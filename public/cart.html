@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart | Sugar Spark Cakes</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="css/cart.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <a href="index.html" class="brand">
+            <span class="brand-icon" aria-hidden="true">🧁</span>
+            <span>Sugar Spark Cakes</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Shop</a>
+            <a href="index.html#about">About</a>
+            <a href="index.html#contact">Contact Us</a>
+        </nav>
+
+        <div class="header-actions">
+            <a href="dashboard.html" class="icon-button"
+               aria-label="Search and browse cakes" title="Browse cakes">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10.8" cy="10.8" r="6.5"></circle>
+                    <path d="m16 16 5 5"></path>
+                </svg>
+            </a>
+
+            <a href="dashboard.html" class="icon-button"
+               aria-label="Customer account" title="Account">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="7.5" r="4"></circle>
+                    <path d="M4.5 21v-2a7.5 7.5 0 0 1 15 0v2"></path>
+                </svg>
+            </a>
+
+            <a href="cart.html" class="icon-button cart-button active"
+               aria-label="Shopping cart" title="Shopping cart">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M2 3h2l2.5 12.5h12L21 7H5"></path>
+                    <circle cx="9" cy="20" r="1.4"></circle>
+                    <circle cx="18" cy="20" r="1.4"></circle>
+                </svg>
+                <span class="cart-count" id="header-cart-count">0</span>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="cart-hero">
+            <div>
+                <p class="hero-eyebrow">SUGAR SPARK CAKES</p>
+                <h1>Your Shopping Cart</h1>
+                <p>Review your favourite cakes before continuing.</p>
+            </div>
+        </section>
+
+        <section class="cart-section">
+            <div class="cart-heading">
+                <div>
+                    <p class="section-label">YOUR SELECTION</p>
+                    <h2>Cart Items</h2>
+                </div>
+
+                <a href="dashboard.html" class="continue-link">
+                    ← Continue Shopping
+                </a>
+            </div>
+
+            <div class="cart-card">
+                <div class="table-wrapper">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-items"></tbody>
+                    </table>
+                </div>
+
+                <div class="empty-cart" id="empty-cart" hidden>
+                    <div class="empty-cart-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 4h2l2 11h11l3-8H6"></path>
+                            <circle cx="9" cy="20" r="1"></circle>
+                            <circle cx="17" cy="20" r="1"></circle>
+                        </svg>
+                    </div>
+                    <h3>Your cart is empty</h3>
+                    <p>Explore our cake collection and add your favourite cakes here.</p>
+                    <a href="dashboard.html" class="primary-button">
+                        Explore Cakes <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="cart-bottom" id="cart-footer" hidden>
+                <p class="cart-note">
+                    Your selected cakes are saved in this browser.
+                </p>
+
+                <aside class="order-summary">
+                    <h3>Order Summary</h3>
+
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <strong id="grand-total">LKR 0</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Delivery</span>
+                        <span class="delivery-note">To be confirmed</span>
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <div class="summary-row summary-total">
+                        <span>Estimated Total</span>
+                        <strong id="summary-total">LKR 0</strong>
+                    </div>
+
+                    <button type="button" id="checkout-button"
+                            class="checkout-button">
+                        Proceed to Checkout <span aria-hidden="true">→</span>
+                    </button>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+        <div class="footer-brand">
+            <a href="index.html" class="brand">
+                <span class="footer-logo-icon" aria-hidden="true">🧁</span>
+                <span>Sugar Spark Cakes</span>
+            </a>
+            <p>Custom cakes for every occasion.</p>
+            <p>Freshly baked, beautifully designed.</p>
+        </div>
+
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Shop</a>
+            <a href="index.html#about">About</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
+
+        <div class="footer-social">
+            <h3>Stay Connected</h3>
+            <div class="social-icons">
+                <a href="#facebook" aria-label="Facebook">f</a>
+                <a href="#instagram" aria-label="Instagram">◎</a>
+                <a href="mailto:hello@sugarsparkcakes.example"
+                   aria-label="Email Sugar Spark Cakes">✉</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/cart.js"></script>
+</body>
+</html>
