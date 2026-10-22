@@ -1,0 +1,975 @@
+
+/* =========================================
+   SUGAR SPARK CAKES
+   Pink Theme Dashboard Styles
+========================================= */
+
+/* 1. GLOBAL STYLES */
+
+:root {
+    --pink: #E6537B;
+    --pink-dark: #C93D65;
+    --pink-light: #FFF1F5;
+    --pink-soft: #FFF8FA;
+    --pink-border: #F0D5DE;
+    --pink-hover: #FCE0E9;
+    --text: #38252D;
+    --text-light: #795D68;
+    --white: #FFFFFF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 20px;
+}
+
+body {
+    font-family: "DM Sans", Arial, sans-serif;
+    color: var(--text);
+    background: var(--white);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+
+/* 2. HEADER */
+
+.site-header {
+    min-height: 68px;
+    padding: 10px 20px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 25px;
+    background: var(--white);
+    border: 1px solid var(--pink-border);
+    border-radius: 10px 10px 0 0;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.brand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 43px;
+    height: 43px;
+    font-size: 32px;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 27px;
+}
+
+.main-nav a {
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    font-size: 15px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: var(--pink-dark);
+    border-bottom-color: var(--pink);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+.icon-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 30px;
+    padding: 2px;
+    border: none;
+    background: transparent;
+    color: var(--text);
+}
+
+.icon-button svg,
+.search-box svg {
+    width: 23px;
+    height: 23px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.icon-button:hover {
+    color: var(--pink);
+}
+
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -7px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    border-radius: 50%;
+    color: var(--white);
+    background: var(--pink);
+    font-size: 10px;
+}
+
+
+/* 3. HERO SECTION */
+
+.hero {
+    min-height: 255px;
+    padding: 32px 9%;
+    display: grid;
+    grid-template-columns: 1fr 0.85fr;
+    align-items: center;
+    gap: 40px;
+    background: linear-gradient(110deg, #FFF1F5, #FCE5ED);
+}
+
+.hero-content {
+    min-width: 0;
+}
+
+.hero-eyebrow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 17px;
+    margin-bottom: 7px;
+    color: var(--pink-dark);
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.eyebrow-dot {
+    color: var(--pink);
+    font-size: 19px;
+}
+
+.hero h1 {
+    color: #4D2535;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(28px, 3.1vw, 38px);
+    font-weight: 600;
+    line-height: 1.22;
+    letter-spacing: -0.8px;
+}
+
+.hero-description {
+    margin-top: 8px;
+    color: var(--text-light);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.shop-now-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-width: 154px;
+    margin-top: 14px;
+    padding: 10px 18px;
+    border: 1px solid var(--pink);
+    border-radius: 10px;
+    color: var(--white);
+    background: var(--pink);
+    font-size: 15px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.shop-now-button span {
+    font-size: 21px;
+    line-height: 1;
+}
+
+.shop-now-button:hover {
+    background: var(--pink-dark);
+    transform: translateY(-2px);
+}
+
+.hero-image-wrapper {
+    width: 100%;
+    height: 165px;
+    overflow: hidden;
+    border: 1px solid var(--pink-border);
+    border-radius: 12px;
+    background: var(--pink-light);
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* 4. CUSTOMIZE YOUR CAKE BANNER */
+
+.customize-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin: 20px 16px;
+    padding: 22px 28px;
+    border: 1px solid var(--pink-border);
+    border-radius: 12px;
+    background: linear-gradient(110deg, #FFF1F5, #FCE3EB);
+}
+
+.customize-banner-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.customize-label {
+    color: var(--pink-dark);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+}
+
+.customize-banner h2 {
+    margin-top: 5px;
+    color: #51273A;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 25px;
+    line-height: 1.3;
+}
+
+.customize-banner p {
+    margin-top: 6px;
+    color: var(--text-light);
+    font-size: 13px;
+}
+
+.customize-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-shrink: 0;
+    padding: 12px 20px;
+    border: 1px solid var(--pink);
+    border-radius: 25px;
+    color: var(--white);
+    background: var(--pink);
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.customize-button span {
+    font-size: 19px;
+}
+
+.customize-button:hover {
+    background: var(--pink-dark);
+    border-color: var(--pink-dark);
+    transform: translateY(-2px);
+}
+
+
+/* 5. POPULAR CAKES SECTION */
+
+.popular-section {
+    padding: 10px 16px 20px;
+    background: var(--white);
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.section-heading h2 {
+    color: var(--text);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.view-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--pink-dark);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.view-all-link span {
+    font-size: 20px;
+}
+
+.view-all-link:hover {
+    text-decoration: underline;
+}
+
+
+/* 6. SEARCH AND CATEGORY FILTER */
+
+.shop-tools {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 12px 0 16px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 180px;
+    gap: 9px;
+    padding: 9px 11px;
+    border: 1px solid var(--pink-border);
+    border-radius: 8px;
+    background: var(--pink-soft);
+}
+
+.search-box:focus-within {
+    border-color: var(--pink);
+    box-shadow: 0 0 0 3px rgba(230, 83, 123, 0.12);
+}
+
+.search-box svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--pink-dark);
+}
+
+.search-box input {
+    width: 100%;
+    min-width: 0;
+    padding: 2px 0;
+    border: none;
+    outline: none;
+    color: var(--text);
+    background: transparent;
+    font-size: 13px;
+}
+
+.search-box input::placeholder {
+    color: #A1848F;
+}
+
+.filter-label {
+    color: var(--text-light);
+    font-size: 13px;
+}
+
+.shop-tools select {
+    max-width: 100%;
+    padding: 9px 10px;
+    border: 1px solid var(--pink-border);
+    border-radius: 8px;
+    outline-color: var(--pink);
+    background: var(--pink-soft);
+    color: var(--text);
+    font-size: 13px;
+}
+
+.shop-tools select:focus {
+    border-color: var(--pink);
+}
+
+
+/* 7. CAKE CARD GRID */
+
+.cake-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 15px;
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+.cake-card {
+    min-width: 0;
+    padding: 12px 9px 10px;
+    border: 1px solid var(--pink-border);
+    border-radius: 12px;
+    background: var(--white);
+    text-align: center;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.cake-card:hover {
+    transform: translateY(-3px);
+    border-color: #E9B8C8;
+    box-shadow: 0 6px 18px rgba(201, 61, 101, 0.10);
+}
+
+.cake-image-link {
+    display: block;
+    width: 100%;
+    max-width: 145px;
+    height: 84px;
+    margin: 0 auto 8px;
+    overflow: hidden;
+    border: 1px solid var(--pink-border);
+    border-radius: 8px;
+    background: var(--pink-light);
+}
+
+.cake-image-link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.25s ease;
+}
+
+.cake-card:hover .cake-image-link img {
+    transform: scale(1.04);
+}
+
+.cake-card h3 {
+    overflow-wrap: anywhere;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.cake-price {
+    margin-top: 3px;
+    color: var(--pink-dark);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* 8. CAKE CARD BUTTONS */
+
+.card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 7px;
+    margin-top: 9px;
+}
+
+.view-button,
+.add-cart-button {
+    min-width: 0;
+    min-height: 29px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border: 1px solid var(--pink);
+    border-radius: 8px;
+    color: var(--pink-dark);
+    background: var(--pink-light);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.25;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.view-button:hover {
+    color: var(--white);
+    background: var(--pink);
+}
+
+.add-cart-button {
+    color: var(--white);
+    background: var(--pink);
+}
+
+.add-cart-button:hover {
+    background: var(--pink-dark);
+    border-color: var(--pink-dark);
+}
+
+.add-cart-button:disabled {
+    cursor: default;
+    opacity: 0.8;
+}
+
+
+/* 9. NO SEARCH RESULTS */
+
+.no-results {
+    padding: 30px 10px;
+    color: var(--text-light);
+    text-align: center;
+    font-size: 14px;
+}
+
+
+/* 10. FOOTER */
+
+.site-footer {
+    display: grid;
+    grid-template-columns: 1.35fr 0.75fr 1fr;
+    gap: 35px;
+    padding: 22px 4%;
+    border-top: 1px solid var(--pink-border);
+    background: var(--pink-soft);
+}
+
+.footer-brand .brand {
+    gap: 10px;
+    font-size: 15px;
+}
+
+.footer-logo-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    font-size: 35px;
+}
+
+.footer-brand > p {
+    margin-left: 60px;
+    color: var(--text-light);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.footer-links,
+.footer-social {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footer-links h3,
+.footer-social h3 {
+    margin-bottom: 8px;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.footer-links a {
+    margin-bottom: 3px;
+    color: var(--text-light);
+    font-size: 11px;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--pink-dark);
+    text-decoration: underline;
+}
+
+.social-icons {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    margin-top: 3px;
+}
+
+.social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 26px;
+    color: var(--pink-dark);
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.social-icons a:hover {
+    color: var(--pink);
+}
+
+
+/* 11. TABLET RESPONSIVE DESIGN */
+
+@media (max-width: 900px) {
+
+    .site-header {
+        grid-template-columns: 1fr auto;
+        gap: 15px;
+    }
+
+    .main-nav {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        flex-wrap: wrap;
+        gap: 10px 25px;
+        padding-bottom: 5px;
+    }
+
+    .header-actions {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .hero {
+        padding-left: 6%;
+        padding-right: 6%;
+        gap: 25px;
+    }
+
+    .hero-eyebrow {
+        gap: 10px;
+        font-size: 12px;
+    }
+
+    .cake-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .site-footer {
+        gap: 20px;
+    }
+
+    .customize-banner {
+        padding: 20px;
+    }
+}
+
+
+/* 12. MOBILE RESPONSIVE DESIGN */
+
+@media (max-width: 600px) {
+
+    /* Header */
+
+    .site-header {
+        min-height: auto;
+        padding: 12px 14px;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+    }
+
+    .brand {
+        gap: 7px;
+        font-size: 13px;
+    }
+
+    .brand-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 27px;
+    }
+
+    .main-nav {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-content: center;
+        gap: 8px 20px;
+    }
+
+    .main-nav a {
+        font-size: 13px;
+    }
+
+    .header-actions {
+        gap: 10px;
+    }
+
+    .icon-button {
+        width: 23px;
+        height: 28px;
+    }
+
+    .icon-button svg {
+        width: 21px;
+        height: 21px;
+    }
+
+
+    /* Hero */
+
+    .hero {
+        grid-template-columns: 1fr;
+        gap: 23px;
+        padding: 30px 6%;
+    }
+
+    .hero h1 {
+        font-size: clamp(30px, 8vw, 40px);
+    }
+
+    .hero-eyebrow {
+        gap: 8px;
+        font-size: 11px;
+    }
+
+    .hero-description {
+        font-size: 14px;
+    }
+
+    .hero-image-wrapper {
+        height: 210px;
+    }
+
+    .shop-now-button {
+        min-width: 145px;
+        padding: 10px 16px;
+    }
+
+
+    /* Customize banner */
+
+    .customize-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        margin: 16px 12px;
+        padding: 20px;
+    }
+
+    .customize-banner h2 {
+        font-size: 22px;
+    }
+
+    .customize-banner p {
+        font-size: 13px;
+    }
+
+    .customize-button {
+        width: 100%;
+        min-height: 44px;
+    }
+
+
+    /* Search and filters */
+
+    .popular-section {
+        padding: 18px 12px 20px;
+    }
+
+    .section-heading h2 {
+        font-size: 20px;
+    }
+
+    .shop-tools {
+        gap: 8px;
+    }
+
+    .search-box {
+        flex-basis: 100%;
+    }
+
+    .filter-label {
+        font-size: 12px;
+    }
+
+    .shop-tools select {
+        flex: 1;
+        min-width: 0;
+    }
+
+
+    /* Cake cards */
+
+    .cake-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .cake-card {
+        padding: 10px 8px;
+    }
+
+    .cake-image-link {
+        max-width: none;
+        height: 130px;
+    }
+
+    .cake-card h3 {
+        font-size: 13px;
+    }
+
+    .cake-price {
+        font-size: 13px;
+    }
+
+    .card-actions {
+        gap: 6px;
+    }
+
+    .view-button,
+    .add-cart-button {
+        min-height: 32px;
+        padding: 6px 4px;
+        font-size: 10px;
+    }
+
+
+    /* Footer */
+
+    .site-footer {
+        grid-template-columns: 1fr 1fr;
+        gap: 22px 15px;
+        padding: 23px 5%;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+
+    .footer-brand .brand {
+        font-size: 14px;
+    }
+
+    .footer-brand > p {
+        margin-left: 43px;
+    }
+
+    .footer-logo-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 27px;
+    }
+
+    .footer-links h3,
+    .footer-social h3 {
+        font-size: 13px;
+    }
+}
+
+
+/* 13. EXTRA SMALL MOBILE SCREENS */
+
+@media (max-width: 360px) {
+
+    .site-header {
+        padding: 10px;
+    }
+
+    .brand {
+        font-size: 12px;
+    }
+
+    .main-nav {
+        gap: 8px 13px;
+    }
+
+    .main-nav a {
+        font-size: 12px;
+    }
+
+    .header-actions {
+        gap: 6px;
+    }
+
+    .hero-eyebrow {
+        gap: 6px;
+        font-size: 10px;
+    }
+
+    .hero-image-wrapper {
+        height: 175px;
+    }
+
+    .customize-banner {
+        padding: 16px;
+    }
+
+    .customize-banner h2 {
+        font-size: 20px;
+    }
+
+    .cake-image-link {
+        height: 105px;
+    }
+
+    .cake-card {
+        padding: 8px 5px;
+    }
+
+    .card-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* 14. ACCESSIBILITY */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--pink-dark);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

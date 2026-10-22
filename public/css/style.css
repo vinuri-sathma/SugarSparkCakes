@@ -1,0 +1,677 @@
+
+/* ========================================
+   1. GLOBAL STYLES
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 30px;
+}
+
+body {
+    font-family: "DM Sans", Arial, sans-serif;
+    color: #51271f;
+    background: #fff9f7;
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+/* ========================================
+   2. NAVIGATION BAR
+======================================== */
+
+.navbar {
+    min-height: 100px;
+    padding: 15px 8.5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    background: #fffdfc;
+    border-bottom: 1px solid #f3e3e1;
+    position: relative;
+    z-index: 10;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.brand-icon {
+    color: #ef6387;
+    font-size: 43px;
+    line-height: 1;
+}
+
+.brand-name {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 25px;
+    font-style: italic;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 43px;
+}
+
+.nav-links a {
+    position: relative;
+    padding: 12px 0;
+    color: #604b47;
+    font-size: 16px;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #ec527a;
+}
+
+.nav-links a.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    width: 100%;
+    height: 3px;
+    background: #ec527a;
+}
+
+/* ========================================
+   3. HERO / LANDING SECTION
+======================================== */
+
+.hero {
+    min-height: 600px;
+    padding: 65px 7%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    isolation: isolate;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 45%,
+            #fffdfb 0%,
+            #fff7f5 45%,
+            #f9e1e2 100%
+        );
+}
+
+/* Decorative pink shape on the top-left */
+
+.hero::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -115px;
+    left: -100px;
+    width: 330px;
+    height: 290px;
+    border-radius: 45% 0 60% 40%;
+    background: #f7cbd2;
+    opacity: 0.48;
+    transform: rotate(-15deg);
+}
+
+/* Decorative shape on the bottom-right */
+
+.hero::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    right: -100px;
+    bottom: -230px;
+    width: 520px;
+    height: 420px;
+    border-radius: 50%;
+    background: #f5c4c9;
+    opacity: 0.42;
+}
+
+/* Main heading and button */
+
+.hero-content {
+    width: 100%;
+    max-width: 850px;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.hero h1 {
+    color: #51271f;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(43px, 5.3vw, 76px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -1.8px;
+}
+
+.hero h1 span {
+    display: block;
+    font-style: italic;
+}
+
+.hero h2 {
+    margin-top: 23px;
+    color: #e96583;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(23px, 2.6vw, 37px);
+    font-style: italic;
+    font-weight: 600;
+}
+
+.hero-description {
+    margin-top: 19px;
+    color: #735d57;
+    font-size: clamp(15px, 1.5vw, 19px);
+    line-height: 1.8;
+}
+
+/* ========================================
+   4. HERO IMAGES
+======================================== */
+
+/* Cake image on the left */
+
+.cake-image-left {
+    position: absolute;
+    left: -100px;
+    bottom: -12px;
+    width: 390px;
+    height: 440px;
+    object-fit: cover;
+    object-position: 58% center;
+    border-radius: 0 45% 0 0;
+    z-index: 1;
+
+    -webkit-mask-image: linear-gradient(
+        to right,
+        black 65%,
+        transparent 100%
+    );
+
+    mask-image: linear-gradient(
+        to right,
+        black 65%,
+        transparent 100%
+    );
+}
+
+/* Flower image on the right */
+
+.flowers-image-right {
+    position: absolute;
+    right: -100px;
+    bottom: -20px;
+    width: 340px;
+    height: 440px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50% 0 0 0;
+    opacity: 0.48;
+    z-index: 0;
+
+    -webkit-mask-image: linear-gradient(
+        to left,
+        black 55%,
+        transparent 100%
+    );
+
+    mask-image: linear-gradient(
+        to left,
+        black 55%,
+        transparent 100%
+    );
+}
+
+/* Decorative sparkle symbols */
+
+.sparkle {
+    position: absolute;
+    color: #ed83a0;
+    font-size: 48px;
+    line-height: 1;
+    z-index: 2;
+}
+
+.sparkle-one {
+    top: 30%;
+    left: 25%;
+}
+
+.sparkle-two {
+    top: 30%;
+    right: 25%;
+}
+
+/* ========================================
+   5. EXPLORE BUTTON
+======================================== */
+
+.explore-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 23px;
+    min-width: 270px;
+    margin-top: 33px;
+    padding: 17px 30px;
+
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 45px;
+
+    color: white;
+    background: linear-gradient(
+        110deg,
+        #f16b8c,
+        #e94675
+    );
+
+    box-shadow: 0 8px 22px rgba(222, 68, 111, 0.19);
+
+    font-size: 18px;
+    font-weight: 700;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.explore-button span {
+    font-size: 25px;
+    transition: transform 0.25s ease;
+}
+
+.explore-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 27px rgba(222, 68, 111, 0.3);
+}
+
+.explore-button:hover span {
+    transform: translateX(5px);
+}
+
+.explore-button:focus-visible,
+.nav-links a:focus-visible,
+.brand:focus-visible {
+    outline: 3px solid #c93465;
+    outline-offset: 5px;
+}
+
+/* ========================================
+   6. BUSINESS FEATURES
+======================================== */
+
+.feature-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    padding: 24px 8%;
+    background: #fffdfc;
+    border-bottom: 1px solid #f5e7e6;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    padding: 7px 12px;
+    border-right: 1px solid #f1dddd;
+}
+
+.feature:last-child {
+    border-right: none;
+}
+
+.feature-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #e64d79;
+    background: #fde7ec;
+    font-size: 24px;
+}
+
+.feature h3 {
+    color: #5b3038;
+    font-size: 14px;
+}
+
+.feature p {
+    margin-top: 3px;
+    color: #a18488;
+    font-size: 11px;
+}
+
+/* ========================================
+   7. CAKE COLLECTION PREVIEW
+======================================== */
+
+.cake-collection {
+    padding: 55px 8% 65px;
+    text-align: center;
+    background: #fffaf9;
+}
+
+.section-label {
+    color: #d95a7c;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.cake-collection h2 {
+    margin-top: 7px;
+    color: #582b34;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 35px;
+    font-style: italic;
+}
+
+.section-description {
+    margin-top: 7px;
+    color: #866b70;
+    font-size: 14px;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.category-card {
+    display: flex;
+    align-items: center;
+    min-height: 115px;
+    overflow: hidden;
+    border: 1px solid #f2e0e2;
+    border-radius: 13px;
+    background: #fff0f1;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(125, 53, 70, 0.1);
+}
+
+.category-card img {
+    width: 48%;
+    height: 115px;
+    object-fit: cover;
+}
+
+.category-info {
+    flex: 1;
+    padding: 10px;
+}
+
+.category-info h3 {
+    color: #5b3038;
+    font-size: 13px;
+}
+
+.category-arrow {
+    display: inline-flex;
+    width: 25px;
+    height: 25px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    border-radius: 50%;
+    color: white;
+    background: #e84978;
+}
+
+/* ========================================
+   8. FOOTER
+======================================== */
+
+.footer {
+    padding: 24px 7%;
+    text-align: center;
+    color: #fceff1;
+    background: #512b32;
+}
+
+.footer-brand {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.footer p {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+.footer .copyright {
+    margin-top: 12px;
+    color: #d5b7be;
+}
+
+/* ========================================
+   9. TABLET RESPONSIVE DESIGN
+======================================== */
+
+@media (max-width: 1100px) {
+
+    .navbar {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .nav-links {
+        gap: 23px;
+    }
+
+    .brand-name {
+        font-size: 21px;
+    }
+
+    .cake-image-left {
+        left: -150px;
+    }
+
+    .flowers-image-right {
+        right: -150px;
+    }
+
+    .feature-strip {
+        padding-left: 3%;
+        padding-right: 3%;
+    }
+
+    .feature {
+        gap: 8px;
+        padding: 7px;
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* ========================================
+   10. MOBILE RESPONSIVE DESIGN
+======================================== */
+
+@media (max-width: 700px) {
+
+    /* Navigation */
+
+    .navbar {
+        min-height: auto;
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px 5%;
+    }
+
+    .brand {
+        justify-content: center;
+    }
+
+    .brand-icon {
+        font-size: 34px;
+    }
+
+    .brand-name {
+        font-size: 23px;
+    }
+
+    .nav-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px 22px;
+    }
+
+    .nav-links a {
+        font-size: 13px;
+    }
+
+    /* Hero section */
+
+    .hero {
+        min-height: 590px;
+        padding: 65px 6% 55px;
+    }
+
+    .hero-content {
+        max-width: 520px;
+    }
+
+    .hero h1 {
+        font-size: clamp(37px, 9vw, 54px);
+        letter-spacing: -1px;
+    }
+
+    .hero h2 {
+        margin-top: 18px;
+        font-size: clamp(21px, 5vw, 28px);
+    }
+
+    .hero-description {
+        font-size: 15px;
+    }
+
+    /* Reduce image size on small screens */
+
+    .cake-image-left {
+        left: -125px;
+        bottom: -35px;
+        width: 220px;
+        height: 230px;
+        opacity: 0.32;
+    }
+
+    .flowers-image-right {
+        right: -130px;
+        bottom: -35px;
+        width: 210px;
+        height: 260px;
+        opacity: 0.27;
+    }
+
+    .sparkle {
+        font-size: 30px;
+    }
+
+    .sparkle-one {
+        left: 5%;
+        top: 23%;
+    }
+
+    .sparkle-two {
+        right: 5%;
+        top: 23%;
+    }
+
+    /* Explore button */
+
+    .explore-button {
+        min-width: 220px;
+        padding: 14px 23px;
+        font-size: 16px;
+    }
+
+
+/* ========================================
+   11. EXTRA SMALL MOBILE SCREENS
+======================================== */
+
+@media (max-width: 380px) {
+
+    .brand-name {
+        font-size: 20px;
+    }
+
+    .nav-links {
+        gap: 7px 14px;
+    }
+
+    .hero h1 {
+        font-size: 35px;
+    }
+
+    .hero h2 {
+        font-size: 20px;
+    }
+
+    .hero-description {
+        font-size: 14px;
+    }
+
+    .feature {
+        padding: 5px 3px;
+    }
+}
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+    }
+}
