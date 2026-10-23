@@ -4,10 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const table = document.querySelector(".cart-table");
     const emptyCart = document.getElementById("empty-cart");
     const cartFooter = document.getElementById("cart-footer");
-    const cartCount = document.getElementById("header-cart-count");
+    const cartCount = document.getElementById("cart-count");
     const grandTotal = document.getElementById("grand-total");
     const summaryTotal = document.getElementById("summary-total");
-    const checkoutButton = document.getElementById("checkout-button");
 
     const CART_KEY = "sugarSparkCart";
 
@@ -21,7 +20,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function saveCart(cart) {
-        localStorage.setItem(CART_KEY, JSON.stringify(cart));
+        try {
+            localStorage.setItem(CART_KEY, JSON.stringify(cart));
+        } catch (error) {
+            console.error("Unable to save the cart:", error);
+        }
     }
 
     function money(amount) {
@@ -44,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderCart() {
         const cart = getCart();
+
         itemsContainer.innerHTML = "";
 
         let total = 0;
@@ -51,7 +55,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         cart.forEach(function (item, index) {
             const price = Math.max(0, Number(item.price) || 0);
-            const quantity = Math.max(1, Math.floor(Number(item.quantity) || 1));
+            const quantity = Math.max(
+                1,
+                Math.floor(Number(item.quantity) || 1)
+            );
+
             const itemTotal = price * quantity;
             const name = escapeHTML(item.name || "Cake");
 
@@ -62,7 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 ? `<img class="product-image"
                         src="${escapeHTML(item.image)}"
                         alt="${name}">`
-                : `<div class="product-placeholder" aria-label="Cake image unavailable">♡</div>`;
+                : `<div class="product-placeholder"
+                        aria-label="Cake image unavailable">♡</div>`;
 
             const row = document.createElement("tr");
 
@@ -72,26 +81,49 @@ document.addEventListener("DOMContentLoaded", function () {
                         ${image}
                         <div>
                             <span class="product-name">${name}</span>
-                            <span class="product-caption">Sugar Spark Cakes</span>
+                            <span class="product-caption">
+                                Sugar Spark Cakes
+                            </span>
                         </div>
                     </div>
                 </td>
+
                 <td>${escapeHTML(item.size || "1kg")}</td>
+
                 <td class="price-cell">${money(price)}</td>
+
                 <td>
                     <div class="quantity-control">
-                        <button type="button" data-action="decrease"
-                            data-index="${index}" aria-label="Decrease quantity">−</button>
-                        <span class="quantity-number">${quantity}</span>
-                        <button type="button" data-action="increase"
-                            data-index="${index}" aria-label="Increase quantity">+</button>
+                        <button type="button"
+                            data-action="decrease"
+                            data-index="${index}"
+                            aria-label="Decrease quantity">
+                            −
+                        </button>
+
+                        <span class="quantity-number">
+                            ${quantity}
+                        </span>
+
+                        <button type="button"
+                            data-action="increase"
+                            data-index="${index}"
+                            aria-label="Increase quantity">
+                            +
+                        </button>
                     </div>
                 </td>
+
                 <td class="item-total">${money(itemTotal)}</td>
+
                 <td>
-                    <button type="button" class="remove-button"
-                        data-action="remove" data-index="${index}"
-                        aria-label="Delete ${name}" title="Delete item">
+                    <button type="button"
+                        class="remove-button"
+                        data-action="remove"
+                        data-index="${index}"
+                        aria-label="Delete ${name}"
+                        title="Delete item">
+
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M3 6h18"></path>
                             <path d="M8 6V4h8v2"></path>
@@ -108,16 +140,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
         grandTotal.textContent = money(total);
         summaryTotal.textContent = money(total);
-        cartCount.textContent = quantityTotal;
 
+        // Update the header Cart badge.
+        cartCount.textContent = quantityTotal;
+        cartCount.hidden = quantityTotal === 0;
+
+        // Show the correct cart state.
         const hasItems = cart.length > 0;
+
         emptyCart.hidden = hasItems;
         cartFooter.hidden = !hasItems;
         table.hidden = !hasItems;
     }
 
+    // Increase, decrease or remove cart items.
     itemsContainer.addEventListener("click", function (event) {
         const button = event.target.closest("button[data-action]");
+
         if (!button) return;
 
         const index = Number(button.dataset.index);
@@ -125,39 +164,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!Number.isInteger(index) || !cart[index]) return;
 
-        if (button.dataset.action === "increase") {
-            cart[index].quantity =
-                Math.max(1, Number(cart[index].quantity) || 1) + 1;
-        } else if (button.dataset.action === "decrease") {
-            const quantity = Math.max(1, Number(cart[index].quantity) || 1);
+        const action = button.dataset.action;
+        const currentQuantity = Math.max(
+            1,
+            Math.floor(Number(cart[index].quantity) || 1)
+        );
 
-            if (quantity > 1) {
-                cart[index].quantity = quantity - 1;
+        if (action === "increase") {
+            cart[index].quantity = currentQuantity + 1;
+
+        } else if (action === "decrease") {
+            if (currentQuantity > 1) {
+                cart[index].quantity = currentQuantity - 1;
             } else {
                 cart.splice(index, 1);
             }
-        } else if (button.dataset.action === "remove") {
+
+        } else if (action === "remove") {
             cart.splice(index, 1);
+        } else {
+            return;
         }
 
         saveCart(cart);
         renderCart();
     });
 
-    checkoutButton.addEventListener("click", function () {
-        if (getCart().length === 0) {
-            alert("Your cart is empty. Please select a cake first.");
-            return;
-        }
-
-        alert("Checkout functionality will be implemented in the next development step.");
-    });
-
+    // Update the cart when another browser tab changes it.
     window.addEventListener("storage", function (event) {
-        if (event.key === CART_KEY) {
+        if (event.key === CART_KEY || event.key === null) {
             renderCart();
         }
     });
 
+    // Display saved cart items when the page loads.
     renderCart();
 });

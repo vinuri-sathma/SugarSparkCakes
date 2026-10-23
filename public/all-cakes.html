@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Cakes | Sugar Spark Cakes</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="css/all-cakes.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <a class="logo" href="index.html">
+            <span class="brand-icon" aria-hidden="true">🧁</span>
+            <span class="brand-name">Sugar Spark Cakes</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Shop</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact Us</a>
+        </nav>
+
+        <div class="header-actions">
+            <a href="cart.html" class="cart-link"
+               aria-label="Shopping cart">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M2 3h2l2.5 12.5h12L21 7H5"></path>
+                    <circle cx="9" cy="20" r="1.4"></circle>
+                    <circle cx="18" cy="20" r="1.4"></circle>
+                </svg>
+
+                <span>Cart</span>
+                <span class="cart-count" id="cart-count" hidden>0</span>
+            </a>
+        </div>
+    </header>
+
+    <section class="page-heading">
+        <a href="dashboard.html" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+        <h1>Our Cake Collection</h1>
+        <p>Discover the perfect cake for your special moments.</p>
+    </section>
+
+    <main class="catalogue">
+        <div class="tools">
+            <input
+                type="search"
+                id="cake-search"
+                placeholder="Search cakes..."
+                aria-label="Search cakes"
+            >
+
+            <select id="cake-filter" aria-label="Filter by category">
+                <option value="all">All Categories</option>
+                <option value="birthday">Birthday Cakes</option>
+                <option value="chocolate">Chocolate Cakes</option>
+                <option value="floral">Floral Cakes</option>
+                <option value="wedding">Wedding &amp; Anniversary</option>
+                <option value="kids">Cartoon &amp; Kids Cakes</option>
+                <option value="vanilla">Ribbon &amp; Vanilla Cakes</option>
+                <option value="special">Special Occasion Cakes</option>
+            </select>
+        </div>
+
+        <p class="result-count" id="result-count">
+            Loading cakes...
+        </p>
+
+        <div class="cake-grid" id="all-cakes-grid"></div>
+
+        <p class="no-results" id="no-results">
+            No cakes found. Try another search or category.
+        </p>
+    </main>
+
+    <footer>
+        © 2026 Sugar Spark Cakes. All rights reserved.
+    </footer>
+
+    <script src="js/all-cakes.js"></script>
+</body>
+</html>

@@ -2,11 +2,13 @@
 /* Sugar Spark Cakes - Home Page JavaScript */
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Smooth scrolling for sections on the home page
+
+    // Smooth scrolling for links pointing to sections on this page
     const sectionLinks = document.querySelectorAll('a[href^="#"]');
 
     sectionLinks.forEach(function (link) {
         link.addEventListener("click", function (event) {
+
             const targetId = link.getAttribute("href");
 
             if (!targetId || targetId === "#") {

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Customize your special cake with Sugar Spark Cakes.">
+
+    <title>Customize Your Cake | Sugar Spark Cakes</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="css/customize-cake.css">
+</head>
+<body>
+
+    <!-- Small falling cake decorations -->
+    <div class="cake-rain" aria-hidden="true">
+        <span>🧁</span>
+        <span>🍰</span>
+        <span>✨</span>
+        <span>🎂</span>
+        <span>🍓</span>
+        <span>🧁</span>
+        <span>✨</span>
+        <span>🍰</span>
+        <span>🎂</span>
+        <span>🍓</span>
+        <span>🧁</span>
+        <span>✨</span>
+    </div>
+
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <span class="brand-icon" aria-hidden="true">🧁</span>
+            <span class="brand-name">Sugar Spark Cakes</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="all-cakes.html">Cakes</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact Us</a>
+        </nav>
+
+        <div class="header-actions">
+            <a href="cart.html" class="cart-link" aria-label="Shopping cart">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M2 3h2l2.5 12.5h12L21 7H5"></path>
+                    <circle cx="9" cy="20" r="1.4"></circle>
+                    <circle cx="18" cy="20" r="1.4"></circle>
+                </svg>
+                <span>Cart</span>
+                <span class="cart-count" id="cart-count" hidden>0</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="customize-container">
+
+        <a href="dashboard.html" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+        <section class="page-heading">
+            <span class="heading-decoration" aria-hidden="true">✦ Sweet ideas start here ✦</span>
+            <h1>Customize Your Cake</h1>
+            <p>
+                Create a cake that matches your special moment.
+                Tell us your preferences and place your order through WhatsApp.
+            </p>
+        </section>
+
+        <form id="customize-form">
+            <div class="customize-layout">
+
+                <!-- Cake picture upload -->
+                <section class="form-card image-card">
+                    <h2>Your Cake Inspiration</h2>
+
+                    <p class="section-description">
+                        Upload a picture of the cake design you would like.
+                    </p>
+
+                    <label for="cake-image" class="upload-area">
+                        <span class="upload-icon">＋</span>
+                        <span class="upload-title">Upload Cake Picture</span>
+                        <span class="upload-description">
+                            Click here to choose an image
+                        </span>
+                        <span class="upload-formats">JPG, PNG or WEBP</span>
+                    </label>
+
+                    <input
+                        type="file"
+                        id="cake-image"
+                        accept="image/jpeg,image/png,image/webp"
+                    >
+
+                    <div id="image-preview-container"
+                         class="image-preview-container" hidden>
+                        <img id="image-preview" src=""
+                             alt="Uploaded cake design preview">
+
+                        <p id="image-file-name"></p>
+
+                        <button type="button" id="remove-image"
+                                class="remove-image">
+                            Remove Picture
+                        </button>
+                    </div>
+
+                    <p class="small-note">
+                        The picture is used as a design reference.
+                    </p>
+                </section>
+
+                <!-- Customization form -->
+                <section class="form-card details-card">
+                    <h2>Cake Details</h2>
+
+                    <div class="form-group">
+                        <label for="customer-name">Your Name *</label>
+                        <input type="text" id="customer-name"
+                               placeholder="Enter your name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer-phone">Contact Number *</label>
+                        <input type="tel" id="customer-phone"
+                               placeholder="Enter your phone number" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cake-flavour">Cake Flavour *</label>
+                            <select id="cake-flavour" required>
+                                <option value="">Select flavour</option>
+                                <option value="Chocolate">Chocolate</option>
+                                <option value="Vanilla">Vanilla</option>
+                                <option value="Ribbon">Ribbon</option>
+                                <option value="Black Forest">Black Forest</option>
+                                <option value="Strawberry">Strawberry</option>
+                                <option value="Red Velvet">Red Velvet</option>
+                                <option value="Butter Cake">Butter Cake</option>
+                                <option value="Other">Other / Discuss on WhatsApp</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cake-weight">Cake Weight *</label>
+                            <select id="cake-weight" required>
+                                <option value="">Select weight</option>
+                                <option value="500g">500g</option>
+                                <option value="1kg">1kg</option>
+                                <option value="1.5kg">1.5kg</option>
+                                <option value="2kg">2kg</option>
+                                <option value="3kg">3kg</option>
+                                <option value="Other">Other / Discuss on WhatsApp</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cake-occasion">Occasion</label>
+                        <select id="cake-occasion">
+                            <option value="">Select occasion</option>
+                            <option value="Birthday">Birthday</option>
+                            <option value="Wedding">Wedding</option>
+                            <option value="Anniversary">Anniversary</option>
+                            <option value="Graduation">Graduation</option>
+                            <option value="Baby Shower">Baby Shower</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cake-design">Preferred Design / Colours</label>
+                        <textarea id="cake-design" rows="3"
+                            placeholder="Describe your preferred design, colours or theme..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cake-greeting">Greeting on the Cake</label>
+                        <input type="text" id="cake-greeting" maxlength="100"
+                            placeholder="E.g. Happy Birthday Sarah!">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="delivery-date">Required Date *</label>
+                        <input type="date" id="delivery-date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="additional-notes">Additional Instructions</label>
+                        <textarea id="additional-notes" rows="3"
+                            placeholder="Any other requirements or special instructions..."></textarea>
+                    </div>
+
+                    <p class="required-note">* Required fields</p>
+
+                    <button type="submit" class="whatsapp-button">
+                        <span>Place Order Through WhatsApp</span>
+                        <span aria-hidden="true">↗</span>
+                    </button>
+
+                    <p class="whatsapp-note">
+                        Your order request will open in WhatsApp.
+                        Price and availability will be confirmed by the business.
+                    </p>
+                </section>
+
+            </div>
+        </form>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="index.html" class="logo">
+                    <span class="brand-icon" aria-hidden="true">🧁</span>
+                    <span class="brand-name">Sugar Spark Cakes</span>
+                </a>
+                <p>Custom cakes for every occasion.</p>
+                <p>Freshly baked, beautifully designed.</p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a><br>
+                <a href="all-cakes.html">Cakes</a><br>
+                <a href="about.html">About</a><br>
+                <a href="contact.html">Contact Us</a><br>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            © 2026 Sugar Spark Cakes. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="js/customize-cake.js"></script>
+</body>
+</html>

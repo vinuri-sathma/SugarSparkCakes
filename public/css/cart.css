@@ -724,3 +724,294 @@ button:focus-visible {
     outline: 2px solid var(--pink-dark);
     outline-offset: 3px;
 }
+
+
+/* UPDATED HEADER LOGO - matches All Cakes page */
+
+.site-header .brand-name,
+.site-footer .brand-name {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    font-style: normal;
+    color: var(--pink-dark);
+    white-space: nowrap;
+}
+
+.site-header .brand {
+    gap: 10px;
+}
+
+/* HEADER CART - matches Dashboard page */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.cart-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 7px 12px;
+    border: 1px solid var(--pink-border);
+    border-radius: 9px;
+    background: var(--white);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.cart-link svg {
+    width: 21px;
+    height: 21px;
+}
+
+.cart-link:hover,
+.cart-link.active {
+    color: var(--pink-dark);
+    background: var(--pink-light);
+}
+
+.cart-link.active {
+    border-color: var(--pink-border);
+}
+
+.cart-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 19px;
+    height: 19px;
+    padding: 0 5px;
+    border-radius: 50%;
+    color: var(--white);
+    background: var(--pink);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.cart-count[hidden] {
+    display: none !important;
+}
+
+/* CART PAGE HEADING */
+
+.cart-hero {
+    background:
+        radial-gradient(
+            ellipse at 12% 20%,
+            rgba(255, 255, 255, 0.85),
+            transparent 38%
+        ),
+        linear-gradient(110deg, #FFF8EF, #FFE9E7, #F9DCE5);
+}
+
+.cart-hero h1 {
+    color: #633747;
+}
+
+/* CHECKOUT LINK */
+
+.checkout-button {
+    text-decoration: none;
+    text-align: center;
+}
+
+/* RESPONSIVE HEADER */
+
+@media (max-width: 600px) {
+    .site-header .brand-name,
+    .site-footer .brand-name {
+        font-size: 18px;
+    }
+
+    .site-header .brand {
+        gap: 5px;
+    }
+
+    .cart-link {
+        gap: 5px;
+        padding: 6px 8px;
+        font-size: 13px;
+    }
+
+    .cart-link svg {
+        width: 19px;
+        height: 19px;
+    }
+}
+
+@media (max-width: 360px) {
+    .site-header .brand-name {
+        font-size: 15px;
+    }
+
+    .brand-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 24px;
+    }
+}
+
+
+/* =========================================
+   FALLING CAKE ANIMATION - CART PAGE
+   ========================================= */
+
+body {
+    position: relative;
+    isolation: isolate;
+}
+
+/* Animation background */
+
+.cake-rain {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+}
+
+.cake-rain span {
+    position: absolute;
+    top: -60px;
+    display: block;
+    opacity: 0.45;
+    font-size: 22px;
+    animation: cart-cake-fall linear infinite;
+    will-change: transform;
+}
+
+.cake-rain span:nth-child(1) {
+    left: 5%;
+    font-size: 22px;
+    animation-duration: 15s;
+    animation-delay: -4s;
+}
+
+.cake-rain span:nth-child(2) {
+    left: 14%;
+    font-size: 18px;
+    animation-duration: 19s;
+    animation-delay: -11s;
+}
+
+.cake-rain span:nth-child(3) {
+    left: 24%;
+    font-size: 16px;
+    animation-duration: 17s;
+    animation-delay: -7s;
+}
+
+.cake-rain span:nth-child(4) {
+    left: 35%;
+    font-size: 25px;
+    animation-duration: 20s;
+    animation-delay: -14s;
+}
+
+.cake-rain span:nth-child(5) {
+    left: 45%;
+    font-size: 19px;
+    animation-duration: 16s;
+    animation-delay: -5s;
+}
+
+.cake-rain span:nth-child(6) {
+    left: 55%;
+    font-size: 23px;
+    animation-duration: 18s;
+    animation-delay: -9s;
+}
+
+.cake-rain span:nth-child(7) {
+    left: 65%;
+    font-size: 20px;
+    animation-duration: 21s;
+    animation-delay: -16s;
+}
+
+.cake-rain span:nth-child(8) {
+    left: 74%;
+    font-size: 17px;
+    animation-duration: 16s;
+    animation-delay: -6s;
+}
+
+.cake-rain span:nth-child(9) {
+    left: 83%;
+    font-size: 24px;
+    animation-duration: 19s;
+    animation-delay: -12s;
+}
+
+.cake-rain span:nth-child(10) {
+    left: 93%;
+    font-size: 21px;
+    animation-duration: 17s;
+    animation-delay: -8s;
+}
+
+.cake-rain span:nth-child(11) {
+    left: 39%;
+    font-size: 17px;
+    animation-duration: 22s;
+    animation-delay: -18s;
+}
+
+.cake-rain span:nth-child(12) {
+    left: 88%;
+    font-size: 19px;
+    animation-duration: 20s;
+    animation-delay: -13s;
+}
+
+/* Falling animation */
+
+@keyframes cart-cake-fall {
+    0% {
+        transform: translate3d(0, -10vh, 0) rotate(0deg);
+    }
+
+    25% {
+        transform: translate3d(15px, 25vh, 0) rotate(80deg);
+    }
+
+    50% {
+        transform: translate3d(-12px, 55vh, 0) rotate(170deg);
+    }
+
+    75% {
+        transform: translate3d(15px, 80vh, 0) rotate(260deg);
+    }
+
+    100% {
+        transform: translate3d(-8px, 115vh, 0) rotate(360deg);
+    }
+}
+
+/* Keep header and footer above the animation */
+
+.site-header,
+.site-footer {
+    position: relative;
+    z-index: 11;
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+    .cake-rain {
+        display: none;
+    }
+}

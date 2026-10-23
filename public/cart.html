@@ -14,45 +14,46 @@
     <link rel="stylesheet" href="css/cart.css">
 </head>
 <body>
+    
+<!-- Falling cake decorations -->
+<div class="cake-rain" aria-hidden="true">
+    <span>🧁</span>
+    <span>🍰</span>
+    <span>✨</span>
+    <span>🎂</span>
+    <span>🍓</span>
+    <span>🧁</span>
+    <span>🍒</span>
+    <span>✨</span>
+    <span>🍰</span>
+    <span>🎂</span>
+    <span>🍓</span>
+    <span>🧁</span>
+</div>
 
     <header class="site-header">
         <a href="index.html" class="brand">
             <span class="brand-icon" aria-hidden="true">🧁</span>
-            <span>Sugar Spark Cakes</span>
+            <span class="brand-name">Sugar Spark Cakes</span>
         </a>
 
         <nav class="main-nav" aria-label="Main navigation">
             <a href="index.html">Home</a>
             <a href="dashboard.html">Shop</a>
-            <a href="index.html#about">About</a>
-            <a href="index.html#contact">Contact Us</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact Us</a>
         </nav>
 
         <div class="header-actions">
-            <a href="dashboard.html" class="icon-button"
-               aria-label="Search and browse cakes" title="Browse cakes">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="10.8" cy="10.8" r="6.5"></circle>
-                    <path d="m16 16 5 5"></path>
-                </svg>
-            </a>
-
-            <a href="dashboard.html" class="icon-button"
-               aria-label="Customer account" title="Account">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="7.5" r="4"></circle>
-                    <path d="M4.5 21v-2a7.5 7.5 0 0 1 15 0v2"></path>
-                </svg>
-            </a>
-
-            <a href="cart.html" class="icon-button cart-button active"
-               aria-label="Shopping cart" title="Shopping cart">
+            <a href="cart.html" class="cart-link active"
+               aria-label="Shopping cart">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M2 3h2l2.5 12.5h12L21 7H5"></path>
                     <circle cx="9" cy="20" r="1.4"></circle>
                     <circle cx="18" cy="20" r="1.4"></circle>
                 </svg>
-                <span class="cart-count" id="header-cart-count">0</span>
+                <span>Cart</span>
+                <span class="cart-count" id="cart-count" hidden>0</span>
             </a>
         </div>
     </header>
@@ -60,7 +61,6 @@
     <main>
         <section class="cart-hero">
             <div>
-                <p class="hero-eyebrow">SUGAR SPARK CAKES</p>
                 <h1>Your Shopping Cart</h1>
                 <p>Review your favourite cakes before continuing.</p>
             </div>
@@ -103,8 +103,10 @@
                             <circle cx="17" cy="20" r="1"></circle>
                         </svg>
                     </div>
+
                     <h3>Your cart is empty</h3>
                     <p>Explore our cake collection and add your favourite cakes here.</p>
+
                     <a href="dashboard.html" class="primary-button">
                         Explore Cakes <span aria-hidden="true">→</span>
                     </a>
@@ -136,20 +138,20 @@
                         <strong id="summary-total">LKR 0</strong>
                     </div>
 
-                    <button type="button" id="checkout-button"
-                            class="checkout-button">
+                    <a href="checkout.html" id="checkout-button"
+                       class="checkout-button">
                         Proceed to Checkout <span aria-hidden="true">→</span>
-                    </button>
+                    </a>
                 </aside>
             </div>
         </section>
     </main>
 
-    <footer class="site-footer" id="contact">
+    <footer class="site-footer">
         <div class="footer-brand">
             <a href="index.html" class="brand">
                 <span class="footer-logo-icon" aria-hidden="true">🧁</span>
-                <span>Sugar Spark Cakes</span>
+                <span class="brand-name">Sugar Spark Cakes</span>
             </a>
             <p>Custom cakes for every occasion.</p>
             <p>Freshly baked, beautifully designed.</p>
@@ -159,8 +161,8 @@
             <h3>Quick Links</h3>
             <a href="index.html">Home</a>
             <a href="dashboard.html">Shop</a>
-            <a href="index.html#about">About</a>
-            <a href="index.html#contact">Contact</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact Us</a>
         </div>
 
         <div class="footer-social">

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore cake details at Sugar Spark Cakes.">
+
+    <title>Cake Details | Sugar Spark Cakes</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/cake-details.css">
+</head>
+<body class="product-detail-page">
+    
+<!-- Falling cake decorations -->
+<div class="cake-rain" aria-hidden="true">
+    <span>🧁</span>
+    <span>🍰</span>
+    <span>✨</span>
+    <span>🎂</span>
+    <span>🍓</span>
+    <span>🧁</span>
+    <span>🍒</span>
+    <span>✨</span>
+    <span>🍰</span>
+    <span>🎂</span>
+    <span>🍓</span>
+    <span>🧁</span>
+</div>
+
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <span class="brand-icon" aria-hidden="true">🧁</span>
+            <span class="brand-name">Sugar Spark Cakes</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="all-cakes.html">Cakes</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact Us</a>
+        </nav>
+
+        <div class="header-actions">
+            <a href="cart.html" class="cart-link" aria-label="Shopping cart">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M2 3h2l2.5 12.5h12L21 7H5"></path>
+                    <circle cx="9" cy="20" r="1.4"></circle>
+                    <circle cx="18" cy="20" r="1.4"></circle>
+                </svg>
+                <span>Cart</span>
+                <span class="cart-count" id="cart-count" hidden>0</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="details-main">
+        <a href="all-cakes.html" class="back-to-shop">
+            ← Back to Shop
+        </a>
+
+        <section class="product-details-layout" id="product-details">
+
+            <div class="product-gallery">
+                <div class="main-image-frame">
+                    <img id="main-product-image" src="" alt="">
+                </div>
+
+                <div class="product-thumbnails" id="product-thumbnails"
+                     aria-label="Product photos"></div>
+            </div>
+
+            <div class="product-information">
+                <p class="product-eyebrow">SUGAR SPARK CAKES</p>
+
+                <h1 id="product-name">Loading cake...</h1>
+
+                <p class="detail-price" id="product-price"></p>
+
+                <p class="detail-description" id="product-description"></p>
+
+                <div class="detail-option">
+                    <h2>Size</h2>
+                    <div class="size-options" id="size-options"></div>
+                </div>
+
+                <div class="detail-option">
+                    <h2>Quantity</h2>
+
+                    <div class="quantity-control">
+                        <button type="button" id="decrease-quantity"
+                                aria-label="Decrease quantity">−</button>
+                        <output id="quantity-value" aria-live="polite">1</output>
+                        <button type="button" id="increase-quantity"
+                                aria-label="Increase quantity">+</button>
+                    </div>
+                </div>
+
+                <p class="detail-total">
+                    Total: <strong id="product-total"></strong>
+                </p>
+
+                <button type="button" class="detail-add-cart"
+                        id="detail-add-cart">
+                    Add to Cart
+                </button>
+
+                <p class="cart-feedback" id="cart-feedback"
+                   role="status" aria-live="polite"></p>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-brand">
+            <a href="index.html" class="logo">
+                <span class="brand-icon" aria-hidden="true">🧁</span>
+                <span class="brand-name">Sugar Spark Cakes</span>
+            </a>
+            <p>Custom cakes for every occasion.</p>
+            <p>Freshly baked, beautifully designed.</p>
+        </div>
+
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <a href="index.html">Home</a>
+            <a href="all-cakes.html">Cakes</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+    </footer>
+
+    <script src="js/cake-details.js"></script>
+</body>
+</html>

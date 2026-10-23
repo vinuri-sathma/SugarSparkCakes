@@ -973,3 +973,689 @@ select:focus-visible {
         transition-duration: 0.01ms !important;
     }
 }
+
+
+/* =========================================
+   DASHBOARD UPDATES
+========================================= */
+
+/* Header logo - match All Cakes page */
+
+.site-header .brand-name,
+.footer-brand .brand-name {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    color: var(--pink-dark);
+    white-space: nowrap;
+}
+
+.site-header .brand {
+    gap: 8px;
+}
+
+.site-header .brand-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 29px;
+}
+
+
+/* Header cart link */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.cart-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    position: relative;
+    min-height: 38px;
+    padding: 6px 10px;
+    border: 1px solid var(--pink-border);
+    border-radius: 9px;
+    color: var(--text);
+    background: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.cart-link svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.cart-link:hover {
+    color: var(--pink-dark);
+    background: var(--pink-light);
+}
+
+.cart-count {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    min-width: 19px;
+    height: 19px;
+    padding: 0 5px;
+    border-radius: 50%;
+    color: var(--white);
+    background: var(--pink);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* Larger hero section and image frame */
+
+.hero {
+    min-height: 350px;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 35px;
+    padding-top: 35px;
+    padding-bottom: 35px;
+}
+
+.hero-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 290px;
+    overflow: hidden;
+    border: 1px solid var(--pink-border);
+    border-radius: 14px;
+    background: var(--pink-light);
+}
+
+.hero-slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* Slider navigation dots */
+
+.slider-dots {
+    position: absolute;
+    z-index: 2;
+    bottom: 12px;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transform: translateX(-50%);
+    padding: 7px 10px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.slider-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #D8A9B8;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.slider-dot.active {
+    background: var(--pink-dark);
+    transform: scale(1.25);
+}
+
+.slider-dot:focus-visible {
+    outline: 2px solid var(--pink-dark);
+    outline-offset: 3px;
+}
+
+
+/* Shorter, centered search bar */
+
+.shop-tools {
+    justify-content: center;
+}
+
+.search-box {
+    flex: 0 1 360px;
+    width: 100%;
+    min-width: 0;
+    max-width: 360px;
+}
+
+
+/* Tablet adjustments */
+
+@media (max-width: 900px) {
+    .site-header .brand-name,
+    .footer-brand .brand-name {
+        font-size: 20px;
+    }
+
+    .hero {
+        grid-template-columns: 0.9fr 1.1fr;
+        min-height: 320px;
+        gap: 22px;
+    }
+
+    .hero-image-wrapper {
+        height: 260px;
+    }
+}
+
+
+/* Mobile adjustments */
+
+@media (max-width: 600px) {
+    .site-header .brand-name,
+    .footer-brand .brand-name {
+        font-size: 18px;
+    }
+
+    .site-header .brand-icon {
+        width: 29px;
+        height: 29px;
+        font-size: 25px;
+    }
+
+    .cart-link {
+        gap: 5px;
+        padding: 6px 8px;
+        font-size: 13px;
+    }
+
+    .cart-link svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .hero-image-wrapper {
+        height: 250px;
+    }
+
+    .search-box {
+        flex-basis: 360px;
+        max-width: 360px;
+    }
+}
+
+
+/* Extra-small screens */
+
+@media (max-width: 360px) {
+    .site-header .brand-name {
+        font-size: 15px;
+    }
+
+    .site-header .brand-icon {
+        width: 25px;
+        height: 25px;
+        font-size: 22px;
+    }
+
+    .cart-link {
+        gap: 4px;
+        padding: 5px 6px;
+        font-size: 12px;
+    }
+
+    .hero-image-wrapper {
+        height: 210px;
+    }
+}
+
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-slide,
+    .slider-dot {
+        transition: none;
+    }
+}
+
+
+/* =========================================
+   CREATIVE BAKERY HERO DESIGN
+========================================= */
+
+.hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 370px;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 30px;
+    padding: 32px 5%;
+    border-top: 1px solid #F2D8D7;
+    border-bottom: 1px solid #F2D8D7;
+
+    /* Cream, peach and blush pink */
+    background:
+        radial-gradient(
+            ellipse at 8% 15%,
+            rgba(255, 255, 255, 0.95) 0%,
+            transparent 35%
+        ),
+        linear-gradient(
+            120deg,
+            #FFF8EF 0%,
+            #FFE9E1 42%,
+            #F9DCE5 100%
+        );
+}
+
+/* Soft decorative circles */
+
+.hero::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: -95px;
+    right: 31%;
+    width: 240px;
+    height: 240px;
+    border: 1px solid rgba(201, 61, 101, 0.12);
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 20px rgba(255, 255, 255, 0.13),
+        0 0 0 42px rgba(255, 255, 255, 0.10);
+    pointer-events: none;
+}
+
+
+/* Text panel */
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    padding: 25px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 22px;
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.78),
+        rgba(255, 244, 238, 0.58)
+    );
+    box-shadow: 0 10px 32px rgba(116, 62, 66, 0.07);
+    backdrop-filter: blur(3px);
+}
+
+.hero-eyebrow {
+    gap: 9px;
+    color: #A84C62;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+.eyebrow-dot {
+    color: #D68A78;
+}
+
+.hero h1 {
+    margin-top: 10px;
+    color: #633747;
+    font-size: clamp(29px, 3vw, 40px);
+    line-height: 1.2;
+    letter-spacing: -0.7px;
+}
+
+.hero-description {
+    color: #765C5C;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.shop-now-button {
+    margin-top: 19px;
+    padding: 12px 20px;
+    border: 1px solid #BD5570;
+    border-radius: 9px;
+    background: linear-gradient(110deg, #D75C7D, #BD4568);
+    box-shadow: 0 5px 13px rgba(189, 69, 104, 0.18);
+}
+
+.shop-now-button:hover {
+    background: #A93458;
+}
+
+
+/* Picture frame */
+
+.hero-image-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 305px;
+    overflow: hidden;
+    padding: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    border-radius: 18px;
+    background: linear-gradient(
+        145deg,
+        #FFFFFF,
+        #F5D5D9,
+        #E9C4A7
+    );
+    box-shadow:
+        0 15px 32px rgba(91, 48, 47, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.hero-slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 13px;
+    background: #F5E4D9;
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+    border-radius: 13px;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.025);
+    transition:
+        opacity 0.8s ease,
+        transform 3.8s ease,
+        visibility 0.8s ease;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+
+/* Slider dots */
+
+.slider-dots {
+    bottom: 13px;
+    gap: 9px;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 250, 246, 0.9);
+    box-shadow: 0 3px 12px rgba(60, 35, 35, 0.1);
+}
+
+.slider-dot {
+    width: 8px;
+    height: 8px;
+    background: #D7A7AC;
+}
+
+.slider-dot.active {
+    width: 21px;
+    border-radius: 10px;
+    background: #C5486B;
+    transform: none;
+}
+
+
+/* Responsive layout */
+
+@media (max-width: 900px) {
+    .hero {
+        gap: 20px;
+        padding: 25px 3%;
+    }
+
+    .hero-content {
+        padding: 20px 15px;
+    }
+
+    .hero-image-wrapper {
+        height: 270px;
+    }
+
+    .hero h1 {
+        font-size: clamp(27px, 3.4vw, 35px);
+    }
+}
+
+@media (max-width: 600px) {
+    .hero {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 22px 15px 30px;
+    }
+
+    .hero-content {
+        padding: 22px 18px;
+    }
+
+    .hero h1 {
+        font-size: clamp(31px, 8vw, 39px);
+    }
+
+    .hero-image-wrapper {
+        height: auto;
+        aspect-ratio: 4 / 3;
+        min-height: 220px;
+        max-height: 310px;
+    }
+
+    .hero::after {
+        font-size: 18px;
+        letter-spacing: 3px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-slide {
+        transition: none;
+        transform: none;
+    }
+}
+
+
+/* =========================================
+   FALLING CAKE ANIMATION
+   Dashboard Page
+   ========================================= */
+
+body {
+    position: relative;
+    isolation: isolate;
+}
+
+/* Background animation layer */
+
+
+.cake-rain {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+}
+
+.cake-rain span {
+    position: absolute;
+    top: -60px;
+    display: block;
+    opacity: 0.45;
+    font-size: 22px;
+    animation: dashboard-cake-fall linear infinite;
+    will-change: transform;
+}
+
+.site-header,
+.site-footer {
+    position: relative;
+    z-index: 11;
+}
+
+
+/* Animation positions and speeds */
+
+.cake-rain span:nth-child(1) {
+    left: 5%;
+    font-size: 22px;
+    animation-duration: 15s;
+    animation-delay: -4s;
+}
+
+.cake-rain span:nth-child(2) {
+    left: 14%;
+    font-size: 18px;
+    animation-duration: 19s;
+    animation-delay: -11s;
+}
+
+.cake-rain span:nth-child(3) {
+    left: 24%;
+    font-size: 16px;
+    animation-duration: 17s;
+    animation-delay: -7s;
+}
+
+.cake-rain span:nth-child(4) {
+    left: 35%;
+    font-size: 25px;
+    animation-duration: 20s;
+    animation-delay: -14s;
+}
+
+.cake-rain span:nth-child(5) {
+    left: 45%;
+    font-size: 19px;
+    animation-duration: 16s;
+    animation-delay: -5s;
+}
+
+.cake-rain span:nth-child(6) {
+    left: 55%;
+    font-size: 23px;
+    animation-duration: 18s;
+    animation-delay: -9s;
+}
+
+.cake-rain span:nth-child(7) {
+    left: 65%;
+    font-size: 20px;
+    animation-duration: 21s;
+    animation-delay: -16s;
+}
+
+.cake-rain span:nth-child(8) {
+    left: 74%;
+    font-size: 17px;
+    animation-duration: 16s;
+    animation-delay: -6s;
+}
+
+.cake-rain span:nth-child(9) {
+    left: 83%;
+    font-size: 24px;
+    animation-duration: 19s;
+    animation-delay: -12s;
+}
+
+.cake-rain span:nth-child(10) {
+    left: 93%;
+    font-size: 21px;
+    animation-duration: 17s;
+    animation-delay: -8s;
+}
+
+.cake-rain span:nth-child(11) {
+    left: 39%;
+    font-size: 17px;
+    animation-duration: 22s;
+    animation-delay: -18s;
+}
+
+.cake-rain span:nth-child(12) {
+    left: 88%;
+    font-size: 19px;
+    animation-duration: 20s;
+    animation-delay: -13s;
+}
+
+/* Falling movement */
+
+@keyframes dashboard-cake-fall {
+    0% {
+        transform: translate3d(0, -10vh, 0) rotate(0deg);
+    }
+
+    25% {
+        transform: translate3d(15px, 25vh, 0) rotate(80deg);
+    }
+
+    50% {
+        transform: translate3d(-12px, 55vh, 0) rotate(170deg);
+    }
+
+    75% {
+        transform: translate3d(15px, 80vh, 0) rotate(260deg);
+    }
+
+    100% {
+        transform: translate3d(-8px, 115vh, 0) rotate(360deg);
+    }
+}
+
+/* Keep dashboard content above the animation */
+
+.site-header,
+main,
+.site-footer {
+    position: relative;
+    z-index: 1;
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+    .cake-rain {
+        display: none;
+    }
+}

@@ -10,497 +10,354 @@
 
     <title>Shop Cakes | Sugar Spark Cakes</title>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
           rel="stylesheet">
 
-    <!-- Dashboard CSS -->
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 
 <body>
+    
+<!-- Falling cake decorations -->
+<div class="cake-rain" aria-hidden="true">
+    <span>🧁</span>
+    <span>🍰</span>
+    <span>✨</span>
+    <span>🎂</span>
+    <span>🍓</span>
+    <span>🧁</span>
+    <span>🍒</span>
+    <span>✨</span>
+    <span>🍰</span>
+    <span>🎂</span>
+    <span>🍓</span>
+    <span>🧁</span>
+</div>
 
-    <!-- =========================
-         HEADER
-    ========================== -->
+<header class="site-header">
 
-    <header class="site-header">
+    <a href="index.html" class="brand">
+        <span class="brand-icon" aria-hidden="true">🧁</span>
+        <span class="brand-name">Sugar Spark Cakes</span>
+    </a>
 
-        <a href="index.html" class="brand">
-            <span class="brand-icon" aria-hidden="true">🧁</span>
-            <span>Sugar Spark Cakes</span>
+    <nav class="main-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="#shop" class="active">Shop</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact Us</a>
+    </nav>
+
+    <div class="header-actions">
+        <a href="cart.html" class="cart-link" aria-label="Shopping cart">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2 3h2l2.5 12.5h12L21 7H5"></path>
+                <circle cx="9" cy="20" r="1.4"></circle>
+                <circle cx="18" cy="20" r="1.4"></circle>
+            </svg>
+            <span>Cart</span>
+            <span class="cart-count" id="cart-count">0</span>
+        </a>
+    </div>
+
+</header>
+
+<main>
+
+    <!-- HERO SECTION WITH AUTOMATIC IMAGE SLIDER -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+            <p class="hero-eyebrow">
+                <span>FRESH</span>
+                <span class="eyebrow-dot">•</span>
+                <span>HOMEMADE</span>
+                <span class="eyebrow-dot">•</span>
+                <span>WITH LOVE</span>
+            </p>
+
+            <h1>Sweet Moments<br>Made Special</h1>
+
+            <p class="hero-description">
+                Custom cakes for every occasion.<br>
+                Freshly baked, beautifully designed.
+            </p>
+
+            <a href="#shop" class="shop-now-button">
+                Shop Now <span aria-hidden="true">→</span>
+            </a>
+        </div>
+
+        <div class="hero-image-wrapper" aria-label="Our beautiful cakes">
+
+            <div class="hero-slider" id="hero-slider">
+
+                <img
+                    class="hero-slide active"
+                    src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=85"
+                    alt="Beautiful chocolate celebration cake">
+
+                <img
+                    class="hero-slide"
+                    src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1200&q=85"
+                    alt="Beautiful decorated celebration cake"
+                    loading="lazy">
+
+                <img
+                    class="hero-slide"
+                    src="https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=1200&q=85"
+                    alt="Special occasion cake"
+                    loading="lazy">
+
+            </div>
+
+            <div class="slider-dots" id="slider-dots" aria-label="Choose a cake picture">
+                <button type="button" class="slider-dot active"
+                        aria-label="Show picture 1" aria-pressed="true"></button>
+                <button type="button" class="slider-dot"
+                        aria-label="Show picture 2" aria-pressed="false"></button>
+                <button type="button" class="slider-dot"
+                        aria-label="Show picture 3" aria-pressed="false"></button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CUSTOMIZE YOUR CAKE -->
+
+    <section class="customize-banner" id="customize-cake">
+
+        <div class="customize-banner-text">
+            <span class="customize-label">YOUR CAKE, YOUR WAY</span>
+
+            <h2>Create Your Dream Cake</h2>
+
+            <p>
+                Choose your favourite cake and make it special
+                with your own design ideas.
+            </p>
+        </div>
+
+        <a href="customize-cake.html" class="customize-button">
+            Customize Your Cake
+            <span aria-hidden="true">→</span>
         </a>
 
-        <nav class="main-nav" aria-label="Main navigation">
-            <a href="index.html">Home</a>
-            <a href="#shop" class="active">Shop</a>
-            <a href="index.html#about">About</a>
-            <a href="index.html#contact">Contact Us</a>
-        </nav>
+    </section>
 
-        <div class="header-actions">
 
-            <!-- Search Icon -->
-            <button
-                class="icon-button"
-                type="button"
-                aria-label="Search cakes"
-                title="Search cakes"
-                onclick="document.getElementById('cake-search').focus()">
+    <!-- POPULAR CAKES -->
 
+    <section class="popular-section" id="shop">
+
+        <div class="section-heading">
+            <h2>Popular Cakes</h2>
+
+            <a href="all-cakes.html" class="view-all-link">
+                View All <span aria-hidden="true">→</span>
+            </a>
+        </div>
+
+        <div class="shop-tools">
+
+            <label class="search-box" for="cake-search">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="10.8" cy="10.8" r="6.5"></circle>
                     <path d="m16 16 5 5"></path>
                 </svg>
 
-            </button>
-
-            <!-- Customer Account -->
-            <a href="#account"
-               class="icon-button"
-               aria-label="Customer account"
-               title="Account">
-
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="7.5" r="4"></circle>
-                    <path d="M4.5 21v-2a7.5 7.5 0 0 1 15 0v2"></path>
-                </svg>
-
-            </a>
-
-            <!-- Shopping Cart -->
-            <a href="cart.html"
-            class="icon-button cart-button"
-            aria-label="Shopping cart"
-            title="Shopping cart">
-
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M2 3h2l2.5 12.5h12L21 7H5"></path>
-                    <circle cx="9" cy="20" r="1.4"></circle>
-                    <circle cx="18" cy="20" r="1.4"></circle>
-                </svg>
-
-                <span class="cart-count" id="cart-count">0</span>
-
-            </a>
+                <input
+                    type="search"
+                    id="cake-search"
+                    placeholder="Search cakes..."
+                    aria-label="Search cakes">
+            </label>
 
         </div>
 
-    </header>
 
+        <div class="cake-grid" id="all-cakes">
 
-    <main>
+            <article class="cake-card"
+                     data-name="Chocolate Cake"
+                     data-category="chocolate">
 
-        <!-- =========================
-             HERO SECTION
-        ========================== -->
-
-        <section class="hero" id="home">
-
-            <div class="hero-content">
-
-                <p class="hero-eyebrow">
-                    <span>FRESH</span>
-                    <span class="eyebrow-dot">•</span>
-                    <span>HOMEMADE</span>
-                    <span class="eyebrow-dot">•</span>
-                    <span>WITH LOVE</span>
-                </p>
-
-                <h1>
-                    Sweet Moments<br>
-                    Made Special
-                </h1>
-
-                <p class="hero-description">
-                    Custom cakes for every occasion.<br>
-                    Freshly baked, beautifully designed.
-                </p>
-
-                <a href="#shop" class="shop-now-button">
-                    Shop Now
-                    <span aria-hidden="true">→</span>
+                <a href="cake-details.html?id=chocolate-cake"
+                   class="cake-image-link"
+                   aria-label="View Chocolate Cake details">
+                    <img
+                        src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=500&q=80"
+                        alt="Chocolate cake" loading="lazy">
                 </a>
 
-            </div>
+                <h3>Chocolate Cake</h3>
+                <p class="cake-price">Rs. 2,390</p>
 
-            <div class="hero-image-wrapper">
+                <div class="card-actions">
+                    <a href="cake-details.html?id=chocolate-cake"
+                       class="view-button">View</a>
 
-                <img
-                    class="hero-image"
-                    src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1000&q=85"
-                    alt="Beautiful decorated celebration cake">
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             CUSTOMIZE YOUR CAKE
-        ========================== -->
-
-        <section class="customize-banner"
-                 id="customize-cake">
-
-            <div class="customize-banner-text">
-
-                <span class="customize-label">
-                    YOUR CAKE, YOUR WAY
-                </span>
-
-                <h2>Create Your Dream Cake</h2>
-
-                <p>
-                    Choose your favourite cake and make it special
-                    with your own design ideas.
-                </p>
-
-            </div>
-
-            <a href="cake-customization.html"
-               class="customize-button">
-
-                Customize Your Cake
-                <span aria-hidden="true">→</span>
-
-            </a>
-
-        </section>
-
-
-        <!-- =========================
-             POPULAR CAKES
-        ========================== -->
-
-        <section class="popular-section" id="shop">
-
-            <div class="section-heading">
-
-                <h2>Popular Cakes</h2>
-
-                <a href="#all-cakes" class="view-all-link">
-                    View All
-                    <span aria-hidden="true">→</span>
-                </a>
-
-            </div>
-
-
-            <!-- Search -->
-
-            <div class="shop-tools">
-
-                <label class="search-box">
-
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="10.8" cy="10.8" r="6.5"></circle>
-                        <path d="m16 16 5 5"></path>
-                    </svg>
-
-                    <input
-                        type="search"
-                        id="cake-search"
-                        placeholder="Search cakes..."
-                        aria-label="Search cakes">
-
-                </label>
-
-            </div>
-
-
-            <!-- Cake Cards -->
-
-            <div class="cake-grid" id="all-cakes">
-
-
-                <!-- Chocolate Cake -->
-
-                <article class="cake-card"
-                         data-name="Chocolate Cake"
-                         data-category="chocolate">
-
-                    <a href="#chocolate-cake"
-                       class="cake-image-link"
-                       aria-label="View Chocolate Cake details">
-
-                        <img
-                            src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=500&q=80"
-                            alt="Chocolate cake"
-                            loading="lazy">
-
-                    </a>
-
-                    <h3>Chocolate Cake</h3>
-
-                    <p class="cake-price">Rs. 2,390</p>
-
-                    <div class="card-actions">
-
-                        <a href="#chocolate-cake"
-                           class="view-button">
-                            View
-                        </a>
-
-                        <button
-                            type="button"
-                            class="add-cart-button"
+                    <button type="button" class="add-cart-button"
                             data-product="Chocolate Cake"
-                            data-price="2390">
-                            Add to Cart
-                        </button>
-
-                    </div>
-
-                </article>
+                            data-price="2390">Add to Cart</button>
+                </div>
+            </article>
 
 
-                <!-- Vanilla Cake -->
+            <article class="cake-card"
+                     data-name="Vanilla Cake"
+                     data-category="vanilla">
 
-                <article class="cake-card"
-                         data-name="Vanilla Cake"
-                         data-category="vanilla">
+                <a href="cake-details.html?id=vanilla-cake"
+                   class="cake-image-link"
+                   aria-label="View Vanilla Cake details">
+                    <img
+                        src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=500&q=80"
+                        alt="Vanilla celebration cake" loading="lazy">
+                </a>
 
-                    <a href="#vanilla-cake"
-                       class="cake-image-link"
-                       aria-label="View Vanilla Cake details">
+                <h3>Vanilla Cake</h3>
+                <p class="cake-price">Rs. 2,500</p>
 
-                        <img
-                            src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=500&q=80"
-                            alt="Vanilla celebration cake"
-                            loading="lazy">
+                <div class="card-actions">
+                    <a href="cake-details.html?id=vanilla-cake"
+                       class="view-button">View</a>
 
-                    </a>
-
-                    <h3>Vanilla Cake</h3>
-
-                    <p class="cake-price">Rs. 2,500</p>
-
-                    <div class="card-actions">
-
-                        <a href="#vanilla-cake"
-                           class="view-button">
-                            View
-                        </a>
-
-                        <button
-                            type="button"
-                            class="add-cart-button"
+                    <button type="button" class="add-cart-button"
                             data-product="Vanilla Cake"
-                            data-price="2500">
-                            Add to Cart
-                        </button>
-
-                    </div>
-
-                </article>
+                            data-price="2500">Add to Cart</button>
+                </div>
+            </article>
 
 
-                <!-- Black Forest Cake -->
+            <article class="cake-card"
+                     data-name="Black Forest Cake"
+                     data-category="black-forest">
 
-                <article class="cake-card"
-                         data-name="Black Forest Cake"
-                         data-category="black-forest">
+                <a href="cake-details.html?id=black-forest-cake"
+                   class="cake-image-link"
+                   aria-label="View Black Forest Cake details">
+                    <img
+                        src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=500&q=80"
+                        alt="Black Forest style cake" loading="lazy">
+                </a>
 
-                    <a href="#black-forest-cake"
-                       class="cake-image-link"
-                       aria-label="View Black Forest Cake details">
+                <h3>Black Forest Cake</h3>
+                <p class="cake-price">Rs. 2,600</p>
 
-                        <img
-                            src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=500&q=80"
-                            alt="Black Forest style cake"
-                            loading="lazy">
+                <div class="card-actions">
+                    <a href="cake-details.html?id=black-forest-cake"
+                       class="view-button">View</a>
 
-                    </a>
-
-                    <h3>Black Forest Cake</h3>
-
-                    <p class="cake-price">Rs. 2,600</p>
-
-                    <div class="card-actions">
-
-                        <a href="#black-forest-cake"
-                           class="view-button">
-                            View
-                        </a>
-
-                        <button
-                            type="button"
-                            class="add-cart-button"
+                    <button type="button" class="add-cart-button"
                             data-product="Black Forest Cake"
-                            data-price="2600">
-                            Add to Cart
-                        </button>
-
-                    </div>
-
-                </article>
+                            data-price="2600">Add to Cart</button>
+                </div>
+            </article>
 
 
-                <!-- Ribbon Cake -->
+            <article class="cake-card"
+                     data-name="Ribbon Cake"
+                     data-category="ribbon">
 
-                <article class="cake-card"
-                         data-name="Ribbon Cake"
-                         data-category="ribbon">
+                <a href="cake-details.html?id=ribbon-cake"
+                   class="cake-image-link"
+                   aria-label="View Ribbon Cake details">
+                    <img
+                        src="https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=500&q=80"
+                        alt="Ribbon style cake" loading="lazy">
+                </a>
 
-                    <a href="#ribbon-cake"
-                       class="cake-image-link"
-                       aria-label="View Ribbon Cake details">
+                <h3>Ribbon Cake</h3>
+                <p class="cake-price">Rs. 2,250</p>
 
-                        <img
-                            src="https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=500&q=80"
-                            alt="Ribbon style cake"
-                            loading="lazy">
+                <div class="card-actions">
+                    <a href="cake-details.html?id=ribbon-cake"
+                       class="view-button">View</a>
 
-                    </a>
-
-                    <h3>Ribbon Cake</h3>
-
-                    <p class="cake-price">Rs. 2,250</p>
-
-                    <div class="card-actions">
-
-                        <a href="#ribbon-cake"
-                           class="view-button">
-                            View
-                        </a>
-
-                        <button
-                            type="button"
-                            class="add-cart-button"
+                    <button type="button" class="add-cart-button"
                             data-product="Ribbon Cake"
-                            data-price="2250">
-                            Add to Cart
-                        </button>
-
-                    </div>
-
-                </article>
+                            data-price="2250">Add to Cart</button>
+                </div>
+            </article>
 
 
-                <!-- Strawberry Cake -->
+            <article class="cake-card"
+                     data-name="Strawberry Cake"
+                     data-category="strawberry">
 
-                <article class="cake-card"
-                         data-name="Strawberry Cake"
-                         data-category="strawberry">
+                <a href="cake-details.html?id=strawberry-cake"
+                   class="cake-image-link"
+                   aria-label="View Strawberry Cake details">
+                    <img
+                        src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=500&q=80"
+                        alt="Strawberry dessert cake" loading="lazy">
+                </a>
 
-                    <a href="#strawberry-cake"
-                       class="cake-image-link"
-                       aria-label="View Strawberry Cake details">
+                <h3>Strawberry Cake</h3>
+                <p class="cake-price">Rs. 2,400</p>
 
-                        <img
-                            src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=500&q=80"
-                            alt="Strawberry dessert cake"
-                            loading="lazy">
+                <div class="card-actions">
+                    <a href="cake-details.html?id=strawberry-cake"
+                       class="view-button">View</a>
 
-                    </a>
-
-                    <h3>Strawberry Cake</h3>
-
-                    <p class="cake-price">Rs. 2,400</p>
-
-                    <div class="card-actions">
-
-                        <a href="#strawberry-cake"
-                           class="view-button">
-                            View
-                        </a>
-
-                        <button
-                            type="button"
-                            class="add-cart-button"
+                    <button type="button" class="add-cart-button"
                             data-product="Strawberry Cake"
-                            data-price="2400">
-                            Add to Cart
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-            </div>
-
-
-            <!-- No Search Results Message -->
-
-            <p class="no-results" id="no-results" hidden>
-                No cakes found. Try another search.
-            </p>
-
-        </section>
-
-    </main>
-
-
-    <!-- =========================
-         FOOTER
-    ========================== -->
-
-    <footer class="site-footer" id="contact">
-
-
-        <!-- Brand Information -->
-
-        <div class="footer-brand">
-
-            <a href="index.html" class="brand">
-
-                <span class="footer-logo-icon"
-                      aria-hidden="true">🧁</span>
-
-                <span>Sugar Spark Cakes</span>
-
-            </a>
-
-            <p>Custom cakes for every occasion.</p>
-            <p>Freshly baked, beautifully designed.</p>
+                            data-price="2400">Add to Cart</button>
+                </div>
+            </article>
 
         </div>
 
+        <p class="no-results" id="no-results" hidden>
+            No cakes found. Try another search.
+        </p>
 
-        <!-- Quick Links -->
+    </section>
 
-        <div class="footer-links">
+</main>
 
-            <h3>Quick Links</h3>
 
-            <a href="index.html">Home</a>
-            <a href="#shop">Shop</a>
-            <a href="index.html#about">About</a>
-            <a href="index.html#contact">Contact</a>
+<!-- FOOTER -->
 
+<footer class="site-footer" id="contact">
+
+    <div class="footer-brand">
+        <a href="index.html" class="brand">
+            <span class="footer-logo-icon" aria-hidden="true">🧁</span>
+            <span class="brand-name">Sugar Spark Cakes</span>
+        </a>
+
+        <p>Custom cakes for every occasion.</p>
+        <p>Freshly baked, beautifully designed.</p>
+    </div>
+
+    <div class="footer-links">
+        <h3>Quick Links</h3>
+        <a href="index.html">Home</a>
+        <a href="dashboard.html#shop">Shop</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact Us</a>
+    </div>
+
+    <div class="footer-social">
+        <h3>Stay Connected</h3>
+
+        <div class="social-icons">
+            <a href="#facebook" aria-label="Facebook">f</a>
+            <a href="#instagram" aria-label="Instagram">◎</a>
+            <a href="mailto:hello@sugarsparkcakes.example"
+               aria-label="Email Sugar Spark Cakes">✉</a>
         </div>
+    </div>
 
+</footer>
 
-        <!-- Social Links -->
-
-        <div class="footer-social">
-
-            <h3>Stay Connected</h3>
-
-            <div class="social-icons">
-
-                <a href="#facebook"
-                   aria-label="Facebook">f</a>
-
-                <a href="#instagram"
-                   aria-label="Instagram">◎</a>
-
-                <a href="mailto:hello@sugarsparkcakes.example"
-                   aria-label="Email Sugar Spark Cakes">✉</a>
-
-            </div>
-
-        </div>
-
-    </footer>
-
-
-    <!-- Dashboard JavaScript -->
-    <script src="js/dashboard.js"></script>
+<script src="js/dashboard.js"></script>
 </body>
 </html>
