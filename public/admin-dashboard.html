@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Sugar Spark Cakes</title>
+    <link rel="stylesheet" href="css/admin-dashboard.css">
+</head>
+<body>
+
+    <!-- Soft pink background -->
+    <div class="pink-background-effects" aria-hidden="true"></div>
+
+    <div class="admin-layout">
+
+        <!-- Left Sidebar -->
+        <aside class="sidebar" id="sidebar">
+
+            <a href="admin-dashboard.html" class="sidebar-brand">
+                <span class="brand-icon">S</span>
+                <span>
+                    <strong>Sugar Spark</strong>
+                    <small>CAKES ADMIN</small>
+                </span>
+            </a>
+
+            <div class="sidebar-section-label">MAIN MENU</div>
+
+            <nav class="sidebar-nav" aria-label="Admin navigation">
+
+                <a href="admin-dashboard.html"
+                   class="nav-link active"
+                   aria-current="page">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="admin-products.html" class="nav-link">
+                    <span class="nav-icon">♧</span>
+                    <span>Manage Products</span>
+                </a>
+
+                <a href="admin-orders.html" class="nav-link">
+                    <span class="nav-icon">▤</span>
+                    <span>Manage Orders</span>
+                </a>
+
+                <a href="admin-customers.html" class="nav-link">
+                    <span class="nav-icon">♙</span>
+                    <span>Customer Details</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-note">
+                    <span class="note-icon">♡</span>
+                    <p>Making every celebration sweeter.</p>
+                </div>
+
+                <button type="button" class="logout-button" id="logoutButton">
+                    <span class="nav-icon">↪</span>
+                    <span>Logout</span>
+                </button>
+            </div>
+
+        </aside>
+
+        <!-- Main Dashboard -->
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+                    <button
+                        type="button"
+                        id="menuToggle"
+                        class="menu-toggle"
+                        aria-label="Toggle navigation"
+                        aria-expanded="false"
+                    >
+                        ☰
+                    </button>
+
+                    <div>
+                        <span class="admin-label">ADMIN PANEL</span>
+                        <p class="breadcrumb">Home / Dashboard</p>
+                    </div>
+                </div>
+
+                <div class="admin-profile">
+                    <div class="profile-avatar">A</div>
+                    <div class="profile-info">
+                        <strong>Administrator</strong>
+                        <small>Admin Account</small>
+                    </div>
+                </div>
+
+            </header>
+
+            <section class="dashboard-content">
+
+                <div class="welcome-section">
+                    <div>
+                        <p class="welcome-tag">SUGAR SPARK CAKES</p>
+                        <h1>Admin Dashboard</h1>
+                        <p class="welcome-description">
+                            Welcome back! Here's an overview of your cake shop.
+                        </p>
+                    </div>
+
+                    <div class="date-display">
+                        <span class="date-icon">♡</span>
+                        <span id="currentDate">Loading date...</span>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <section class="stats-grid" aria-label="Shop summary">
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-icon pink-icon">♧</span>
+                            <span class="stat-caption">CATALOGUE</span>
+                        </div>
+                        <p class="stat-title">Total Products</p>
+                        <h2 id="totalProducts">0</h2>
+                        <p class="stat-description">Cakes in the catalogue</p>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-icon rose-icon">▤</span>
+                            <span class="stat-caption">ORDERS</span>
+                        </div>
+                        <p class="stat-title">Total Orders</p>
+                        <h2 id="totalOrders">0</h2>
+                        <p class="stat-description">Orders recorded</p>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-icon peach-icon">◷</span>
+                            <span class="stat-caption">ATTENTION</span>
+                        </div>
+                        <p class="stat-title">Pending Orders</p>
+                        <h2 id="pendingOrders">0</h2>
+                        <p class="stat-description">Awaiting processing</p>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-icon lilac-icon">♙</span>
+                            <span class="stat-caption">CUSTOMERS</span>
+                        </div>
+                        <p class="stat-title">Total Customers</p>
+                        <h2 id="totalCustomers">0</h2>
+                        <p class="stat-description">Registered customers</p>
+                    </article>
+
+                </section>
+
+                <!-- Orders Table -->
+                <section class="dashboard-panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <p class="panel-eyebrow">ORDER MANAGEMENT</p>
+                            <h2>Recent Orders</h2>
+                            <p class="panel-description">
+                                Check the latest cake order activity.
+                            </p>
+                        </div>
+
+                        <a href="admin-orders.html" class="view-all-link">
+                            View All Orders →
+                        </a>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Cake / Order</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="recentOrdersBody">
+                                <tr>
+                                    <td colspan="5" class="empty-state">
+                                        Loading orders...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="demo-note">
+                        Preview data only — live order information will appear
+                        after the database is connected.
+                    </p>
+
+                </section>
+
+                <!-- Quick Actions -->
+                <section class="quick-actions">
+                    <div class="quick-heading">
+                        <p class="panel-eyebrow">SHORTCUTS</p>
+                        <h2>Quick Actions</h2>
+                    </div>
+
+                    <div class="action-grid">
+
+                        <a href="admin-products.html" class="action-card">
+                            <span class="action-icon">＋</span>
+                            <span>
+                                <strong>Manage Products</strong>
+                                <small>Add or update cake details</small>
+                            </span>
+                            <span class="action-arrow">→</span>
+                        </a>
+
+                        <a href="admin-orders.html" class="action-card">
+                            <span class="action-icon">✓</span>
+                            <span>
+                                <strong>Manage Orders</strong>
+                                <small>Review customer orders</small>
+                            </span>
+                            <span class="action-arrow">→</span>
+                        </a>
+
+                        <a href="admin-customers.html" class="action-card">
+                            <span class="action-icon">♡</span>
+                            <span>
+                                <strong>Customer Details</strong>
+                                <small>View customer information</small>
+                            </span>
+                            <span class="action-arrow">→</span>
+                        </a>
+
+                    </div>
+                </section>
+
+                <footer class="dashboard-footer">
+                    <span>© 2026 Sugar Spark Cakes</span>
+                    <span>Admin Dashboard</span>
+                </footer>
+
+            </section>
+        </main>
+
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>

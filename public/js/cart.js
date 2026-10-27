@@ -7,8 +7,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const cartCount = document.getElementById("cart-count");
     const grandTotal = document.getElementById("grand-total");
     const summaryTotal = document.getElementById("summary-total");
+    const checkoutButton = document.getElementById("checkout-button");
 
     const CART_KEY = "sugarSparkCart";
+
+    // Must match the customer session key set after successful login.
+    const CUSTOMER_KEY = "sugarSparkCustomer";
+    const RETURN_KEY = "sugarSparkReturnTo";
 
     function getCart() {
         try {
@@ -42,6 +47,51 @@ document.addEventListener("DOMContentLoaded", function () {
                 '"': "&quot;",
                 "'": "&#39;"
             }[character];
+        });
+    }
+
+    // Checks whether a customer session exists.
+    function isCustomerLoggedIn() {
+        try {
+            const customer = JSON.parse(
+                localStorage.getItem(CUSTOMER_KEY)
+            );
+
+            return Boolean(
+                customer &&
+                typeof customer === "object" &&
+                !Array.isArray(customer) &&
+                customer.loggedIn === true
+            );
+        } catch (error) {
+            return false;
+        }
+    }
+
+    // Prevent checkout access when the customer is not logged in.
+    if (checkoutButton) {
+        checkoutButton.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const cart = getCart();
+
+            if (cart.length === 0) {
+                alert("Your cart is empty. Please add a cake before checkout.");
+                return;
+            }
+
+            if (!isCustomerLoggedIn()) {
+                try {
+                    sessionStorage.setItem(RETURN_KEY, "checkout.html");
+                } catch (error) {
+                    console.error("Unable to save the redirect:", error);
+                }
+
+                window.location.href = "login.html?redirect=checkout.html";
+                return;
+            }
+
+            window.location.href = "checkout.html";
         });
     }
 
@@ -101,9 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             −
                         </button>
 
-                        <span class="quantity-number">
-                            ${quantity}
-                        </span>
+                        <span class="quantity-number">${quantity}</span>
 
                         <button type="button"
                             data-action="increase"
@@ -123,7 +171,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         data-index="${index}"
                         aria-label="Delete ${name}"
                         title="Delete item">
-
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M3 6h18"></path>
                             <path d="M8 6V4h8v2"></path>
@@ -141,11 +188,9 @@ document.addEventListener("DOMContentLoaded", function () {
         grandTotal.textContent = money(total);
         summaryTotal.textContent = money(total);
 
-        // Update the header Cart badge.
         cartCount.textContent = quantityTotal;
         cartCount.hidden = quantityTotal === 0;
 
-        // Show the correct cart state.
         const hasItems = cart.length > 0;
 
         emptyCart.hidden = hasItems;
@@ -172,14 +217,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (action === "increase") {
             cart[index].quantity = currentQuantity + 1;
-
         } else if (action === "decrease") {
             if (currentQuantity > 1) {
                 cart[index].quantity = currentQuantity - 1;
             } else {
                 cart.splice(index, 1);
             }
-
         } else if (action === "remove") {
             cart.splice(index, 1);
         } else {
@@ -190,13 +233,12 @@ document.addEventListener("DOMContentLoaded", function () {
         renderCart();
     });
 
-    // Update the cart when another browser tab changes it.
+    // Update cart when another browser tab changes it.
     window.addEventListener("storage", function (event) {
         if (event.key === CART_KEY || event.key === null) {
             renderCart();
         }
     });
 
-    // Display saved cart items when the page loads.
     renderCart();
 });

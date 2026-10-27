@@ -1,0 +1,719 @@
+
+/* Admin Login - Sugar Spark Cakes */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #fff7fa;
+    color: #3b2931;
+}
+
+/* Header */
+
+.admin-header {
+    min-height: 76px;
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    border-bottom: 1px solid #f1dce5;
+}
+
+.brand {
+    color: #c64f83;
+    font-size: 23px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.admin-label {
+    color: #a83d6d;
+    background: #fbe6ef;
+    border-left: 4px solid #c64f83;
+    padding: 9px 13px;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+}
+
+/* Main Login Area */
+
+.login-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 45px 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 430px;
+    padding: 38px 35px;
+    background: #ffffff;
+    border: 1px solid #f0d9e3;
+    border-top: 5px solid #c64f83;
+    border-radius: 12px;
+    box-shadow: 0 10px 35px rgba(120, 55, 83, 0.09);
+}
+
+.admin-mark {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 22px;
+    background: #fbe6ef;
+    color: #a83d6d;
+    border-radius: 12px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.eyebrow {
+    margin-bottom: 9px;
+    color: #b84b7b;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.login-card h1 {
+    margin-bottom: 10px;
+    font-size: 29px;
+    color: #382630;
+}
+
+.subtitle {
+    margin-bottom: 28px;
+    color: #806b76;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Form */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #e5cbd7;
+    border-radius: 7px;
+    outline: none;
+    background: #fffdfd;
+    color: #3b2931;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    border-color: #c64f83;
+    box-shadow: 0 0 0 3px rgba(198, 79, 131, 0.12);
+}
+
+.password-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 65px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    border: none;
+    background: transparent;
+    color: #a83d6d;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.login-button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 7px;
+    background: #c64f83;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.login-button:hover {
+    background: #a83d6d;
+    transform: translateY(-1px);
+}
+
+.login-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.login-message {
+    min-height: 20px;
+    margin: -5px 0 13px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.login-message.error {
+    color: #b42336;
+}
+
+.login-message.success {
+    color: #247545;
+}
+
+.back-link {
+    display: block;
+    margin-top: 25px;
+    color: #a83d6d;
+    text-align: center;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+
+.admin-footer {
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    background: #ffffff;
+    border-top: 1px solid #f1dce5;
+    color: #806b76;
+    font-size: 12px;
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 480px) {
+    .admin-header {
+        padding: 16px 5%;
+    }
+
+    .brand {
+        font-size: 19px;
+    }
+
+    .admin-label {
+        padding: 8px;
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+
+    .login-container {
+        padding: 30px 16px;
+    }
+
+    .login-card {
+        padding: 30px 23px;
+    }
+
+    .login-card h1 {
+        font-size: 25px;
+    }
+
+    .admin-footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+
+/* =====================================
+   ADMIN LOGIN - ANIMATED DESIGN EFFECTS
+   ===================================== */
+
+/* Animated full-page background */
+body {
+    position: relative;
+    isolation: isolate;
+    overflow-x: hidden;
+    background: linear-gradient(
+        125deg,
+        #fff7fa 0%,
+        #fff0f6 35%,
+        #fffafd 65%,
+        #fceaf2 100%
+    );
+    background-size: 250% 250%;
+    animation: backgroundFlow 14s ease-in-out infinite alternate;
+}
+
+@keyframes backgroundFlow {
+    0% {
+        background-position: 0% 30%;
+    }
+    100% {
+        background-position: 100% 70%;
+    }
+}
+
+/* Soft floating light effects */
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    z-index: -1;
+    width: 330px;
+    height: 330px;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(65px);
+    opacity: 0.45;
+    animation: floatingGlow 10s ease-in-out infinite alternate;
+}
+
+body::before {
+    top: 13%;
+    left: -150px;
+    background: #f6b7d1;
+}
+
+body::after {
+    right: -140px;
+    bottom: 5%;
+    background: #edb8e1;
+    animation-delay: -5s;
+}
+
+@keyframes floatingGlow {
+    0% {
+        transform: translate(0, 0) scale(0.9);
+    }
+    50% {
+        transform: translate(35px, -25px) scale(1.08);
+    }
+    100% {
+        transform: translate(15px, 35px) scale(1);
+    }
+}
+
+/* Smooth entrance for the login card */
+.login-card {
+    position: relative;
+    overflow: hidden;
+    animation: cardEntrance 0.85s cubic-bezier(0.2, 0.8, 0.2, 1)
+        both;
+    transition:
+        box-shadow 0.35s ease,
+        border-color 0.35s ease,
+        transform 0.35s ease;
+}
+
+@keyframes cardEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(28px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.login-card:hover {
+    box-shadow: 0 20px 55px rgba(160, 57, 105, 0.13);
+    border-color: #edbfd3;
+}
+
+/* Animated top border highlight */
+.login-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 65%;
+    height: 4px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #ffffff,
+        #f8c7dc,
+        transparent
+    );
+    animation: borderShine 5s ease-in-out infinite;
+}
+
+@keyframes borderShine {
+    0%, 35% {
+        left: -100%;
+    }
+    70%, 100% {
+        left: 150%;
+    }
+}
+
+/* Admin icon animation */
+.admin-mark {
+    animation: iconAppear 0.7s ease-out 0.2s both;
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.admin-mark:hover {
+    transform: rotate(-7deg) scale(1.08);
+    background: #f7d5e5;
+    box-shadow: 0 7px 18px rgba(198, 79, 131, 0.18);
+}
+
+@keyframes iconAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px) rotate(-8deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotate(0);
+    }
+}
+
+/* Heading and description entrance */
+.eyebrow,
+.login-card h1,
+.subtitle {
+    animation: textEntrance 0.7s ease-out both;
+}
+
+.eyebrow {
+    animation-delay: 0.15s;
+}
+
+.login-card h1 {
+    animation-delay: 0.25s;
+}
+
+.subtitle {
+    animation-delay: 0.35s;
+}
+
+@keyframes textEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Input focus animation */
+.form-group input {
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+.form-group input:focus {
+    background: #ffffff;
+    border-color: #c64f83;
+    box-shadow: 0 0 0 4px rgba(198, 79, 131, 0.13);
+}
+
+/* Sign In button animation */
+.login-button {
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(198, 79, 131, 0.12);
+}
+
+.login-button::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -80%;
+    width: 45%;
+    height: 200%;
+    transform: rotate(25deg);
+    background: rgba(255, 255, 255, 0.22);
+    transition: left 0.55s ease;
+}
+
+.login-button:hover::before {
+    left: 140%;
+}
+
+.login-button:hover {
+    box-shadow: 0 8px 20px rgba(168, 61, 109, 0.24);
+}
+
+/* Admin Panel label effect */
+.admin-label {
+    position: relative;
+    overflow: hidden;
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+.admin-label::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.7),
+        transparent
+    );
+    animation: labelShine 6s ease-in-out infinite;
+}
+
+@keyframes labelShine {
+    0%, 65% {
+        left: -100%;
+    }
+    90%, 100% {
+        left: 150%;
+    }
+}
+
+.admin-label:hover {
+    transform: translateY(-2px);
+    background: #f8dce8;
+}
+
+/* Back link */
+.back-link {
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.back-link:hover {
+    color: #8f2858;
+    transform: translateX(-2px);
+}
+
+/* Respect users who prefer less animation */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+/* ==========================================
+   MOVING CAKE BACKGROUND - ADMIN LOGIN ONLY
+   ========================================== */
+
+body {
+    position: relative;
+    isolation: isolate;
+    overflow-x: hidden;
+}
+
+/* Keep the moving cakes behind the page content */
+.cake-animation {
+    position: fixed;
+    inset: 85px 0 0 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    opacity: 0.42;
+}
+
+/* Each horizontal row */
+.cake-track {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 65px;
+    width: max-content;
+    min-width: 200%;
+    white-space: nowrap;
+    will-change: transform;
+}
+
+.cake-track span {
+    display: inline-block;
+    font-size: clamp(10px, 3vw, 23px);
+    filter: drop-shadow(0 5px 8px rgba(198, 79, 131, 0.12));
+    animation: cakeFloat 3.5s ease-in-out infinite;
+}
+
+/* Row 1: moves left to right */
+.cake-track-one {
+    animation: moveRight 28s linear infinite;
+}
+
+/* Row 2: moves right to left */
+.cake-track-two {
+    animation: moveLeft 34s linear infinite;
+    margin-left: -80%;
+}
+
+/* Row 3: moves left to right, more slowly */
+.cake-track-three {
+    animation: moveRight 40s linear infinite;
+}
+
+/* Row 2: moves right to left */
+.cake-track-two {
+    animation: moveLeft 34s linear infinite;
+    margin-left: -80%;
+}
+
+.cake-track-two span:nth-child(odd) {
+    animation-delay: -1.5s;
+}
+
+.cake-track-three span:nth-child(even) {
+    animation-delay: -2s;
+}
+
+@keyframes moveRight {
+    from {
+        transform: translateX(-25%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes moveLeft {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-25%);
+    }
+}
+
+@keyframes cakeFloat {
+    0%, 100% {
+        translate: 0 0;
+    }
+
+    50% {
+        translate: 0 -12px;
+    }
+}
+
+/* Keep login content above the animated background */
+.admin-header,
+.login-container,
+.admin-footer {
+    position: relative;
+    z-index: 1;
+}
+
+/* Make the card background solid and readable */
+.login-card {
+    background: rgba(255, 255, 255, 0.96);
+}
+
+/* Responsive background */
+@media (max-width: 600px) {
+    .cake-animation {
+        top: 75px;
+        opacity: 0.28;
+    }
+
+    .cake-track {
+        gap: 35px;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .cake-track,
+    .cake-track span {
+        animation: none !important;
+    }
+}
+
+
+/* Visible faded pink background layer */
+.pink-background-effects {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 0% 0%,
+            rgba(226, 115, 156, 0.22) 0,
+            rgba(226, 115, 156, 0.12) 150px,
+            transparent 310px
+        ),
+        radial-gradient(
+            circle at 100% 100%,
+            rgba(226, 115, 156, 0.20) 0,
+            rgba(226, 115, 156, 0.10) 180px,
+            transparent 360px
+        ),
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(247, 199, 216, 0.35) 0,
+            transparent 280px
+        ),
+        radial-gradient(
+            circle at 0% 100%,
+            rgba(247, 199, 216, 0.30) 0,
+            transparent 300px
+        );
+}
+
+/* Keep existing page elements visible above the effect */
+.admin-header,
+.login-container,
+.admin-footer {
+    position: relative;
+    z-index: 1;
+}
+
+.cake-animation {
+    z-index: 0;
+}

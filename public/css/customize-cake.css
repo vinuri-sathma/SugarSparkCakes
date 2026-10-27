@@ -644,9 +644,7 @@ main > h1 {
 }
 
 
-/* =========================================
-   FOOTER - MATCH REFERENCE DESIGN
-   ========================================= */
+/* FOOTER */
 
 .site-footer {
     width: 100%;
@@ -663,12 +661,10 @@ main > h1 {
     max-width: 1720px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 42% 58%;
+    grid-template-columns: 42% 25% 33%;
     align-items: start;
     gap: 0;
 }
-
-/* Left side: Brand and description */
 
 .footer-brand {
     padding-top: 10px;
@@ -700,20 +696,18 @@ main > h1 {
     margin: 8px 0 0 60px;
     max-width: 350px;
     color: #795D68;
-    font-family: "DM Sans", sans-serif;
     font-size: 13px;
-    font-weight: 400;
     line-height: 1.7;
 }
 
-/* Right side: Quick Links */
-
-.footer-links {
+.footer-links,
+.footer-social {
     padding-top: 0;
 }
 
-.footer-links h3 {
-    margin: 0 0 12px;
+.footer-links h3,
+.footer-social h3 {
+    margin: 0 0 16px;
     color: #38252D;
     font-family: "DM Sans", sans-serif;
     font-size: 14px;
@@ -731,16 +725,9 @@ main > h1 {
     list-style: none;
 }
 
-.footer-links li {
-    margin: 0;
-    padding: 0;
-}
-
 .footer-links a {
     color: #795D68;
-    font-family: "DM Sans", sans-serif;
     font-size: 13px;
-    font-weight: 400;
     line-height: 1.5;
     text-decoration: none;
     transition: color 0.2s ease;
@@ -750,7 +737,34 @@ main > h1 {
     color: #C93D65;
 }
 
-/* Copyright */
+.social-icons {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: #E6537B;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.social-icons a svg {
+    display: block;
+    width: 24px;
+    height: 24px;
+}
+
+.social-icons a:hover {
+    color: #C93D65;
+}
 
 .footer-bottom {
     width: 100%;
@@ -759,14 +773,18 @@ main > h1 {
     padding-top: 14px;
     border-top: 1px solid #F0D5DE;
     color: #795D68;
-    font-family: "DM Sans", sans-serif;
     font-size: 12px;
-    font-weight: 400;
     line-height: 1.5;
     text-align: center;
 }
 
 /* Footer responsive layout */
+
+@media (max-width: 950px) {
+    .footer-inner {
+        grid-template-columns: 42% 25% 33%;
+    }
+}
 
 @media (max-width: 650px) {
     .site-footer {
@@ -793,12 +811,9 @@ main > h1 {
         line-height: 1.6;
     }
 
-    .footer-links h3 {
+    .footer-links h3,
+    .footer-social h3 {
         font-size: 14px;
-    }
-
-    .footer-links a {
-        font-size: 13px;
     }
 
     .footer-bottom {

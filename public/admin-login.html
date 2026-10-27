@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Sugar Spark Cakes</title>
+    <link rel="stylesheet" href="css/admin-login.css">
+</head>
+<body>
+<div class="pink-background-effects" aria-hidden="true"></div>
+    
+<div class="cake-animation" aria-hidden="true">
+    <div class="cake-track cake-track-one">
+        <span>🎂</span><span>🧁</span><span>🍰</span>
+        <span>✨</span><span>🎂</span><span>🧁</span>
+        <span>🍰</span><span>🎀</span><span>🎂</span>
+        <span>🧁</span><span>🍰</span><span>✨</span>
+    </div>
+
+    <div class="cake-track cake-track-two">
+        <span>🧁</span><span>🍰</span><span>🎀</span>
+        <span>🎂</span><span>✨</span><span>🧁</span>
+        <span>🍰</span><span>🎂</span><span>🧁</span>
+        <span>🎀</span><span>🍰</span><span>🎂</span>
+    </div>
+
+    <div class="cake-track cake-track-three">
+        <span>🍰</span><span>✨</span><span>🎂</span>
+        <span>🧁</span><span>🎀</span><span>🍰</span>
+        <span>🎂</span><span>🧁</span><span>✨</span>
+        <span>🍰</span><span>🎂</span><span>🧁</span>
+    </div>
+
+    <div class="cake-track cake-track-four">
+        <span>🎂</span><span>🧁</span><span>🍰</span>
+        <span>✨</span><span>🎂</span><span>🧁</span>
+        <span>🍰</span><span>🎀</span><span>🎂</span>
+        <span>🧁</span><span>🍰</span><span>✨</span>
+    </div>
+</div>
+
+    <header class="admin-header">
+        <a href="index.html" class="brand">Sugar Spark Cakes</a>
+        <span class="admin-label">ADMIN PANEL</span>
+    </header>
+
+    <main class="login-container">
+        <section class="login-card">
+
+            <div class="admin-mark">A</div>
+
+            <p class="eyebrow">SUGAR SPARK CAKES</p>
+            <h1>Admin Login</h1>
+            <p class="subtitle">
+                Sign in to access the administration panel.
+            </p>
+
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter admin username"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter admin password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="togglePassword"
+                            class="toggle-password"
+                            aria-label="Show password"
+                        >
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <p id="loginMessage" class="login-message" role="status"></p>
+
+                <button type="submit" class="login-button">
+                    Sign In
+                </button>
+            </form>
+
+            <a href="index.html" class="back-link">
+                ← Back to Customer Website
+            </a>
+
+        </section>
+    </main>
+
+    <footer class="admin-footer">
+        <p>© 2026 Sugar Spark Cakes</p>
+        <span>Administration Portal</span>
+    </footer>
+
+    <script src="js/admin-login.js"></script>
+</body>
+</html>

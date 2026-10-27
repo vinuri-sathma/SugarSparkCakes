@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Sugar Spark Cakes</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/checkout.css">
+    <script src="js/checkout.js" defer></script>
+</head>
+<body>
+
+    <!-- Falling cake animation -->
+    <div class="cake-rain" aria-hidden="true">
+        <span>🧁</span>
+        <span>🍰</span>
+        <span>✨</span>
+        <span>🎂</span>
+        <span>🍓</span>
+        <span>🧁</span>
+        <span>🍒</span>
+        <span>✨</span>
+        <span>🍰</span>
+        <span>🎂</span>
+        <span>🍓</span>
+        <span>🧁</span>
+    </div>
+
+    <!-- Header -->
+    
+    
+<header class="site-header">
+    <a class="logo" href="dashboard.html">
+        <span class="logo-icon">🧁</span>
+        <span>Sugar Spark Cakes</span>
+    </a>
+
+    <nav class="main-nav">
+        <a href="dashboard.html">Home</a>
+        <a href="all-cakes.html">Shop</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact Us</a>
+    </nav>
+
+    <a href="cart.html" class="cart-button">
+        <svg class="cart-icon" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+
+        <span>Cart</span>
+        <span id="cart-count" class="cart-count">0</span>
+    </a>
+</header>
+
+
+    <main class="checkout-container">
+
+        <section class="page-heading">
+            <p class="eyebrow">ALMOST THERE!</p>
+            <h1>Checkout</h1>
+            <p>Complete your details and make your celebration sweeter.</p>
+        </section>
+
+        <div id="page-message" class="page-message" role="status" hidden></div>
+
+        <form id="checkout-form" class="checkout-layout">
+
+            <!-- LEFT SIDE: Customer Details -->
+            <section class="checkout-card customer-card">
+
+                <div class="section-heading">
+                    <span class="step-number">01</span>
+                    <div>
+                        <h2>Customer Details</h2>
+                        <p>Tell us where to deliver your cake.</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group full-width">
+                        <label for="customer-name">Full Name *</label>
+                        <input
+                            type="text"
+                            id="customer-name"
+                            name="customerName"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer-phone">Contact Number *</label>
+                        <input
+                            type="tel"
+                            id="customer-phone"
+                            name="customerPhone"
+                            placeholder="Enter contact number"
+                            autocomplete="tel"
+                            pattern="[0-9+\-\s()]{9,20}"
+                            title="Enter a valid contact number."
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer-email">Email Address</label>
+                        <input
+                            type="email"
+                            id="customer-email"
+                            name="customerEmail"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                        >
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="delivery-address">Delivery Address *</label>
+                        <textarea
+                            id="delivery-address"
+                            name="deliveryAddress"
+                            placeholder="House number, street, city..."
+                            rows="3"
+                            autocomplete="street-address"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="delivery-date">Preferred Delivery Date *</label>
+                        <input
+                            type="date"
+                            id="delivery-date"
+                            name="deliveryDate"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="delivery-note">Additional Note</label>
+                        <input
+                            type="text"
+                            id="delivery-note"
+                            name="deliveryNote"
+                            placeholder="Optional delivery instructions"
+                        >
+                    </div>
+
+                </div>
+
+                <!-- Payment -->
+                <div class="section-heading payment-heading">
+                    <span class="step-number">02</span>
+                    <div>
+                        <h2>Payment Method</h2>
+                        <p>Select your preferred payment option.</p>
+                    </div>
+                </div>
+
+                <div class="payment-options">
+
+                    <label class="payment-option">
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="Cash on Delivery"
+                            required
+                        >
+                        <span class="payment-icon">💵</span>
+                        <span class="payment-text">
+                            <strong>Cash on Delivery</strong>
+                            <small>Pay when your cake arrives.</small>
+                        </span>
+                    </label>
+
+                    <label class="payment-option">
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="Bank Transfer"
+                        >
+                        <span class="payment-icon">🏦</span>
+                        <span class="payment-text">
+                            <strong>Bank Transfer</strong>
+                            <small>Arrange payment by bank transfer.</small>
+                        </span>
+                    </label>
+
+                    <label class="payment-option">
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="Card Payment (Demo)"
+                        >
+                        <span class="payment-icon">💳</span>
+                        <span class="payment-text">
+                            <strong>Card Payment</strong>
+                            <small>Demo selection only; no real payment is processed.</small>
+                        </span>
+                    </label>
+
+                </div>
+
+                <p class="payment-note">
+                    Payment options are displayed for this project demo.
+                    Online payment processing is not connected.
+                </p>
+
+            </section>
+
+            <!-- RIGHT SIDE: Bill / Order Summary -->
+            <aside class="checkout-card bill-card">
+
+                <div class="bill-header">
+                    <div class="bill-logo">🧁 Sugar Spark Cakes</div>
+                    <p>ORDER SUMMARY</p>
+                </div>
+
+                <div class="bill-divider"></div>
+
+                <div class="bill-intro">
+                    <h2>Your Order</h2>
+                    <span id="bill-item-count">0 items</span>
+                </div>
+
+                <div id="order-items" class="order-items">
+                    <p class="empty-cart">Loading your cart...</p>
+                </div>
+
+                <div class="bill-divider"></div>
+
+                <div class="bill-row">
+                    <span>Subtotal</span>
+                    <strong id="subtotal">LKR 0.00</strong>
+                </div>
+
+                <div class="bill-row">
+                    <span>Delivery Fee</span>
+                    <strong id="delivery-fee">LKR 0.00</strong>
+                </div>
+
+                <div class="bill-divider"></div>
+
+                <div class="bill-row total-row">
+                    <span>Total Amount</span>
+                    <strong id="total-amount">LKR 0.00</strong>
+                </div>
+
+                <p class="bill-footnote">
+                    Please check your items and delivery details before placing your order.
+                </p>
+
+                <button type="submit" id="place-order-btn" class="place-order-btn">
+                    Place Order
+                    <span>→</span>
+                </button>
+
+                <a href="cart.html" class="back-to-cart">← Return to Cart</a>
+
+                <div class="secure-note">
+                    <span>♡</span>
+                    Made with love for your special moments.
+                </div>
+
+            </aside>
+
+        </form>
+
+        <!-- Generated bill after order placement -->
+        <section id="generated-bill" class="generated-bill" hidden>
+            <div class="success-heading">
+                <span class="success-icon">✓</span>
+                <p class="eyebrow">ORDER PLACED</p>
+                <h2>Thank You for Your Order!</h2>
+                <p>Your order summary is shown below.</p>
+            </div>
+
+            <div id="receipt-content" class="receipt-content"></div>
+
+            <div class="receipt-actions">
+                <button type="button" id="print-bill-btn" class="secondary-btn">
+                    Print Bill
+                </button>
+                <a href="all-cakes.html" class="continue-btn">Continue Shopping</a>
+            </div>
+        </section>
+
+    </main>
+
+    
+
+<footer class="site-footer">
+    <div class="footer-container">
+
+        <!-- Brand -->
+        <div class="footer-about">
+            <a href="dashboard.html" class="footer-brand">
+                <span class="footer-cupcake">🧁</span>
+                <span>Sugar Spark Cakes</span>
+            </a>
+
+            <p>
+                Custom cakes for every occasion.<br>
+                Freshly baked, beautifully designed.
+            </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <a href="dashboard.html">Home</a>
+            <a href="all-cakes.html">Shop</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+
+        <!-- Social Media -->
+        <div class="footer-social">
+            <h3>Stay Connected</h3>
+
+            <div class="social-icons">
+                <a href="https://www.facebook.com/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.3-1.5 1.6-1.5h1.7V3.7c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2H7.3V13h2.8v8z"/>
+                    </svg>
+                </a>
+
+                <a href="https://www.instagram.com/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3.5" y="3.5" width="17" height="17" rx="5"/>
+                        <circle cx="12" cy="12" r="4"/>
+                        <circle class="instagram-dot" cx="17.5" cy="6.8" r="1"/>
+                    </svg>
+                </a>
+
+                <a href="mailto:"
+                   aria-label="Email Sugar Spark Cakes">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="2.5" y="4.5" width="19" height="15" rx="1.5"/>
+                        <path d="m3.5 6 8.5 7 8.5-7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Sugar Spark Cakes. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

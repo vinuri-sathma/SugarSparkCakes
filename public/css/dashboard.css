@@ -892,6 +892,10 @@ img {
     .footer-social h3 {
         font-size: 13px;
     }
+
+    .footer-bottom {
+        margin-top: 24px;
+    }
 }
 
 

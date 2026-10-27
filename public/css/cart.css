@@ -695,6 +695,12 @@ svg {
         height: 35px;
         font-size: 27px;
     }
+
+    .footer-bottom {
+        margin-top: 24px;
+    }
+
+
 }
 
 @media (max-width: 360px) {

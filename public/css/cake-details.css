@@ -1,4 +1,3 @@
-
 /* Sugar Spark Cakes - Cake Details Page */
 
 .product-detail-page {
@@ -20,13 +19,14 @@
 .back-to-shop {
     display: inline-block;
     margin-bottom: 28px;
-    color: var(--detail-muted);
+    color: var(--detail-pink-dark);
     text-decoration: none;
     font-weight: 600;
+    transition: color 0.2s;
 }
 
 .back-to-shop:hover {
-    color: var(--detail-pink-dark);
+    color: var(--detail-pink);
 }
 
 .product-details-layout {
@@ -230,32 +230,7 @@
     font-weight: 600;
 }
 
-@media (max-width: 760px) {
-    .details-main {
-        width: min(100% - 28px, 560px);
-        margin-top: 24px;
-    }
-
-    .product-details-layout {
-        grid-template-columns: 1fr;
-        gap: 28px;
-    }
-
-    .product-gallery {
-        padding: 16px;
-    }
-
-    .product-information {
-        padding-top: 0;
-    }
-
-    .size-button {
-        min-width: 72px;
-        padding: 10px 13px;
-    }
-}
-
-/* Header and logo — match the All Cakes page */
+/* Header and logo */
 
 .product-detail-page .site-header .logo,
 .product-detail-page .site-footer .logo {
@@ -280,12 +255,17 @@
     white-space: nowrap;
 }
 
-.product-detail-page .site-header .brand-icon {
+.product-detail-page .site-header .brand-icon,
+.product-detail-page .site-footer .brand-icon {
     font-size: 22px;
     line-height: 1;
 }
 
-/* Header cart link — match the other pages */
+.product-detail-page .site-footer .logo:hover {
+    opacity: 0.85;
+}
+
+/* Header cart link */
 
 .product-detail-page .site-header .header-actions {
     display: flex;
@@ -347,26 +327,14 @@
     display: none !important;
 }
 
-/* Back to Shop — pink like the other pages */
+/* Back to Shop */
 
 .product-detail-page .back-to-shop {
     color: #C93D65;
-    transition: color 0.2s;
 }
 
 .product-detail-page .back-to-shop:hover {
     color: #E6537B;
-}
-
-/* Footer logo consistency */
-
-.product-detail-page .site-footer .brand-icon {
-    font-size: 22px;
-    line-height: 1;
-}
-
-.product-detail-page .site-footer .logo:hover {
-    opacity: 0.85;
 }
 
 /* Responsive header */
@@ -418,18 +386,14 @@
     }
 }
 
-
 /* =========================================
    FALLING CAKE ANIMATION
-   Cake Details Page
    ========================================= */
 
 body {
     position: relative;
     isolation: isolate;
 }
-
-/* Animation layer behind the page content */
 
 .cake-rain {
     position: fixed;
@@ -449,8 +413,6 @@ body {
     animation: cake-details-fall linear infinite;
     will-change: transform;
 }
-
-/* Different positions and falling speeds */
 
 .cake-rain span:nth-child(1) {
     left: 5%;
@@ -536,8 +498,6 @@ body {
     animation-delay: -13s;
 }
 
-/* Falling movement */
-
 @keyframes cake-details-fall {
     0% {
         transform: translate3d(0, -10vh, 0) rotate(0deg);
@@ -560,7 +520,7 @@ body {
     }
 }
 
-/* Keep the page content above the animation */
+/* Keep page content above the animation */
 
 .site-header,
 main,
@@ -569,10 +529,245 @@ main,
     z-index: 1;
 }
 
-/* Disable animation for users who prefer reduced motion */
+/* =========================================
+   FOOTER — MATCH THE PROVIDED SCREENSHOT
+   ========================================= */
 
-@media (prefers-reduced-motion: reduce) {
-    .cake-rain {
-        display: none;
+body.product-detail-page .site-footer {
+    display: grid;
+    grid-template-columns: 32% 34% 34%;
+    align-items: start;
+    column-gap: 0;
+    row-gap: 0;
+
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px 5% 18px;
+
+    background: #FFF8FA;
+    border-top: 1px solid #F0D5DE;
+    position: relative;
+    z-index: 1;
+}
+
+/* Brand section */
+
+body.product-detail-page .site-footer > .footer-brand {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+}
+
+body.product-detail-page .site-footer .footer-brand .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+body.product-detail-page .site-footer .footer-brand .brand-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+body.product-detail-page .site-footer .footer-brand .brand-name {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #C93D65;
+    white-space: nowrap;
+}
+
+body.product-detail-page .site-footer .footer-brand p {
+    margin: 8px 0 0 60px;
+    max-width: 350px;
+    color: #795D68;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* Quick Links */
+
+body.product-detail-page .site-footer > .footer-links {
+    grid-column: 2;
+    grid-row: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+
+    min-width: 0;
+    margin: 0;
+}
+
+body.product-detail-page .site-footer > .footer-links h3 {
+    margin: 0 0 12px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+body.product-detail-page .site-footer > .footer-links a {
+    color: #795D68;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+body.product-detail-page .site-footer > .footer-links a:hover {
+    color: #C93D65;
+}
+
+/* Stay Connected */
+
+body.product-detail-page .site-footer > .footer-social {
+    grid-column: 3;
+    grid-row: 1;
+
+    display: block;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+body.product-detail-page .site-footer > .footer-social h3 {
+    margin: 0 0 16px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+body.product-detail-page .site-footer .social-icons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 24px;
+}
+
+body.product-detail-page .site-footer .social-icons a {
+    width: auto;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    color: #C93D65;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s, transform 0.2s;
+}
+
+body.product-detail-page .site-footer .social-icons a:hover {
+    color: #E6537B;
+    background: transparent;
+    transform: translateY(-2px);
+}
+
+body.product-detail-page .site-footer .social-icons svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Copyright — centered line underneath all 3 sections */
+
+body.product-detail-page .site-footer > .footer-bottom {
+    grid-column: 1 / -1;
+    grid-row: 2;
+
+    width: 100%;
+    max-width: 1720px;
+    box-sizing: border-box;
+
+    margin: 30px auto 0;
+    padding: 14px 0 0;
+
+    border-top: 1px solid #F0D5DE;
+    color: #795D68;
+    font-family: "DM Sans", sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* Responsive footer */
+
+@media (max-width: 760px) {
+    body.product-detail-page .site-footer {
+        grid-template-columns: 1fr 1fr;
+        column-gap: 24px;
+        row-gap: 28px;
+        padding: 26px 5% 18px;
+    }
+
+    body.product-detail-page .site-footer > .footer-brand {
+        grid-column: 1 / -1;
+        grid-row: 1;
+    }
+
+    body.product-detail-page .site-footer > .footer-links {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    body.product-detail-page .site-footer > .footer-social {
+        grid-column: 2;
+        grid-row: 2;
+        text-align: left;
+    }
+
+    body.product-detail-page .site-footer > .footer-bottom {
+        grid-column: 1 / -1;
+        grid-row: 3;
+        margin-top: 0;
+    }
+
+    body.product-detail-page .site-footer .footer-brand p {
+        margin-left: 0;
+    }
+
+    body.product-detail-page .site-footer .footer-brand .brand-name {
+        font-size: 23px;
+    }
+
+    body.product-detail-page .site-footer .social-icons {
+        gap: 18px;
+    }
+}
+
+@media (max-width: 420px) {
+    body.product-detail-page .site-footer {
+        grid-template-columns: 1fr;
+        row-gap: 24px;
+    }
+
+    body.product-detail-page .site-footer > .footer-brand {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    body.product-detail-page .site-footer > .footer-links {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    body.product-detail-page .site-footer > .footer-social {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    body.product-detail-page .site-footer > .footer-bottom {
+        grid-column: 1;
+        grid-row: 4;
     }
 }
