@@ -28,5 +28,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    
+    // Secret keyboard shortcut to open Admin Login
+    document.addEventListener("keydown", function (event) {
+
+        if (
+            event.ctrlKey &&
+            event.shiftKey &&
+            event.key.toLowerCase() === "a"
+        ) {
+            event.preventDefault();
+            window.location.href = "admin-login.html";
+        }
+
+    });
+
     console.log("Home page JavaScript loaded successfully.");
 });

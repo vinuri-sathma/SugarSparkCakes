@@ -386,6 +386,36 @@
     }
 }
 
+/* View Details Page Background */
+
+body.product-detail-page {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "DM Sans", sans-serif;
+    color: #38252D;
+
+    background:
+        radial-gradient(
+            circle at 12% 20%,
+            #FFE0EA 0,
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 65%,
+            #FFEEDA 0,
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #FFF9F6,
+            #FFF1F5 55%,
+            #FFF8FA
+        );
+
+    position: relative;
+    isolation: isolate;
+}
+
 /* =========================================
    FALLING CAKE ANIMATION
    ========================================= */

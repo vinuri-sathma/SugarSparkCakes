@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders | Sugar Spark Cakes</title>
+    <link rel="stylesheet" href="css/admin-orders.css">
+</head>
+<body>
+
+    <div class="admin-layout">
+
+        <!-- Sidebar: consistent with Admin Dashboard -->
+        <aside class="sidebar" id="sidebar">
+
+            <a href="admin-dashboard.html" class="sidebar-brand"
+               aria-label="Sugar Spark Cakes admin home">
+                <span class="brand-icon" aria-hidden="true">🧁</span>
+                <span class="brand-text">
+                    <strong>Sugar Spark Cakes</strong>
+                    <small>ADMIN</small>
+                </span>
+            </a>
+
+            <div class="sidebar-section-label">MAIN MENU</div>
+
+            <nav class="sidebar-nav" aria-label="Admin navigation">
+                <a href="admin-dashboard.html" class="nav-link">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="admin-products.html" class="nav-link">
+                    <span class="nav-icon">♧</span>
+                    <span>Manage Products</span>
+                </a>
+
+                <a href="admin-orders.html" class="nav-link active"
+                   aria-current="page">
+                    <span class="nav-icon">▤</span>
+                    <span>Manage Orders</span>
+                </a>
+
+                <a href="admin-customer-details.html" class="nav-link">
+                    <span class="nav-icon">♙</span>
+                    <span>Customer Details</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-note">
+                    <span class="note-icon">♡</span>
+                    <p>Making every celebration sweeter.</p>
+                </div>
+
+                <a href="admin-login.html" class="logout-button">
+                    <span class="nav-icon">↪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button type="button" class="menu-toggle" id="menuToggle"
+                            aria-label="Toggle navigation"
+                            aria-expanded="false">
+                        ☰
+                    </button>
+
+                    <div>
+                        <span class="admin-label">ADMIN PANEL</span>
+                        <p class="breadcrumb">Home / Manage Orders</p>
+                    </div>
+                </div>
+
+                <div class="admin-profile">
+                    <div class="profile-avatar">A</div>
+                    <div class="profile-info">
+                        <strong>Administrator</strong>
+                        <small>Admin Account</small>
+                    </div>
+                </div>
+            </header>
+
+            <section class="orders-content">
+
+                <div class="page-heading">
+                    <div>
+                        <p class="eyebrow">SUGAR SPARK CAKES</p>
+                        <h1>Manage Orders</h1>
+                        <p class="page-description">
+                            View customer orders and manage their status.
+                        </p>
+                    </div>
+
+                    <button type="button" class="refresh-button" id="refreshButton">
+                        ↻ Refresh Orders
+                    </button>
+                </div>
+
+                <!-- Order summary -->
+                <section class="stats-grid" aria-label="Order summary">
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-icon pink-icon">▤</span>
+                            <span class="stat-caption">ALL ORDERS</span>
+                        </div>
+                        <p class="stat-title">Total Orders</p>
+                        <h2 id="totalOrders">0</h2>
+                        <p class="stat-description">Orders received</p>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-icon peach-icon">◷</span>
+                            <span class="stat-caption">NEW ORDERS</span>
+                        </div>
+                        <p class="stat-title">Pending Orders</p>
+                        <h2 id="pendingOrders">0</h2>
+                        <p class="stat-description">Awaiting processing</p>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-icon lilac-icon">↻</span>
+                            <span class="stat-caption">IN PROGRESS</span>
+                        </div>
+                        <p class="stat-title">Processing Orders</p>
+                        <h2 id="processingOrders">0</h2>
+                        <p class="stat-description">Currently being prepared</p>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-icon green-icon">✓</span>
+                            <span class="stat-caption">FINISHED</span>
+                        </div>
+                        <p class="stat-title">Completed Orders</p>
+                        <h2 id="completedOrders">0</h2>
+                        <p class="stat-description">Successfully completed</p>
+                    </article>
+
+                </section>
+
+                <!-- Orders table -->
+                <section class="orders-panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <p class="eyebrow">ORDER MANAGEMENT</p>
+                            <h2>Customer Orders</h2>
+                            <p class="panel-description">
+                                Search orders and update their progress.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="toolbar">
+                        <input type="search" id="searchInput"
+                               placeholder="Search order ID or customer..."
+                               aria-label="Search orders">
+
+                        <select id="statusFilter" aria-label="Filter by order status">
+                            <option value="">All Statuses</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <p id="statusMessage" class="status-message"
+                       role="status" aria-live="polite"></p>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Cake / Order</th>
+                                    <th>Order Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Update Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="ordersTableBody">
+                                <tr>
+                                    <td colspan="7" class="empty-state">
+                                        Loading orders...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="demo-note" id="dataNotice">
+                        Loading order information...
+                    </p>
+
+                </section>
+
+                <footer class="page-footer">
+                    <span>© 2026 Sugar Spark Cakes</span>
+                    <span>Admin Order Management</span>
+                </footer>
+
+            </section>
+        </main>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <script src="js/admin-orders.js"></script>
+</body>
+</html>

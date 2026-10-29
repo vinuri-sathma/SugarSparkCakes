@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Details | Sugar Spark Cakes Admin</title>
+    <link rel="stylesheet" href="css/admin-customer-details.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+    <aside class="sidebar" id="sidebar">
+        <a href="admin-dashboard.html" class="sidebar-brand" aria-label="Sugar Spark Cakes admin home">
+            <span class="brand-icon" aria-hidden="true">🧁</span>
+            <span class="brand-text">
+                <strong>Sugar Spark Cakes</strong>
+                <small>ADMIN</small>
+            </span>
+        </a>
+
+        <div class="sidebar-section-label">MAIN MENU</div>
+
+        <nav class="sidebar-nav" aria-label="Admin navigation">
+            <a href="admin-dashboard.html" class="nav-link">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="admin-products.html" class="nav-link">
+                <span class="nav-icon">♧</span>
+                <span>Manage Products</span>
+            </a>
+
+            <a href="admin-orders.html" class="nav-link">
+                <span class="nav-icon">▤</span>
+                <span>Manage Orders</span>
+            </a>
+
+            <a href="admin-customer-details.html" class="nav-link active" aria-current="page">
+                <span class="nav-icon">♙</span>
+                <span>Customer Details</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-note">
+                <span class="note-icon">♡</span>
+                <p>Making every celebration sweeter.</p>
+            </div>
+
+            <a href="admin-login.html" class="logout-button">
+                <span class="nav-icon">↪</span>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu">☰</button>
+
+                <div>
+                    <span class="admin-label">ADMIN PANEL</span>
+                    <p class="breadcrumb">Dashboard / Customer Details</p>
+                </div>
+            </div>
+
+            <div class="admin-profile">
+                <div class="profile-avatar">A</div>
+                <div class="profile-info">
+                    <strong>Administrator</strong>
+                    <small>Admin Account</small>
+                </div>
+            </div>
+        </header>
+
+        <section class="customers-content">
+
+            <div class="page-heading">
+                <div>
+                    <p class="eyebrow">SUGAR SPARK CAKES</p>
+                    <h1>Customer Details</h1>
+                    <p class="page-description">
+                        View and manage customer information registered with Sugar Spark Cakes.
+                    </p>
+                </div>
+
+                <button class="refresh-button" id="refreshButton">↻ Refresh Data</button>
+            </div>
+
+            <section class="stats-grid">
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon pink-icon">♙</span>
+                        <span class="stat-caption">CUSTOMERS</span>
+                    </div>
+                    <p class="stat-title">Total Customers</p>
+                    <h2 id="totalCustomers">0</h2>
+                    <p class="stat-description">All registered customers</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon green-icon">✓</span>
+                        <span class="stat-caption">ACTIVE</span>
+                    </div>
+                    <p class="stat-title">Active Customers</p>
+                    <h2 id="activeCustomers">0</h2>
+                    <p class="stat-description">Currently active accounts</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon lilac-icon">✦</span>
+                        <span class="stat-caption">RECENT</span>
+                    </div>
+                    <p class="stat-title">New Customers</p>
+                    <h2 id="newCustomers">0</h2>
+                    <p class="stat-description">Registered in the last 30 days</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon peach-icon">○</span>
+                        <span class="stat-caption">INACTIVE</span>
+                    </div>
+                    <p class="stat-title">Inactive Customers</p>
+                    <h2 id="inactiveCustomers">0</h2>
+                    <p class="stat-description">Currently inactive accounts</p>
+                </article>
+
+            </section>
+
+            <section class="customers-panel">
+
+                <div class="panel-header">
+                    <p class="eyebrow">CUSTOMER MANAGEMENT</p>
+                    <h2>Registered Customers</h2>
+                    <p class="panel-description">
+                        Search customer records and view their contact information.
+                    </p>
+                </div>
+
+                <div class="toolbar">
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Search by name, email or phone..."
+                        aria-label="Search customers"
+                    >
+
+                    <select id="statusFilter" aria-label="Filter by customer status">
+                        <option value="all">All Customers</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <p class="status-message" id="statusMessage" role="status"></p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CUSTOMER ID</th>
+                                <th>CUSTOMER</th>
+                                <th>PHONE</th>
+                                <th>REGISTERED DATE</th>
+                                <th>STATUS</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="demo-note" id="dataNotice">
+                    Showing sample customer records for interface testing. Database integration will be added later.
+                </div>
+
+            </section>
+
+            <footer class="page-footer">
+                <span>© 2026 Sugar Spark Cakes</span>
+                <span>Admin Customer Management</span>
+            </footer>
+
+        </section>
+    </main>
+</div>
+
+<div class="customer-modal" id="customerModal" aria-hidden="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalCustomerName">
+        <button class="modal-close" id="closeModal" aria-label="Close details">×</button>
+
+        <div class="modal-profile">
+            <div class="modal-avatar" id="modalAvatar">C</div>
+            <p class="eyebrow">CUSTOMER INFORMATION</p>
+            <h2 id="modalCustomerName">Customer Name</h2>
+            <span class="status-pill" id="modalCustomerStatus">Active</span>
+        </div>
+
+        <div class="customer-information">
+            <div class="information-row">
+                <span>Customer ID</span>
+                <strong id="modalCustomerId"></strong>
+            </div>
+            <div class="information-row">
+                <span>Email Address</span>
+                <strong id="modalCustomerEmail"></strong>
+            </div>
+            <div class="information-row">
+                <span>Phone Number</span>
+                <strong id="modalCustomerPhone"></strong>
+            </div>
+            <div class="information-row">
+                <span>Registered Date</span>
+                <strong id="modalCustomerDate"></strong>
+            </div>
+            <div class="information-row">
+                <span>Account Status</span>
+                <strong id="modalCustomerStatusText"></strong>
+            </div>
+        </div>
+
+        <button class="refresh-button modal-done" id="doneModal">Close</button>
+    </section>
+</div>
+
+<script src="js/admin-customer-details.js"></script>
+</body>
+</html>

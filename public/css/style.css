@@ -838,3 +838,200 @@ body {
         display: none;
     }
 }
+
+
+/* ========================================
+   12. HOME PAGE PROMOTIONS
+======================================== */
+
+.promotions {
+    padding: 55px 8% 65px;
+    background:
+        radial-gradient(
+            circle at 5% 10%,
+            rgba(255, 224, 234, 0.55),
+            transparent 32%
+        ),
+        linear-gradient(135deg, #fffaf9, #fff1f5);
+
+    border-top: 1px solid #f5e1e5;
+}
+
+.promotions-heading {
+    text-align: center;
+    margin: 0 auto 30px;
+}
+
+.promotions-heading h2 {
+    margin-top: 8px;
+    color: #582b34;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(27px, 3vw, 36px);
+}
+
+.promotions-heading p {
+    margin-top: 8px;
+    color: #866b70;
+    font-size: 15px;
+}
+
+.promotion-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+.promotion-card {
+    position: relative;
+    overflow: hidden;
+    padding: 26px 24px;
+    min-height: 265px;
+    border: 1px solid #f2d9e0;
+    border-radius: 17px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 7px 22px rgba(120, 58, 76, 0.05);
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.promotion-card::after {
+    content: "";
+    position: absolute;
+    width: 115px;
+    height: 115px;
+    right: -40px;
+    top: -45px;
+    border-radius: 50%;
+    background: rgba(248, 193, 207, 0.25);
+    pointer-events: none;
+}
+
+.promotion-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 13px 28px rgba(120, 58, 76, 0.11);
+}
+
+.promotion-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 16px;
+    border-radius: 15px;
+    background: #fde8ee;
+    font-size: 27px;
+}
+
+.sweet-promo .promotion-icon {
+    background: #fff0df;
+}
+
+.custom-promo .promotion-icon {
+    background: #f5eaff;
+}
+
+.promotion-tag {
+    color: #d65379;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+}
+
+.promotion-card h3 {
+    margin-top: 7px;
+    color: #582b34;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 22px;
+}
+
+.promotion-card p {
+    margin-top: 9px;
+    color: #806970;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.promotion-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: auto;
+    padding-top: 18px;
+    color: #df4772;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.promotion-link span {
+    transition: transform 0.2s ease;
+}
+
+.promotion-link:hover span {
+    transform: translateX(4px);
+}
+
+.promotion-link:focus-visible {
+    outline: 2px solid #c93465;
+    outline-offset: 4px;
+    border-radius: 3px;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+    .promotion-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .promotion-card:last-child {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+    .promotions {
+        padding: 42px 6%;
+    }
+
+    .promotions-heading {
+        margin-bottom: 23px;
+    }
+
+    .promotions-heading p {
+        font-size: 13px;
+    }
+
+    .promotion-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .promotion-card,
+    .promotion-card:last-child {
+        grid-column: auto;
+        min-height: 245px;
+        padding: 23px;
+    }
+
+    .promotion-card h3 {
+        font-size: 21px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .promotion-card,
+    .promotion-link span {
+        transition: none;
+    }
+}
