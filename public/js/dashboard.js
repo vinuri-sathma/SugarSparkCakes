@@ -4,21 +4,137 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     const searchInput = document.getElementById("cake-search");
-    const cakeCards = document.querySelectorAll(".cake-card");
+    const cakeGrid = document.getElementById("all-cakes");
     const noResults = document.getElementById("no-results");
     const cartCount = document.getElementById("cart-count");
-    const addCartButtons = document.querySelectorAll(".add-cart-button");
 
     const slides = document.querySelectorAll(".hero-slide");
     const sliderDots = document.querySelectorAll(".slider-dot");
 
     const CART_KEY = "sugarSparkCart";
 
+    let cakeCards = [];
+    let addCartButtons = [];
+
+
+    /* =====================================
+       LOAD CAKES FROM DATABASE
+    ===================================== */
+
+    async function loadCakes() {
+
+        if (!cakeGrid) return;
+
+        try {
+
+            const response = await fetch("/api/products");
+
+            if (!response.ok) {
+                throw new Error("Unable to load products");
+            }
+
+            const products = await response.json();
+
+            cakeGrid.innerHTML = "";
+
+            if (products.length === 0) {
+                cakeGrid.innerHTML = "<p>No cakes available.</p>";
+                return;
+            }
+
+            products.forEach(function (product) {
+
+                const card = document.createElement("article");
+                card.className = "cake-card";
+
+                card.dataset.name = product.product_name;
+                card.dataset.category = product.category || "";
+
+                const image = document.createElement("img");
+                image.src = product.image
+                    ? product.image
+                    : "https://placehold.co/500x350?text=Cake";
+                image.alt = product.product_name;
+                image.loading = "lazy";
+
+                const imageLink = document.createElement("a");
+                imageLink.className = "cake-image-link";
+                imageLink.href = "cake-details.html?id=" + encodeURIComponent(product.product_id);
+                imageLink.setAttribute("aria-label", "View " + product.product_name + " details");
+                imageLink.appendChild(image);
+
+                const name = document.createElement("h3");
+                name.textContent = product.product_name;
+
+                const price = document.createElement("p");
+                price.className = "cake-price";
+                price.textContent = "Rs. " + Number(product.price).toLocaleString("en-LK", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                const actions = document.createElement("div");
+                actions.className = "card-actions";
+
+                const viewButton = document.createElement("a");
+                viewButton.className = "view-button";
+                viewButton.href = "cake-details.html?id=" + encodeURIComponent(product.product_id);
+                viewButton.textContent = "View";
+
+                const addButton = document.createElement("button");
+                addButton.type = "button";
+                addButton.className = "add-cart-button";
+                addButton.dataset.product = product.product_name;
+                addButton.dataset.price = product.price;
+                addButton.dataset.productId = product.product_id;
+                addButton.textContent = "Add to Cart";
+
+                actions.appendChild(viewButton);
+                actions.appendChild(addButton);
+
+                card.appendChild(imageLink);
+                card.appendChild(name);
+
+                if (product.description) {
+                    const description = document.createElement("p");
+                    description.className = "cake-description";
+                    description.textContent = product.description;
+                    card.appendChild(description);
+                }
+
+                card.appendChild(price);
+                card.appendChild(actions);
+
+                cakeGrid.appendChild(card);
+
+            });
+
+            cakeCards = cakeGrid.querySelectorAll(".cake-card");
+            addCartButtons = cakeGrid.querySelectorAll(".add-cart-button");
+
+            attachCartEvents();
+            filterCakes();
+
+            console.log("Cakes loaded successfully from database.");
+
+        } catch (error) {
+
+            console.error("Error loading cakes:", error);
+
+            cakeGrid.innerHTML =
+                "<p>Unable to load cakes. Please try again later.</p>";
+
+        }
+
+    }
+
+
     /* =====================================
        CAKE SEARCH
     ===================================== */
 
     function filterCakes() {
+
         const searchText = searchInput
             ? searchInput.value.trim().toLowerCase()
             : "";
@@ -26,6 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let visibleCakes = 0;
 
         cakeCards.forEach(function (card) {
+
             const cakeName = (card.dataset.name || "").toLowerCase();
 
             if (cakeName.includes(searchText)) {
@@ -34,11 +151,13 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 card.style.display = "none";
             }
+
         });
 
         if (noResults) {
             noResults.hidden = visibleCakes > 0;
         }
+
     }
 
     if (searchInput) {
@@ -51,7 +170,9 @@ document.addEventListener("DOMContentLoaded", function () {
     ===================================== */
 
     function getCart() {
+
         try {
+
             const savedCart = JSON.parse(
                 localStorage.getItem(CART_KEY)
             );
@@ -61,19 +182,29 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             return [];
         }
+
     }
+
 
     function saveCart(cart) {
+
         try {
+
             localStorage.setItem(CART_KEY, JSON.stringify(cart));
             return true;
+
         } catch (error) {
+
             alert("Unable to update the cart. Please try again.");
             return false;
+
         }
+
     }
 
+
     function updateCartCount() {
+
         const cart = getCart();
 
         const totalItems = cart.reduce(function (total, item) {
@@ -81,9 +212,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
 
         if (cartCount) {
+
             cartCount.textContent = totalItems;
 
-            // Hide the badge when the cart is empty.
             cartCount.style.display =
                 totalItems > 0 ? "inline-flex" : "none";
 
@@ -91,7 +222,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 "aria-label",
                 totalItems + (totalItems === 1 ? " item" : " items")
             );
+
         }
+
     }
 
 
@@ -99,78 +232,90 @@ document.addEventListener("DOMContentLoaded", function () {
        ADD CAKES TO CART
     ===================================== */
 
-    addCartButtons.forEach(function (button) {
+    function attachCartEvents() {
 
-        button.addEventListener("click", function () {
+        addCartButtons.forEach(function (button) {
 
-            const card = button.closest(".cake-card");
+            button.addEventListener("click", function () {
 
-            const name =
-                button.dataset.product ||
-                (card && card.dataset.name) ||
-                "Cake";
+                const card = button.closest(".cake-card");
 
-            const price = Number(button.dataset.price) || 0;
+                const name =
+                    button.dataset.product ||
+                    (card && card.dataset.name) ||
+                    "Cake";
 
-            const imageElement = card
-                ? card.querySelector("img")
-                : null;
+                const price = Number(button.dataset.price) || 0;
 
-            const image = imageElement
-                ? imageElement.getAttribute("src")
-                : "";
+                const imageElement = card
+                    ? card.querySelector("img")
+                    : null;
 
-            const size =
-                button.dataset.size ||
-                (card && card.dataset.size) ||
-                "1kg";
+                const image = imageElement
+                    ? imageElement.getAttribute("src")
+                    : "";
 
-            const cart = getCart();
+                const size =
+                    button.dataset.size ||
+                    (card && card.dataset.size) ||
+                    "1kg";
 
-            const existingItem = cart.find(function (item) {
-                return item.name === name &&
-                    item.size === size &&
-                    Number(item.price) === price;
+                const cart = getCart();
+
+                const existingItem = cart.find(function (item) {
+
+                    return item.name === name &&
+                        item.size === size &&
+                        Number(item.price) === price;
+
+                });
+
+                if (existingItem) {
+
+                    existingItem.quantity =
+                        (Number(existingItem.quantity) || 1) + 1;
+
+                } else {
+
+                    cart.push({
+                        name: name,
+                        price: price,
+                        size: size,
+                        quantity: 1,
+                        image: image
+                    });
+
+                }
+
+                if (!saveCart(cart)) return;
+
+                updateCartCount();
+
+                const originalText = button.textContent;
+
+                button.textContent = "Added ✓";
+                button.disabled = true;
+
+                window.setTimeout(function () {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 1000);
+
             });
 
-            if (existingItem) {
-                existingItem.quantity =
-                    (Number(existingItem.quantity) || 1) + 1;
-            } else {
-                cart.push({
-                    name: name,
-                    price: price,
-                    size: size,
-                    quantity: 1,
-                    image: image
-                });
-            }
-
-            if (!saveCart(cart)) {
-                return;
-            }
-
-            updateCartCount();
-
-            const originalText = button.textContent;
-
-            button.textContent = "Added ✓";
-            button.disabled = true;
-
-            window.setTimeout(function () {
-                button.textContent = originalText;
-                button.disabled = false;
-            }, 1000);
         });
-    });
+
+    }
 
 
-    /* Update count if the cart changes in another tab */
+    /* Update count if cart changes in another tab */
 
     window.addEventListener("storage", function (event) {
+
         if (event.key === CART_KEY) {
             updateCartCount();
         }
+
     });
 
 
@@ -182,66 +327,87 @@ document.addEventListener("DOMContentLoaded", function () {
     let sliderInterval = null;
 
     function showSlide(index) {
-        if (!slides.length) {
-            return;
-        }
+
+        if (!slides.length) return;
 
         currentSlide = (index + slides.length) % slides.length;
 
         slides.forEach(function (slide, slideIndex) {
+
             const isActive = slideIndex === currentSlide;
 
             slide.classList.toggle("active", isActive);
             slide.setAttribute("aria-hidden", String(!isActive));
+
         });
 
         sliderDots.forEach(function (dot, dotIndex) {
+
             const isActive = dotIndex === currentSlide;
 
             dot.classList.toggle("active", isActive);
             dot.setAttribute("aria-pressed", String(isActive));
+
         });
+
     }
 
+
     function startSlider() {
-        if (slides.length < 2) {
-            return;
-        }
+
+        if (slides.length < 2) return;
 
         stopSlider();
 
         sliderInterval = window.setInterval(function () {
             showSlide(currentSlide + 1);
         }, 4000);
+
     }
+
 
     function stopSlider() {
+
         if (sliderInterval !== null) {
+
             window.clearInterval(sliderInterval);
             sliderInterval = null;
+
         }
+
     }
 
+
     sliderDots.forEach(function (dot, index) {
+
         dot.addEventListener("click", function () {
+
             showSlide(index);
             startSlider();
+
         });
+
     });
+
 
     const heroSlider = document.getElementById("hero-slider");
 
     if (heroSlider) {
+
         heroSlider.addEventListener("mouseenter", stopSlider);
         heroSlider.addEventListener("mouseleave", startSlider);
 
         heroSlider.addEventListener("focusin", stopSlider);
         heroSlider.addEventListener("focusout", startSlider);
+
     }
 
+
     if (slides.length > 0) {
+
         showSlide(0);
         startSlider();
+
     }
 
 
@@ -249,8 +415,8 @@ document.addEventListener("DOMContentLoaded", function () {
        INITIALISE DASHBOARD
     ===================================== */
 
-    filterCakes();
     updateCartCount();
+    loadCakes();
 
     console.log("Dashboard JavaScript loaded successfully.");
 

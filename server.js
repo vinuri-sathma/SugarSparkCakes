@@ -32,6 +32,22 @@ app.get('/api/health', (req, res) => {
     });
 });
 
+// Get all cake products
+app.get('/api/products', async (req, res) => {
+    try {
+        const [products] = await db.query(
+            'SELECT * FROM products ORDER BY product_id DESC'
+        );
+
+        res.json(products);
+    } catch (error) {
+        console.error('Error fetching products:', error.message);
+        res.status(500).json({
+            message: 'Failed to retrieve products'
+        });
+    }
+});
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Sugar Spark Cakes server running at http://localhost:${PORT}`);
