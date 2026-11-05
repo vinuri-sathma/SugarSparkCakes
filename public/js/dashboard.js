@@ -35,6 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const products = await response.json();
 
+            // Add productId to existing cart items
+            updateExistingCartProductIds(products);
+
             cakeGrid.innerHTML = "";
 
             if (products.length === 0) {
@@ -203,6 +206,40 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    // Add productId to previously saved cart items
+    function updateExistingCartProductIds(products) {
+
+        const cart = getCart();
+        let cartUpdated = false;
+
+        cart.forEach(function (item) {
+
+            if (Number(item.productId) > 0) return;
+
+            const matchingProduct = products.find(function (product) {
+
+                return product.product_name === item.name &&
+                    Number(product.price) === Number(item.price);
+
+            });
+
+            if (matchingProduct) {
+
+                item.productId = Number(matchingProduct.product_id);
+                cartUpdated = true;
+
+            }
+
+        });
+
+        if (cartUpdated) {
+            saveCart(cart);
+            console.log("Existing cart items updated with productId.");
+        }
+
+    }
+
+
     function updateCartCount() {
 
         const cart = getCart();
@@ -240,6 +277,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const card = button.closest(".cake-card");
 
+                const productId = Number(button.dataset.productId);
+
                 const name =
                     button.dataset.product ||
                     (card && card.dataset.name) ||
@@ -264,13 +303,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const existingItem = cart.find(function (item) {
 
-                    return item.name === name &&
-                        item.size === size &&
-                        Number(item.price) === price;
+                    const itemProductId = Number(item.productId);
+
+                    const sameProduct = itemProductId > 0
+                        ? itemProductId === productId
+                        : item.name === name &&
+                          Number(item.price) === price;
+
+                    return sameProduct && item.size === size;
 
                 });
 
                 if (existingItem) {
+
+                    existingItem.productId = productId;
 
                     existingItem.quantity =
                         (Number(existingItem.quantity) || 1) + 1;
@@ -278,6 +324,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
 
                     cart.push({
+                        productId: productId,
                         name: name,
                         price: price,
                         size: size,

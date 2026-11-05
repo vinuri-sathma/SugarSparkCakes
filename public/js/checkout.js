@@ -2,6 +2,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const CART_KEY = "sugarSparkCart";
     const LAST_ORDER_KEY = "sugarSparkLastOrder";
+    const CUSTOMER_KEY = "customer";
 
     // Set the actual delivery fee here when the business fee is confirmed.
     const DELIVERY_FEE = 0;
@@ -22,6 +23,49 @@ document.addEventListener("DOMContentLoaded", () => {
     let cart = loadCart();
     let currentSubtotal = 0;
     let orderPlaced = false;
+    // ---------- Auto-fill customer details ----------
+
+function fillCustomerDetails() {
+    try {
+        const customer = JSON.parse(
+            sessionStorage.getItem("customer")
+        );
+
+        if (!customer) {
+            return;
+        }
+
+        const nameInput = checkoutForm.querySelector(
+            '[name="customerName"]'
+        );
+
+        const phoneInput = checkoutForm.querySelector(
+            '[name="customerPhone"]'
+        );
+
+        const emailInput = checkoutForm.querySelector(
+            '[name="customerEmail"]'
+        );
+
+        if (nameInput) {
+            nameInput.value = customer.fullName || "";
+        }
+
+        if (phoneInput) {
+            phoneInput.value = customer.phone || "";
+        }
+
+        if (emailInput) {
+            emailInput.value = customer.email || "";
+        }
+
+    } catch (error) {
+        console.error("Unable to load customer details:", error);
+    }
+}
+
+// Fill customer details when checkout page loads
+fillCustomerDetails();
 
     // ---------- Helpers ----------
 
@@ -89,7 +133,6 @@ document.addEventListener("DOMContentLoaded", () => {
         pageMessage.hidden = true;
     }
 
-    
     function updateCartBadge() {
         const count = cart.reduce((total, item) => {
             return total + getQuantity(item);
@@ -170,12 +213,14 @@ document.addEventListener("DOMContentLoaded", () => {
         totalElement.textContent = money(total);
     }
 
+
     // ---------- Delivery date ----------
 
     const deliveryDateInput = document.getElementById("delivery-date");
 
     // Use the visitor's local date, not a UTC date.
     const today = new Date();
+
     const localToday = [
         today.getFullYear(),
         String(today.getMonth() + 1).padStart(2, "0"),
@@ -184,9 +229,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     deliveryDateInput.min = localToday;
 
-    // ---------- Place order and generate bill ----------
 
-    checkoutForm.addEventListener("submit", event => {
+    // ---------- Place order through backend ----------
+
+    checkoutForm.addEventListener("submit", async event => {
         event.preventDefault();
         hideMessage();
 
@@ -208,9 +254,31 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        // Get logged-in customer details
+        let customer;
+
+        try {
+            customer = JSON.parse(
+                sessionStorage.getItem(CUSTOMER_KEY)
+            );
+        } catch (error) {
+            customer = null;
+        }
+
+        if (
+            !customer ||
+            !Number.isInteger(Number(customer.customerId)) ||
+            Number(customer.customerId) <= 0
+        ) {
+            showMessage(
+                "Please log in before placing your order."
+            );
+            return;
+        }
+
         const formData = new FormData(checkoutForm);
 
-        const customer = {
+        const customerDetails = {
             name: String(formData.get("customerName") || "").trim(),
             phone: String(formData.get("customerPhone") || "").trim(),
             email: String(formData.get("customerEmail") || "").trim(),
@@ -219,7 +287,9 @@ document.addEventListener("DOMContentLoaded", () => {
             deliveryNote: String(formData.get("deliveryNote") || "").trim()
         };
 
+        // Include productId when sending cart items
         const orderItemsCopy = cart.map(item => ({
+            productId: Number(item.productId),
             name: String(item.name || "Cake"),
             price: getPrice(item),
             size: String(item.size || ""),
@@ -227,54 +297,115 @@ document.addEventListener("DOMContentLoaded", () => {
             image: String(item.image || "")
         }));
 
-        const subtotal = orderItemsCopy.reduce((total, item) => {
-            return total + item.price * item.quantity;
-        }, 0);
+        // Check product IDs before sending the order
+        const invalidProduct = orderItemsCopy.some(item => {
+            return (
+                !Number.isInteger(item.productId) ||
+                item.productId <= 0
+            );
+        });
 
-        const order = {
-            orderNumber: "SSC-" + Date.now().toString().slice(-8),
-            orderDate: new Date().toLocaleString(),
-            customer,
-            paymentMethod: selectedPayment.value,
-            items: orderItemsCopy,
-            subtotal,
-            deliveryFee: DELIVERY_FEE,
-            total: subtotal + DELIVERY_FEE,
-            status: "Placed (Demo)"
-        };
-
-        // Save a demo order in this browser.
-        try {
-            localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(order));
-        } catch (error) {
-            console.error("Unable to save order:", error);
+        if (invalidProduct) {
             showMessage(
-                "The order could not be saved in this browser. Please check available storage and try again."
+                "Some cart items have missing product information. Please return to the dashboard and add those cakes again."
             );
             return;
         }
 
-        renderGeneratedBill(order);
+        // Prepare order data for backend
+        const orderData = {
+            customerId: Number(customer.customerId),
+            deliveryDate: customerDetails.deliveryDate,
+            deliveryAddress: customerDetails.address,
+            deliveryNote: customerDetails.deliveryNote,
+            paymentMethod: selectedPayment.value,
+            items: orderItemsCopy.map(item => ({
+                productId: item.productId,
+                size: item.size,
+                quantity: item.quantity
+            }))
+        };
 
-        // Clear the cart after placing the demo order.
+        // Prevent multiple submissions
+        placeOrderButton.disabled = true;
+        placeOrderButton.textContent = "Placing Order...";
+
         try {
+
+            // Send order to Express backend
+            const response = await fetch("/api/orders", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    result.message || "Unable to place your order."
+                );
+            }
+
+            // Use totals calculated by the backend
+            const order = {
+                orderId: result.orderId,
+                orderNumber: "SSC-" + result.orderId,
+                orderDate: new Date().toLocaleString(),
+                customer: customerDetails,
+                paymentMethod: selectedPayment.value,
+                items: orderItemsCopy,
+                subtotal: Number(result.subtotal),
+                deliveryFee: Number(result.deliveryFee),
+                total: Number(result.total),
+                status: "Pending"
+            };
+
+            // Save the successfully placed order in this browser
+            try {
+                localStorage.setItem(
+                    LAST_ORDER_KEY,
+                    JSON.stringify(order)
+                );
+            } catch (error) {
+                console.error("Unable to save order copy:", error);
+            }
+
+            // Generate bill after successful backend response
+            renderGeneratedBill(order);
+
+            // Clear cart only after successful order placement
             localStorage.setItem(CART_KEY, JSON.stringify([]));
+
+            cart = [];
+            updateCartBadge();
+
+            orderPlaced = true;
+            checkoutForm.hidden = true;
+            generatedBill.hidden = false;
+
+            generatedBill.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
         } catch (error) {
-            console.error("Unable to clear cart:", error);
+
+            console.error("Order placement error:", error);
+
+            showMessage(
+                error.message || "Something went wrong. Please try again."
+            );
+
+            placeOrderButton.disabled = false;
+            placeOrderButton.innerHTML = 'Place Order <span>→</span>';
+
         }
 
-        cart = [];
-        updateCartBadge();
-
-        orderPlaced = true;
-        checkoutForm.hidden = true;
-        generatedBill.hidden = false;
-
-        generatedBill.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
     });
+
 
     // ---------- Generate printable receipt ----------
 
@@ -392,11 +523,17 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     }
 
+
+    // ---------- Print bill ----------
+
     printButton.addEventListener("click", () => {
         if (orderPlaced) {
             window.print();
         }
     });
 
+
+    // Initial render
     renderOrderSummary();
+
 });

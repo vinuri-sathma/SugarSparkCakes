@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const CART_KEY = "sugarSparkCart";
 
-    // Must match the customer session key set after successful login.
-    const CUSTOMER_KEY = "sugarSparkCustomer";
+    // Match the customer session key used in login.js
+    const CUSTOMER_KEY = "customer";
     const RETURN_KEY = "sugarSparkReturnTo";
 
     function getCart() {
@@ -50,18 +50,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Checks whether a customer session exists.
+    // Check whether a customer session exists.
     function isCustomerLoggedIn() {
         try {
             const customer = JSON.parse(
-                localStorage.getItem(CUSTOMER_KEY)
+                sessionStorage.getItem(CUSTOMER_KEY)
             );
 
             return Boolean(
                 customer &&
                 typeof customer === "object" &&
                 !Array.isArray(customer) &&
-                customer.loggedIn === true
+                Number.isInteger(Number(customer.customerId)) &&
+                Number(customer.customerId) > 0
             );
         } catch (error) {
             return false;
