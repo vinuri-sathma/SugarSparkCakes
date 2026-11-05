@@ -1,20 +1,10 @@
 
 /* Sugar Spark Cakes - Cake Details JavaScript */
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     const CART_KEY = "sugarSparkCart";
 
-    /*
-      Temporary size pricing:
-      250g = 50% of the 1kg price
-      500g = 70%
-      750g = 85%
-      1kg  = 100%
-      2kg  = 180%
-
-      Replace these estimates with the actual bakery prices later.
-    */
-
+    // Temporary size pricing based on the 1kg database price.
     const sizes = [
         { label: "250g", multiplier: 0.50 },
         { label: "500g", multiplier: 0.70 },
@@ -23,97 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
         { label: "2kg", multiplier: 1.80 }
     ];
 
-    const cakes = {
-        "chocolate-cake": {
-            name: "Chocolate Cake",
-            basePrice: 2390,
-            description:
-                "Rich chocolate cake with smooth chocolate frosting, perfect for birthdays and special occasions.",
-            images: [
-                "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=85",
-                "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80",
-                "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=700&q=80"
-            ]
-        },
-
-        "vanilla-cake": {
-            name: "Vanilla Cake",
-            basePrice: 2500,
-            description:
-                "A soft vanilla celebration cake with a light, creamy finish for your special moments.",
-            images: [
-                "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=900&q=85",
-                "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80",
-                "https://images.unsplash.com/photo-1535141192574-5d4897c12636?auto=format&fit=crop&w=700&q=80"
-            ]
-        },
-
-        "black-forest-cake": {
-            name: "Black Forest Cake",
-            basePrice: 2600,
-            description:
-                "A delicious Black Forest style cake, perfect for birthdays and family celebrations.",
-            images: [
-                "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=85",
-                "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=700&q=80",
-                "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=700&q=80"
-            ]
-        },
-
-        "ribbon-cake": {
-            name: "Ribbon Cake",
-            basePrice: 2250,
-            description:
-                "A classic ribbon cake for tea time, family gatherings and special occasions.",
-            images: [
-                "https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=900&q=85",
-                "https://images.unsplash.com/photo-1535141192574-5d4897c12636?auto=format&fit=crop&w=700&q=80",
-                "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=700&q=80"
-            ]
-        },
-
-        "strawberry-cake": {
-            name: "Strawberry Cake",
-            basePrice: 2400,
-            description:
-                "A delightful cake for strawberry lovers and memorable celebrations.",
-            images: [
-                "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=900&q=85",
-                "https://images.unsplash.com/photo-1535141192574-5d4897c12636?auto=format&fit=crop&w=700&q=80",
-                "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=700&q=80"
-            ]
-        }
-    };
-
     const params = new URLSearchParams(window.location.search);
-    const productId = params.get("id");
-    
-let cake = cakes[productId];
-
-if (!cake && productId) {
-    try {
-        const savedCake = JSON.parse(
-            localStorage.getItem("selectedCakeDetails")
-        );
-
-        if (savedCake && savedCake.id === productId) {
-            cake = {
-                name: savedCake.name,
-                basePrice: Number(savedCake.price) || 0,
-                description:
-                    savedCake.name +
-                    " is a cake design for your special occasions.",
-                images: [
-                    savedCake.image,
-                    savedCake.image,
-                    savedCake.image
-                ]
-            };
-        }
-    } catch (error) {
-        cake = undefined;
-    }
-}
+    const productId = Number(params.get("id"));
 
     const nameElement = document.getElementById("product-name");
     const priceElement = document.getElementById("product-price");
@@ -128,12 +29,21 @@ if (!cake && productId) {
     const feedback = document.getElementById("cart-feedback");
     const addButton = document.getElementById("detail-add-cart");
 
-    let selectedSize = sizes[3].label;
+    const decreaseButton = document.getElementById("decrease-quantity");
+    const increaseButton = document.getElementById("increase-quantity");
+
+    let cake = null;
+    let selectedSize = "1kg";
     let quantity = 1;
     let selectedImageIndex = 0;
 
+    // ---------- Price formatting ----------
+
     function formatPrice(price) {
-        return "Rs. " + price.toLocaleString("en-LK");
+        return "Rs. " + Number(price).toLocaleString("en-LK", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
     }
 
     function getPrice(sizeLabel) {
@@ -148,11 +58,14 @@ if (!cake && productId) {
         return Math.round((cake.basePrice * size.multiplier) / 10) * 10;
     }
 
+    // ---------- Cart functions ----------
+
     function getCart() {
         try {
             const cart = JSON.parse(localStorage.getItem(CART_KEY));
             return Array.isArray(cart) ? cart : [];
         } catch (error) {
+            console.error("Unable to read cart:", error);
             return [];
         }
     }
@@ -163,13 +76,15 @@ if (!cake && productId) {
                 0,
                 Math.floor(Number(item.quantity) || 0)
             );
-        },  0);
+        }, 0);
 
         if (cartCount) {
-        cartCount.textContent = total;
-        cartCount.hidden = total === 0;
+            cartCount.textContent = total;
+            cartCount.hidden = total === 0;
         }
     }
+
+    // ---------- Display selected size and price ----------
 
     function updatePrice() {
         const price = getPrice(selectedSize);
@@ -178,13 +93,18 @@ if (!cake && productId) {
         totalElement.textContent = formatPrice(price * quantity);
         quantityValue.textContent = quantity;
 
-        sizeOptions.querySelectorAll(".size-button").forEach(function (button) {
-            const isSelected = button.dataset.size === selectedSize;
+        sizeOptions.querySelectorAll(".size-button").forEach(
+            function (button) {
+                const isSelected =
+                    button.dataset.size === selectedSize;
 
-            button.classList.toggle("active", isSelected);
-            button.setAttribute("aria-pressed", String(isSelected));
-        });
+                button.classList.toggle("active", isSelected);
+                button.setAttribute("aria-pressed", String(isSelected));
+            }
+        );
     }
+
+    // ---------- Product image gallery ----------
 
     function showMainImage(index) {
         selectedImageIndex = index;
@@ -202,8 +122,11 @@ if (!cake && productId) {
     }
 
     function buildGallery() {
+        thumbnails.innerHTML = "";
+
         cake.images.forEach(function (image, index) {
             const button = document.createElement("button");
+
             button.type = "button";
             button.className = "thumbnail-button";
             button.setAttribute(
@@ -229,9 +152,14 @@ if (!cake && productId) {
         showMainImage(0);
     }
 
+    // ---------- Build size selection buttons ----------
+
     function buildSizeOptions() {
+        sizeOptions.innerHTML = "";
+
         sizes.forEach(function (size) {
             const button = document.createElement("button");
+
             button.type = "button";
             button.className = "size-button";
             button.dataset.size = size.label;
@@ -248,23 +176,30 @@ if (!cake && productId) {
         });
     }
 
+    // ---------- Add cake to cart ----------
+
     function addToCart() {
         const cart = getCart();
         const price = getPrice(selectedSize);
         const image = cake.images[selectedImageIndex];
 
         const existingItem = cart.find(function (item) {
-            return item.name === cake.name &&
-                item.size === selectedSize &&
-                Number(item.price) === price;
+            return (
+                Number(item.productId) === cake.productId &&
+                item.size === selectedSize
+            );
         });
 
         if (existingItem) {
             existingItem.quantity =
                 (Number(existingItem.quantity) || 0) + quantity;
+
             existingItem.image = image;
+            existingItem.price = price;
+
         } else {
             cart.push({
+                productId: cake.productId,
                 name: cake.name,
                 price: price,
                 size: selectedSize,
@@ -275,58 +210,136 @@ if (!cake && productId) {
 
         try {
             localStorage.setItem(CART_KEY, JSON.stringify(cart));
+
             updateCartCount();
+
             feedback.textContent =
                 cake.name + " (" + selectedSize + ") added to cart.";
+
         } catch (error) {
+            console.error("Unable to save cart:", error);
+
             feedback.textContent =
                 "Unable to save the cart. Please check your browser settings.";
         }
     }
 
-    if (!cake) {
+    // ---------- Show product not found message ----------
+
+    function showProductNotFound(message) {
         nameElement.textContent = "Cake not found";
         priceElement.textContent = "";
-        descriptionElement.textContent =
-            "Please return to the shop and select a cake.";
+        descriptionElement.textContent = message;
+
         mainImage.hidden = true;
         sizeOptions.hidden = true;
         thumbnails.hidden = true;
         addButton.hidden = true;
+
         document.title = "Cake Not Found | Sugar Spark Cakes";
-        return;
     }
 
-    nameElement.textContent = cake.name;
-    descriptionElement.textContent = cake.description;
-    document.title = cake.name + " | Sugar Spark Cakes";
+    // ---------- Load product from MySQL database ----------
 
-    buildGallery();
-    buildSizeOptions();
-    updatePrice();
-    updateCartCount();
+    async function loadProduct() {
+        if (!Number.isInteger(productId) || productId <= 0) {
+            showProductNotFound(
+                "Please return to the shop and select a cake."
+            );
+            return;
+        }
 
-    document.getElementById("decrease-quantity")
-        .addEventListener("click", function () {
-            if (quantity > 1) {
-                quantity--;
-                updatePrice();
+        try {
+            const response = await fetch("/api/products");
+
+            if (!response.ok) {
+                throw new Error("Unable to load products from the server.");
             }
-        });
 
-    document.getElementById("increase-quantity")
-        .addEventListener("click", function () {
-            if (quantity < 99) {
-                quantity++;
-                updatePrice();
+            const products = await response.json();
+
+            const product = products.find(function (item) {
+                return Number(item.product_id) === productId;
+            });
+
+            if (!product) {
+                showProductNotFound(
+                    "This cake could not be found. Please return to the shop."
+                );
+                return;
             }
-        });
 
-    addButton.addEventListener("click", addToCart);
+            const image = product.image || "";
 
-    window.addEventListener("storage", function (event) {
-        if (event.key === CART_KEY || event.key === null) {
-        updateCartCount();
+            cake = {
+                productId: Number(product.product_id),
+                name: product.product_name,
+                basePrice: Number(product.price),
+                description: product.description || "",
+                images: image ? [image] : []
+            };
+
+            // Display product information
+            nameElement.textContent = cake.name;
+
+            descriptionElement.textContent =
+                cake.description || "A delicious cake for your special occasions.";
+
+            document.title = cake.name + " | Sugar Spark Cakes";
+
+            if (cake.images.length > 0) {
+                mainImage.hidden = false;
+                thumbnails.hidden = false;
+                buildGallery();
+            } else {
+                mainImage.hidden = true;
+                thumbnails.hidden = true;
+            }
+
+            buildSizeOptions();
+            updatePrice();
+            updateCartCount();
+
+        } catch (error) {
+            console.error("Cake details loading error:", error);
+
+            showProductNotFound(
+                "Unable to load cake details. Please try again later."
+            );
+        }
+    }
+
+    // ---------- Quantity controls ----------
+
+    decreaseButton.addEventListener("click", function () {
+        if (quantity > 1) {
+            quantity--;
+            updatePrice();
         }
     });
+
+    increaseButton.addEventListener("click", function () {
+        if (quantity < 99) {
+            quantity++;
+            updatePrice();
+        }
+    });
+
+    // ---------- Add to Cart button ----------
+
+    addButton.addEventListener("click", function () {
+        if (cake) {
+            addToCart();
+        }
+    });
+
+    // Update cart count if another tab changes the cart.
+    window.addEventListener("storage", function (event) {
+        if (event.key === CART_KEY || event.key === null) {
+            updateCartCount();
+        }
+    });
+
+    // Load product when page opens.
+    await loadProduct();
 });

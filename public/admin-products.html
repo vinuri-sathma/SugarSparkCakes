@@ -11,56 +11,55 @@
 
     <div class="admin-layout">
 
+        <aside class="sidebar" id="sidebar">
 
-<aside class="sidebar" id="sidebar">
+            <a href="index.html" class="sidebar-brand" aria-label="Sugar Spark Cakes home">
+                <span class="brand-icon" aria-hidden="true">🧁</span>
+                <span class="brand-text">
+                    <strong>Sugar Spark Cakes</strong>
+                    <small>ADMIN</small>
+                </span>
+            </a>
 
-    <a href="index.html" class="sidebar-brand" aria-label="Sugar Spark Cakes home">
-        <span class="brand-icon" aria-hidden="true">🧁</span>
-        <span class="brand-text">
-            <strong>Sugar Spark Cakes</strong>
-            <small>ADMIN</small>
-        </span>
-    </a>
+            <div class="sidebar-section-label">MAIN MENU</div>
 
-    <div class="sidebar-section-label">MAIN MENU</div>
+            <nav class="sidebar-nav" aria-label="Admin navigation">
+                <a href="admin-dashboard.html" class="nav-link">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
 
-    <nav class="sidebar-nav" aria-label="Admin navigation">
-        <a href="admin-dashboard.html" class="nav-link">
-            <span class="nav-icon">▦</span>
-            <span>Dashboard</span>
-        </a>
+                <a href="admin-products.html"
+                   class="nav-link active"
+                   aria-current="page">
+                    <span class="nav-icon">♧</span>
+                    <span>Manage Products</span>
+                </a>
 
-        <a href="admin-products.html"
-           class="nav-link active"
-           aria-current="page">
-            <span class="nav-icon">♧</span>
-            <span>Manage Products</span>
-        </a>
+                <a href="admin-orders.html" class="nav-link">
+                    <span class="nav-icon">▤</span>
+                    <span>Manage Orders</span>
+                </a>
 
-        <a href="admin-orders.html" class="nav-link">
-            <span class="nav-icon">▤</span>
-            <span>Manage Orders</span>
-        </a>
+                <a href="admin-customer-details.html" class="nav-link">
+                    <span class="nav-icon">♙</span>
+                    <span>Customer Details</span>
+                </a>
+            </nav>
 
-        <a href="admin-customer-details.html" class="nav-link">
-            <span class="nav-icon">♙</span>
-            <span>Customer Details</span>
-        </a>
-    </nav>
+            <div class="sidebar-bottom">
+                <div class="sidebar-note">
+                    <span class="note-icon">♡</span>
+                    <p>Making every celebration sweeter.</p>
+                </div>
 
-    <div class="sidebar-bottom">
-        <div class="sidebar-note">
-            <span class="note-icon">♡</span>
-            <p>Making every celebration sweeter.</p>
-        </div>
+                <a href="admin-login.html" class="logout-button">
+                    <span class="nav-icon">↪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
 
-        <a href="admin-login.html" class="logout-button">
-            <span class="nav-icon">↪</span>
-            <span>Logout</span>
-        </a>
-    </div>
-
-</aside>
+        </aside>
 
         <main class="main-content">
 
@@ -158,9 +157,8 @@
                                     <option value="">Select category</option>
                                     <option>Birthday Cakes</option>
                                     <option>Wedding Cakes</option>
-                                    <option>Chocolate Cakes</option>
                                     <option>Anniversary Cakes</option>
-                                    <option>Other Cakes</option>
+                                    <option>Special Occasion Cakes</option>
                                 </select>
                             </label>
 
@@ -177,11 +175,25 @@
                                 </select>
                             </label>
 
-                            <label class="full-width">
-                                Image URL (optional)
-                                <input type="url" id="cakeImage"
-                                       placeholder="https://example.com/cake.jpg">
-                            </label>
+                            <!-- Multiple cake image upload -->
+                            <div class="full-width image-upload-section">
+                                <label for="cakeImages">
+                                    Cake Images
+                                </label>
+
+                                <input
+                                    type="file"
+                                    id="cakeImages"
+                                    accept="image/*"
+                                    multiple
+                                >
+
+                                <small>
+                                    You can select multiple images for one cake.
+                                </small>
+
+                                <div id="imagePreview" class="image-preview"></div>
+                            </div>
 
                             <label class="full-width">
                                 Description
@@ -214,9 +226,8 @@
                             <option value="">All Categories</option>
                             <option>Birthday Cakes</option>
                             <option>Wedding Cakes</option>
-                            <option>Chocolate Cakes</option>
                             <option>Anniversary Cakes</option>
-                            <option>Other Cakes</option>
+                            <option>Special Occasion Cakes</option>
                         </select>
                     </div>
 
@@ -239,8 +250,8 @@
                     </div>
 
                     <p class="demo-note">
-                        Product information is currently managed by the frontend.
-                        Database integration will be added later.
+                        Product details and multiple cake images will be saved
+                        through the backend database.
                     </p>
 
                 </section>

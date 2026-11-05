@@ -660,17 +660,15 @@ td {
 .product-cell {
     display: flex;
     align-items: center;
-    gap: 11px;
-    min-width: 175px;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
-.product-image,
-.product-placeholder {
-    width: 43px;
-    height: 43px;
-    flex-shrink: 0;
-    border-radius: 9px;
-    background: var(--pink-light);
+.product-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
 .product-image {
@@ -1026,4 +1024,19 @@ td {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
+}
+
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.preview-image {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }

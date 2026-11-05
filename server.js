@@ -1,6 +1,8 @@
 
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
 require('dotenv').config();
 
 const bcrypt = require('bcryptjs');
@@ -17,7 +19,53 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// Test MySQL connection
+// ==========================================
+// IMAGE UPLOAD CONFIGURATION
+// ==========================================
+
+// Create uploads folder if it does not exist
+const uploadDirectory = path.join(__dirname, 'public', 'uploads');
+
+if (!fs.existsSync(uploadDirectory)) {
+    fs.mkdirSync(uploadDirectory, { recursive: true });
+}
+
+// Configure image storage
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, uploadDirectory);
+    },
+
+    filename: (req, file, callback) => {
+        const uniqueName =
+            Date.now() + '-' +
+            Math.round(Math.random() * 1E9) +
+            path.extname(file.originalname).toLowerCase();
+
+        callback(null, uniqueName);
+    }
+});
+
+// Allow image files only, maximum 5MB per image
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 5 * 1024 * 1024
+    },
+    fileFilter: (req, file, callback) => {
+        if (file.mimetype.startsWith('image/')) {
+            callback(null, true);
+        } else {
+            callback(new Error('Only image files are allowed.'));
+        }
+    }
+});
+
+
+// ==========================================
+// TEST MYSQL CONNECTION
+// ==========================================
+
 async function connectDatabase() {
     try {
         const connection = await db.getConnection();
@@ -29,7 +77,10 @@ async function connectDatabase() {
 }
 
 
-// Test API route
+// ==========================================
+// HEALTH CHECK API
+// ==========================================
+
 app.get('/api/health', (req, res) => {
     res.json({
         message: 'Sugar Spark Cakes server is running!'
@@ -37,7 +88,10 @@ app.get('/api/health', (req, res) => {
 });
 
 
-// Get all cake products with category names
+// ==========================================
+// GET ALL PRODUCTS WITH MULTIPLE IMAGES
+// ==========================================
+
 app.get('/api/products', async (req, res) => {
     try {
         const [products] = await db.query(`
@@ -47,16 +101,52 @@ app.get('/api/products', async (req, res) => {
                 p.description,
                 p.price,
                 p.image,
+                p.flavour,
+                p.status,
                 p.category_id,
                 c.category_name AS category,
                 p.created_at
             FROM products p
             LEFT JOIN categories c
-            ON p.category_id = c.category_id
+                ON p.category_id = c.category_id
             ORDER BY p.product_id DESC
         `);
 
-        res.json(products);
+        const [images] = await db.query(`
+            SELECT product_id, image_path
+            FROM product_images
+            ORDER BY image_id ASC
+        `);
+
+        const imageMap = {};
+
+        images.forEach(item => {
+            if (!imageMap[item.product_id]) {
+                imageMap[item.product_id] = [];
+            }
+
+            imageMap[item.product_id].push(item.image_path);
+        });
+
+        const result = products.map(product => {
+            const productImages = imageMap[product.product_id] || [];
+
+            // Use the main image if no gallery images exist
+            if (
+                productImages.length === 0 &&
+                product.image
+            ) {
+                productImages.push(product.image);
+            }
+
+            return {
+                ...product,
+                available: product.status === 'Available',
+                images: productImages
+            };
+        });
+
+        res.json(result);
 
     } catch (error) {
         console.error('Error fetching products:', error.message);
@@ -68,7 +158,309 @@ app.get('/api/products', async (req, res) => {
 });
 
 
-// Customer Registration API
+// ==========================================
+// ADMIN - ADD PRODUCT WITH MULTIPLE IMAGES
+// ==========================================
+
+app.post(
+    '/api/admin/products',
+    upload.array('images', 10),
+    async (req, res) => {
+        let connection;
+
+        try {
+            const {
+                name,
+                price,
+                category,
+                flavour,
+                description,
+                available
+            } = req.body;
+
+            if (!name || !price || !category || !flavour) {
+                return res.status(400).json({
+                    message: 'Please complete all required product details.'
+                });
+            }
+
+            const numericPrice = Number(price);
+
+            if (!Number.isFinite(numericPrice) || numericPrice <= 0) {
+                return res.status(400).json({
+                    message: 'Please enter a valid price.'
+                });
+            }
+
+            const [categories] = await db.query(
+                'SELECT category_id FROM categories WHERE category_name = ?',
+                [category]
+            );
+
+            if (categories.length === 0) {
+                return res.status(400).json({
+                    message: 'Invalid product category.'
+                });
+            }
+
+            const imagePaths = (req.files || []).map(
+                file => '/uploads/' + file.filename
+            );
+
+            const mainImage = imagePaths.length > 0
+                ? imagePaths[0]
+                : null;
+
+            connection = await db.getConnection();
+            await connection.beginTransaction();
+
+            const [productResult] = await connection.query(
+                `INSERT INTO products
+                (
+                    product_name,
+                    description,
+                    price,
+                    image,
+                    category_id,
+                    flavour,
+                    status
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    name.trim(),
+                    description ? description.trim() : null,
+                    numericPrice,
+                    mainImage,
+                    categories[0].category_id,
+                    flavour,
+                    available === 'true' ? 'Available' : 'Unavailable'
+                ]
+            );
+
+            const productId = productResult.insertId;
+
+            for (const imagePath of imagePaths) {
+                await connection.query(
+                    `INSERT INTO product_images
+                    (product_id, image_path)
+                    VALUES (?, ?)`,
+                    [productId, imagePath]
+                );
+            }
+
+            await connection.commit();
+
+            res.status(201).json({
+                message: 'Product added successfully.',
+                productId: productId
+            });
+
+        } catch (error) {
+            if (connection) {
+                await connection.rollback();
+            }
+
+            console.error('Error adding product:', error.message);
+
+            res.status(500).json({
+                message: 'Failed to add product.'
+            });
+
+        } finally {
+            if (connection) {
+                connection.release();
+            }
+        }
+    }
+);
+
+
+// ==========================================
+// ADMIN - UPDATE PRODUCT
+// ==========================================
+
+app.put(
+    '/api/admin/products/:id',
+    upload.array('images', 10),
+    async (req, res) => {
+        let connection;
+
+        try {
+            const productId = Number(req.params.id);
+
+            if (!Number.isInteger(productId) || productId <= 0) {
+                return res.status(400).json({
+                    message: 'Invalid product ID.'
+                });
+            }
+
+            const {
+                name,
+                price,
+                category,
+                flavour,
+                description,
+                available
+            } = req.body;
+
+            const numericPrice = Number(price);
+
+            if (
+                !name ||
+                !category ||
+                !flavour ||
+                !Number.isFinite(numericPrice) ||
+                numericPrice <= 0
+            ) {
+                return res.status(400).json({
+                    message: 'Please enter valid product details.'
+                });
+            }
+
+            const [existingProducts] = await db.query(
+                `SELECT product_id, image
+                 FROM products
+                 WHERE product_id = ?`,
+                [productId]
+            );
+
+            if (existingProducts.length === 0) {
+                return res.status(404).json({
+                    message: 'Product not found.'
+                });
+            }
+
+            const [categories] = await db.query(
+                'SELECT category_id FROM categories WHERE category_name = ?',
+                [category]
+            );
+
+            if (categories.length === 0) {
+                return res.status(400).json({
+                    message: 'Invalid product category.'
+                });
+            }
+
+            connection = await db.getConnection();
+            await connection.beginTransaction();
+
+            let mainImage = existingProducts[0].image;
+
+            // Replace gallery images only if new images are uploaded
+            if (req.files && req.files.length > 0) {
+                const imagePaths = req.files.map(
+                    file => '/uploads/' + file.filename
+                );
+
+                mainImage = imagePaths[0];
+
+                await connection.query(
+                    'DELETE FROM product_images WHERE product_id = ?',
+                    [productId]
+                );
+
+                for (const imagePath of imagePaths) {
+                    await connection.query(
+                        `INSERT INTO product_images
+                        (product_id, image_path)
+                        VALUES (?, ?)`,
+                        [productId, imagePath]
+                    );
+                }
+            }
+
+            await connection.query(
+                `UPDATE products
+                 SET
+                    product_name = ?,
+                    description = ?,
+                    price = ?,
+                    image = ?,
+                    category_id = ?,
+                    flavour = ?,
+                    status = ?
+                 WHERE product_id = ?`,
+                [
+                    name.trim(),
+                    description ? description.trim() : null,
+                    numericPrice,
+                    mainImage,
+                    categories[0].category_id,
+                    flavour,
+                    available === 'true' ? 'Available' : 'Unavailable',
+                    productId
+                ]
+            );
+
+            await connection.commit();
+
+            res.json({
+                message: 'Product updated successfully.'
+            });
+
+        } catch (error) {
+            if (connection) {
+                await connection.rollback();
+            }
+
+            console.error('Error updating product:', error.message);
+
+            res.status(500).json({
+                message: 'Failed to update product.'
+            });
+
+        } finally {
+            if (connection) {
+                connection.release();
+            }
+        }
+    }
+);
+
+
+// ==========================================
+// ADMIN - DELETE PRODUCT
+// ==========================================
+
+app.delete('/api/admin/products/:id', async (req, res) => {
+    try {
+        const productId = Number(req.params.id);
+
+        if (!Number.isInteger(productId) || productId <= 0) {
+            return res.status(400).json({
+                message: 'Invalid product ID.'
+            });
+        }
+
+        const [result] = await db.query(
+            'DELETE FROM products WHERE product_id = ?',
+            [productId]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                message: 'Product not found.'
+            });
+        }
+
+        res.json({
+            message: 'Product deleted successfully.'
+        });
+
+    } catch (error) {
+        console.error('Error deleting product:', error.message);
+
+        res.status(500).json({
+            message: 'Failed to delete product.'
+        });
+    }
+});
+
+
+// ==========================================
+// CUSTOMER REGISTRATION API
+// ==========================================
+
 app.post('/api/register', async (req, res) => {
     try {
         const {
@@ -80,7 +472,6 @@ app.post('/api/register', async (req, res) => {
             terms
         } = req.body;
 
-        // Check required fields
         if (
             !fullName ||
             !email ||
@@ -93,7 +484,6 @@ app.post('/api/register', async (req, res) => {
             });
         }
 
-        // Validate email format
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!emailPattern.test(email)) {
@@ -102,28 +492,24 @@ app.post('/api/register', async (req, res) => {
             });
         }
 
-        // Validate password length
         if (password.length < 8) {
             return res.status(400).json({
                 message: 'Password must contain at least 8 characters.'
             });
         }
 
-        // Check password confirmation
         if (password !== confirmPassword) {
             return res.status(400).json({
                 message: 'Passwords do not match.'
             });
         }
 
-        // Check terms and conditions
         if (terms !== true && terms !== 'on') {
             return res.status(400).json({
                 message: 'Please accept the terms and conditions.'
             });
         }
 
-        // Check whether email already exists
         const [existingCustomers] = await db.query(
             'SELECT customer_id FROM customers WHERE email = ?',
             [email.trim().toLowerCase()]
@@ -135,10 +521,8 @@ app.post('/api/register', async (req, res) => {
             });
         }
 
-        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Insert customer into database
         const [result] = await db.query(
             `INSERT INTO customers
             (full_name, email, phone, password)
@@ -166,19 +550,20 @@ app.post('/api/register', async (req, res) => {
 });
 
 
-// Customer Login API
+// ==========================================
+// CUSTOMER LOGIN API
+// ==========================================
+
 app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Check required fields
         if (!email || !password) {
             return res.status(400).json({
                 message: 'Please enter your email and password.'
             });
         }
 
-        // Find customer by email
         const [customers] = await db.query(
             `SELECT customer_id, full_name, email, phone, password
              FROM customers
@@ -186,7 +571,6 @@ app.post('/api/login', async (req, res) => {
             [email.trim().toLowerCase()]
         );
 
-        // Check whether customer exists
         if (customers.length === 0) {
             return res.status(401).json({
                 message: 'Invalid email or password.'
@@ -195,7 +579,6 @@ app.post('/api/login', async (req, res) => {
 
         const customer = customers[0];
 
-        // Compare entered password with hashed password
         const passwordMatch = await bcrypt.compare(
             password,
             customer.password
@@ -207,7 +590,6 @@ app.post('/api/login', async (req, res) => {
             });
         }
 
-        // Successful login
         res.status(200).json({
             message: 'Login successful! Welcome back.',
             customer: {
@@ -228,13 +610,14 @@ app.post('/api/login', async (req, res) => {
 });
 
 
-// Customer Order Placement API
-app.post('/api/orders', async (req, res) => {
+// ==========================================
+// CUSTOMER ORDER PLACEMENT API
+// ==========================================
 
+app.post('/api/orders', async (req, res) => {
     let connection;
 
     try {
-
         const {
             customerId,
             deliveryDate,
@@ -244,7 +627,6 @@ app.post('/api/orders', async (req, res) => {
             items
         } = req.body;
 
-        // Validate customer ID
         const parsedCustomerId = Number(customerId);
 
         if (
@@ -256,14 +638,12 @@ app.post('/api/orders', async (req, res) => {
             });
         }
 
-        // Validate delivery details
         if (!deliveryDate || !deliveryAddress || !paymentMethod) {
             return res.status(400).json({
                 message: 'Please complete all required delivery details.'
             });
         }
 
-        // Validate delivery date format
         if (!/^\d{4}-\d{2}-\d{2}$/.test(deliveryDate)) {
             return res.status(400).json({
                 message: 'Please enter a valid delivery date.'
@@ -271,6 +651,7 @@ app.post('/api/orders', async (req, res) => {
         }
 
         const dateParts = deliveryDate.split('-').map(Number);
+
         const dateCheck = new Date(
             Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2])
         );
@@ -285,7 +666,6 @@ app.post('/api/orders', async (req, res) => {
             });
         }
 
-        // Validate payment method
         const allowedPaymentMethods = [
             'Cash on Delivery',
             'Bank Transfer',
@@ -298,7 +678,6 @@ app.post('/api/orders', async (req, res) => {
             });
         }
 
-        // Validate order items
         if (!Array.isArray(items) || items.length === 0) {
             return res.status(400).json({
                 message: 'Your cart is empty.'
@@ -306,7 +685,6 @@ app.post('/api/orders', async (req, res) => {
         }
 
         for (const item of items) {
-
             const productId = Number(item.productId);
             const quantity = Number(item.quantity);
 
@@ -321,10 +699,8 @@ app.post('/api/orders', async (req, res) => {
                     message: 'Invalid product information in your cart.'
                 });
             }
-
         }
 
-        // Check whether customer exists
         const [customers] = await db.query(
             'SELECT customer_id FROM customers WHERE customer_id = ?',
             [parsedCustomerId]
@@ -336,7 +712,6 @@ app.post('/api/orders', async (req, res) => {
             });
         }
 
-        // Get product details from database
         const productIds = items.map(item => Number(item.productId));
         const uniqueProductIds = [...new Set(productIds)];
 
@@ -355,7 +730,6 @@ app.post('/api/orders', async (req, res) => {
             });
         }
 
-        // Calculate totals using database prices
         const productMap = new Map();
 
         products.forEach(product => {
@@ -365,7 +739,6 @@ app.post('/api/orders', async (req, res) => {
         let subtotal = 0;
 
         const orderItems = items.map(item => {
-
             const product = productMap.get(Number(item.productId));
             const quantity = Number(item.quantity);
             const price = Number(product.price);
@@ -381,18 +754,15 @@ app.post('/api/orders', async (req, res) => {
                 quantity: quantity,
                 itemTotal: itemTotal
             };
-
         });
 
         const deliveryFee = 0;
         const total = subtotal + deliveryFee;
 
-        // Start database transaction
         connection = await db.getConnection();
 
         await connection.beginTransaction();
 
-        // Insert main order
         const [orderResult] = await connection.query(
             `INSERT INTO orders (
                 customer_id,
@@ -421,9 +791,7 @@ app.post('/api/orders', async (req, res) => {
 
         const orderId = orderResult.insertId;
 
-        // Insert order items
         for (const item of orderItems) {
-
             await connection.query(
                 `INSERT INTO order_items (
                     order_id,
@@ -445,10 +813,8 @@ app.post('/api/orders', async (req, res) => {
                     item.itemTotal
                 ]
             );
-
         }
 
-        // Complete transaction
         await connection.commit();
 
         res.status(201).json({
@@ -460,8 +826,6 @@ app.post('/api/orders', async (req, res) => {
         });
 
     } catch (error) {
-
-        // Roll back incomplete order
         if (connection) {
             await connection.rollback();
         }
@@ -473,17 +837,38 @@ app.post('/api/orders', async (req, res) => {
         });
 
     } finally {
-
         if (connection) {
             connection.release();
         }
-
     }
-
 });
 
 
-// Start the server
+// ==========================================
+// IMAGE UPLOAD ERROR HANDLER
+// ==========================================
+
+app.use((error, req, res, next) => {
+    if (error instanceof multer.MulterError) {
+        return res.status(400).json({
+            message: 'Image upload failed. Each image must be 5MB or smaller, with a maximum of 10 images.'
+        });
+    }
+
+    if (error) {
+        return res.status(400).json({
+            message: error.message
+        });
+    }
+
+    next();
+});
+
+
+// ==========================================
+// START THE SERVER
+// ==========================================
+
 app.listen(PORT, () => {
     console.log(`Sugar Spark Cakes server running at http://localhost:${PORT}`);
     connectDatabase();
