@@ -843,6 +843,211 @@ app.post('/api/orders', async (req, res) => {
     }
 });
 
+// ==========================================
+// ADMIN - GET ALL CUSTOMER ORDERS
+// ==========================================
+
+app.get('/api/admin/orders', async (req, res) => {
+    try {
+        const [orders] = await db.query(`
+            SELECT
+                o.order_id,
+                o.customer_id,
+                c.full_name,
+                c.email,
+                c.phone,
+                o.order_date,
+                o.delivery_date,
+                o.delivery_address,
+                o.delivery_note,
+                o.payment_method,
+                o.subtotal,
+                o.delivery_fee,
+                o.total,
+                o.order_status
+            FROM orders o
+            INNER JOIN customers c
+                ON o.customer_id = c.customer_id
+            ORDER BY o.order_date DESC
+        `);
+
+        const [orderItems] = await db.query(`
+            SELECT
+                order_item_id,
+                order_id,
+                product_id,
+                product_name,
+                product_price,
+                cake_size,
+                quantity,
+                item_total
+            FROM order_items
+            ORDER BY order_item_id ASC
+        `);
+
+        const itemsMap = {};
+
+        orderItems.forEach(item => {
+            if (!itemsMap[item.order_id]) {
+                itemsMap[item.order_id] = [];
+            }
+
+            itemsMap[item.order_id].push(item);
+        });
+
+        const result = orders.map(order => ({
+            ...order,
+            items: itemsMap[order.order_id] || []
+        }));
+
+        res.json(result);
+
+    } catch (error) {
+        console.error('Error fetching orders:', error.message);
+
+        res.status(500).json({
+            message: 'Failed to retrieve customer orders.'
+        });
+    }
+});
+
+// ==========================================
+// ADMIN - GET SINGLE ORDER BY ID
+// ==========================================
+
+app.get('/api/admin/orders/:id', async (req, res) => {
+    try {
+        const orderId = Number(req.params.id);
+
+        // Validate order ID
+        if (!Number.isInteger(orderId) || orderId <= 0) {
+            return res.status(400).json({
+                message: 'Invalid order ID.'
+            });
+        }
+
+        // Get order and customer details
+        const [orders] = await db.query(`
+            SELECT
+                o.order_id,
+                o.customer_id,
+                c.full_name,
+                c.email,
+                c.phone,
+                o.order_date,
+                o.delivery_date,
+                o.delivery_address,
+                o.delivery_note,
+                o.payment_method,
+                o.subtotal,
+                o.delivery_fee,
+                o.total,
+                o.order_status
+            FROM orders o
+            INNER JOIN customers c
+                ON o.customer_id = c.customer_id
+            WHERE o.order_id = ?
+        `, [orderId]);
+
+        // Check whether order exists
+        if (orders.length === 0) {
+            return res.status(404).json({
+                message: 'Order not found.'
+            });
+        }
+
+        // Get items belonging to this order
+        const [items] = await db.query(`
+            SELECT
+                order_item_id,
+                order_id,
+                product_id,
+                product_name,
+                product_price,
+                cake_size,
+                quantity,
+                item_total
+            FROM order_items
+            WHERE order_id = ?
+            ORDER BY order_item_id ASC
+        `, [orderId]);
+
+        // Return order with its items
+        const result = {
+            ...orders[0],
+            items: items
+        };
+
+        res.json(result);
+
+    } catch (error) {
+        console.error('Error fetching single order:', error.message);
+
+        res.status(500).json({
+            message: 'Failed to retrieve order details.'
+        });
+    }
+});
+
+// ==========================================
+// ADMIN - UPDATE ORDER STATUS
+// ==========================================
+
+app.put('/api/admin/orders/:id/status', async (req, res) => {
+    try {
+        const orderId = Number(req.params.id);
+        const { orderStatus } = req.body;
+
+        // Validate order ID
+        if (!Number.isInteger(orderId) || orderId <= 0) {
+            return res.status(400).json({
+                message: 'Invalid order ID.'
+            });
+        }
+
+        // Allow only Pending and Completed statuses
+        const allowedStatuses = ['Pending', 'Completed'];
+
+        if (!allowedStatuses.includes(orderStatus)) {
+            return res.status(400).json({
+                message: 'Invalid order status. Only Pending and Completed are allowed.'
+            });
+        }
+
+        // Check whether order exists
+        const [orders] = await db.query(
+            'SELECT order_id FROM orders WHERE order_id = ?',
+            [orderId]
+        );
+
+        if (orders.length === 0) {
+            return res.status(404).json({
+                message: 'Order not found.'
+            });
+        }
+
+        // Update order status
+        await db.query(
+            `UPDATE orders
+             SET order_status = ?
+             WHERE order_id = ?`,
+            [orderStatus, orderId]
+        );
+
+        res.json({
+            message: 'Order status updated successfully.',
+            orderId: orderId,
+            orderStatus: orderStatus
+        });
+
+    } catch (error) {
+        console.error('Error updating order status:', error.message);
+
+        res.status(500).json({
+            message: 'Failed to update order status.'
+        });
+    }
+});
 
 // ==========================================
 // IMAGE UPLOAD ERROR HANDLER

@@ -11,7 +11,7 @@
 
     <div class="admin-layout">
 
-        <!-- Sidebar: consistent with Admin Dashboard -->
+        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
 
             <a href="admin-dashboard.html" class="sidebar-brand"
@@ -129,16 +129,6 @@
 
                     <article class="stat-card">
                         <div class="stat-top">
-                            <span class="stat-icon lilac-icon">↻</span>
-                            <span class="stat-caption">IN PROGRESS</span>
-                        </div>
-                        <p class="stat-title">Processing Orders</p>
-                        <h2 id="processingOrders">0</h2>
-                        <p class="stat-description">Currently being prepared</p>
-                    </article>
-
-                    <article class="stat-card">
-                        <div class="stat-top">
                             <span class="stat-icon green-icon">✓</span>
                             <span class="stat-caption">FINISHED</span>
                         </div>
@@ -170,9 +160,7 @@
                         <select id="statusFilter" aria-label="Filter by order status">
                             <option value="">All Statuses</option>
                             <option value="Pending">Pending</option>
-                            <option value="Processing">Processing</option>
                             <option value="Completed">Completed</option>
-                            <option value="Cancelled">Cancelled</option>
                         </select>
                     </div>
 
