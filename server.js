@@ -456,6 +456,31 @@ app.delete('/api/admin/products/:id', async (req, res) => {
     }
 });
 
+// ==========================================
+// ADMIN - DASHBOARD STATISTICS
+// ==========================================
+
+app.get('/api/admin/dashboard-stats', async (req, res) => {
+    try {
+        const [stats] = await db.query(`
+            SELECT
+                (SELECT COUNT(*) FROM products) AS totalProducts,
+                (SELECT COUNT(*) FROM orders) AS totalOrders,
+                (SELECT COUNT(*) FROM orders
+                 WHERE order_status = 'Pending') AS pendingOrders,
+                (SELECT COUNT(*) FROM customers) AS totalCustomers
+        `);
+
+        res.json(stats[0]);
+
+    } catch (error) {
+        console.error('Error fetching dashboard statistics:', error.message);
+
+        res.status(500).json({
+            message: 'Failed to retrieve dashboard statistics.'
+        });
+    }
+});
 
 // ==========================================
 // CUSTOMER REGISTRATION API

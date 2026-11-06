@@ -15,68 +15,50 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
-    // Demo data for dashboard preview
-    // Replace with MongoDB data when the backend is connected.
-    const demoProducts = [
-        { id: "P001", name: "Chocolate Celebration Cake", price: 6500 },
-        { id: "P002", name: "Pink Birthday Cake", price: 5500 },
-        { id: "P003", name: "Vanilla Blossom Cake", price: 4800 },
-        { id: "P004", name: "Strawberry Cream Cake", price: 5200 },
-        { id: "P005", name: "Wedding Special Cake", price: 15000 }
-    ];
-
-    const demoCustomers = [
-        { id: "C001", name: "Customer One" },
-        { id: "C002", name: "Customer Two" },
-        { id: "C003", name: "Customer Three" }
-    ];
-
-    const demoOrders = [
-        {
-            id: "ORD-1001",
-            customer: "Customer One",
-            cake: "Chocolate Celebration Cake",
-            amount: 6500,
-            status: "Pending"
-        },
-        {
-            id: "ORD-1002",
-            customer: "Customer Two",
-            cake: "Pink Birthday Cake",
-            amount: 5500,
-            status: "Processing"
-        },
-        {
-            id: "ORD-1003",
-            customer: "Customer Three",
-            cake: "Vanilla Blossom Cake",
-            amount: 4800,
-            status: "Completed"
-        }
-    ];
-
-    // Update summary cards
-    document.getElementById("totalProducts").textContent =
-        demoProducts.length;
-
-    document.getElementById("totalOrders").textContent =
-        demoOrders.length;
-
-    document.getElementById("pendingOrders").textContent =
-        demoOrders.filter(order => order.status === "Pending").length;
-
-    document.getElementById("totalCustomers").textContent =
-        demoCustomers.length;
-
     // Format currency in Sri Lankan Rupees
     function formatCurrency(amount) {
-        return "LKR " + Number(amount).toLocaleString("en-LK");
+        return "LKR " + Number(amount || 0).toLocaleString("en-LK");
     }
 
-    // Render the recent orders table safely
+    // Update dashboard summary cards using database statistics
+    async function loadDashboardStats() {
+        try {
+            const response = await fetch("/api/admin/dashboard-stats");
+
+            if (!response.ok) {
+                throw new Error("Failed to load dashboard statistics.");
+            }
+
+            const stats = await response.json();
+
+            document.getElementById("totalProducts").textContent =
+                stats.totalProducts;
+
+            document.getElementById("totalOrders").textContent =
+                stats.totalOrders;
+
+            document.getElementById("pendingOrders").textContent =
+                stats.pendingOrders;
+
+            document.getElementById("totalCustomers").textContent =
+                stats.totalCustomers;
+
+        } catch (error) {
+            console.error("Dashboard statistics error:", error);
+
+            document.getElementById("totalProducts").textContent = "-";
+            document.getElementById("totalOrders").textContent = "-";
+            document.getElementById("pendingOrders").textContent = "-";
+            document.getElementById("totalCustomers").textContent = "-";
+        }
+    }
+
+    // Render recent orders using database information
     const ordersBody = document.getElementById("recentOrdersBody");
 
     function renderOrders(orders) {
+        if (!ordersBody) return;
+
         ordersBody.replaceChildren();
 
         if (orders.length === 0) {
@@ -92,22 +74,30 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        orders.forEach(order => {
+        // Display the five most recent orders
+        orders.slice(0, 5).forEach(order => {
             const row = document.createElement("tr");
 
             const orderCell = document.createElement("td");
             orderCell.className = "order-id";
-            orderCell.textContent = order.id;
+            orderCell.textContent = "#" + order.order_id;
 
             const customerCell = document.createElement("td");
-            customerCell.textContent = order.customer;
+            customerCell.textContent = order.full_name || "Unknown Customer";
 
             const cakeCell = document.createElement("td");
-            cakeCell.textContent = order.cake;
+
+            const cakeNames = Array.isArray(order.items)
+                ? order.items.map(item =>
+                    `${item.product_name} (x${item.quantity})`
+                ).join(", ")
+                : "Cake Order";
+
+            cakeCell.textContent = cakeNames || "Cake Order";
 
             const amountCell = document.createElement("td");
             amountCell.className = "amount";
-            amountCell.textContent = formatCurrency(order.amount);
+            amountCell.textContent = formatCurrency(order.total);
 
             const statusCell = document.createElement("td");
             const statusBadge = document.createElement("span");
@@ -116,16 +106,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const statusClass = {
                 Pending: "status-pending",
-                Processing: "status-processing",
-                Completed: "status-completed",
-                Cancelled: "status-cancelled"
+                Completed: "status-completed"
             };
 
             statusBadge.classList.add(
-                statusClass[order.status] || "status-pending"
+                statusClass[order.order_status] || "status-pending"
             );
 
-            statusBadge.textContent = order.status;
+            statusBadge.textContent = order.order_status || "Pending";
+
             statusCell.appendChild(statusBadge);
 
             [
@@ -140,7 +129,37 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    renderOrders(demoOrders);
+    // Load recent orders from MySQL database
+    async function loadRecentOrders() {
+        try {
+            const response = await fetch("/api/admin/orders");
+
+            if (!response.ok) {
+                throw new Error("Failed to load recent orders.");
+            }
+
+            const orders = await response.json();
+
+            renderOrders(orders);
+
+        } catch (error) {
+            console.error("Recent orders error:", error);
+
+            if (ordersBody) {
+                ordersBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            Unable to load orders. Please try again.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+    }
+
+    // Load dashboard information
+    loadDashboardStats();
+    loadRecentOrders();
 
     // Mobile sidebar navigation
     const sidebar = document.getElementById("sidebar");
@@ -148,26 +167,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const sidebarOverlay = document.getElementById("sidebarOverlay");
 
     function openSidebar() {
+        if (!sidebar || !sidebarOverlay || !menuToggle) return;
+
         sidebar.classList.add("open");
         sidebarOverlay.classList.add("visible");
         menuToggle.setAttribute("aria-expanded", "true");
     }
 
     function closeSidebar() {
+        if (!sidebar || !sidebarOverlay || !menuToggle) return;
+
         sidebar.classList.remove("open");
         sidebarOverlay.classList.remove("visible");
         menuToggle.setAttribute("aria-expanded", "false");
     }
 
-    menuToggle.addEventListener("click", () => {
-        if (sidebar.classList.contains("open")) {
-            closeSidebar();
-        } else {
-            openSidebar();
-        }
-    });
+    if (menuToggle) {
+        menuToggle.addEventListener("click", () => {
+            if (sidebar && sidebar.classList.contains("open")) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        });
+    }
 
-    sidebarOverlay.addEventListener("click", closeSidebar);
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener("click", closeSidebar);
+    }
 
     document.addEventListener("keydown", event => {
         if (event.key === "Escape") {
@@ -176,15 +203,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Close the mobile sidebar after choosing a navigation link
-    sidebar.querySelectorAll(".nav-link").forEach(link => {
-        link.addEventListener("click", closeSidebar);
-    });
+    if (sidebar) {
+        sidebar.querySelectorAll(".nav-link").forEach(link => {
+            link.addEventListener("click", closeSidebar);
+        });
+    }
 
     // Logout placeholder
-    document.getElementById("logoutButton").addEventListener("click", () => {
-        alert(
-            "Secure logout will be enabled when admin authentication is connected."
-        );
-    });
+    const logoutButton = document.getElementById("logoutButton");
+
+    if (logoutButton) {
+        logoutButton.addEventListener("click", () => {
+            alert(
+                "Secure logout will be enabled when admin authentication is connected."
+            );
+        });
+    }
 
 });
