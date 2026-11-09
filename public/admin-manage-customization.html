@@ -1,0 +1,294 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Customization Requests | Sugar Spark Cakes</title>
+    <link rel="stylesheet" href="css/admin-customization.css">
+</head>
+<body>
+
+    <div class="admin-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+
+            <a href="admin-dashboard.html" class="sidebar-brand"
+               aria-label="Sugar Spark Cakes admin home">
+                <span class="brand-icon" aria-hidden="true">🧁</span>
+                <span class="brand-text">
+                    <strong>Sugar Spark Cakes</strong>
+                    <small>ADMIN</small>
+                </span>
+            </a>
+
+            <div class="sidebar-section-label">MAIN MENU</div>
+
+            <nav class="sidebar-nav" aria-label="Admin navigation">
+
+                <a href="admin-dashboard.html" class="nav-link">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="admin-products.html" class="nav-link">
+                    <span class="nav-icon">♧</span>
+                    <span>Manage Products</span>
+                </a>
+
+                <a href="admin-orders.html" class="nav-link">
+                    <span class="nav-icon">▤</span>
+                    <span>Manage Orders</span>
+                </a>
+
+                <a href="admin-manage-customization.html"
+                   class="nav-link active" aria-current="page">
+                    <span class="nav-icon">♡</span>
+                    <span>Customization Requests</span>
+                </a>
+
+                <a href="admin-customer-details.html" class="nav-link">
+                    <span class="nav-icon">♙</span>
+                    <span>Customer Details</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-note">
+                    <span class="note-icon">♡</span>
+                    <p>Making every celebration sweeter.</p>
+                </div>
+
+                <a href="admin-login.html" class="logout-button">
+                    <span class="nav-icon">↪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button type="button" class="menu-toggle"
+                            id="menuToggle"
+                            aria-label="Toggle navigation"
+                            aria-expanded="false">
+                        ☰
+                    </button>
+
+                    <div>
+                        <span class="admin-label">ADMIN PANEL</span>
+                        <p class="breadcrumb">
+                            Home / Customization Requests
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="admin-profile">
+                    <div class="profile-avatar">A</div>
+
+                    <div class="profile-info">
+                        <strong>Administrator</strong>
+                        <small>Admin Account</small>
+                    </div>
+                </div>
+
+            </header>
+
+            <section class="orders-content">
+
+                <!-- Page heading -->
+                <div class="page-heading">
+
+                    <div>
+                        <p class="eyebrow">SUGAR SPARK CAKES</p>
+
+                        <h1>Customization Requests</h1>
+
+                        <p class="page-description">
+                            View customer cake customization requests
+                            and manage their progress.
+                        </p>
+                    </div>
+
+                    <button type="button" class="refresh-button"
+                            id="refreshButton">
+                        ↻ Refresh Requests
+                    </button>
+
+                </div>
+
+                <!-- Request summary -->
+                <section class="stats-grid"
+                         aria-label="Customization request summary">
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-icon pink-icon">♡</span>
+                            <span class="stat-caption">ALL REQUESTS</span>
+                        </div>
+
+                        <p class="stat-title">Total Requests</p>
+                        <h2 id="totalRequests">0</h2>
+                        <p class="stat-description">
+                            Requests received
+                        </p>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-icon peach-icon">◷</span>
+                            <span class="stat-caption">PENDING</span>
+                        </div>
+
+                        <p class="stat-title">Pending Requests</p>
+                        <h2 id="pendingRequests">0</h2>
+                        <p class="stat-description">
+                            Awaiting processing
+                        </p>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-icon green-icon">✓</span>
+                            <span class="stat-caption">COMPLETED</span>
+                        </div>
+
+                        <p class="stat-title">Completed Requests</p>
+                        <h2 id="completedRequests">0</h2>
+                        <p class="stat-description">
+                            Successfully completed
+                        </p>
+                    </article>
+
+                </section>
+
+                <!-- Customization requests table -->
+                <section class="orders-panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <p class="eyebrow">CUSTOMIZATION MANAGEMENT</p>
+
+                            <h2>Customer Requests</h2>
+
+                            <p class="panel-description">
+                                Review cake requirements and update request status.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Search and filter -->
+                    <div class="toolbar">
+
+                        <input type="search"
+                               id="searchInput"
+                               placeholder="Search customer or request ID..."
+                               aria-label="Search customization requests">
+
+                        <select id="statusFilter"
+                                aria-label="Filter by request status">
+                            <option value="">All Statuses</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+
+                    </div>
+
+                    <p id="statusMessage"
+                       class="status-message"
+                       role="status"
+                       aria-live="polite"></p>
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>Request ID</th>
+                                    <th>Customer</th>
+                                    <th>Cake Details</th>
+                                    <th>Occasion</th>
+                                    <th>Delivery Date</th>
+                                    <th>Reference Image</th>
+                                    <th>Details</th>
+                                    <th>Status</th>
+                                    <th>Update Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="requestsTableBody">
+
+                                <tr>
+                                    <td colspan="8" class="empty-state">
+                                        Loading customization requests...
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <p class="demo-note" id="dataNotice">
+                        Loading customization request information...
+                    </p>
+
+                </section>
+
+                
+                <!-- Customization Request Details Modal -->
+                <div class="details-modal" id="detailsModal" aria-hidden="true">
+
+                    <div class="details-modal-content">
+
+                        <div class="details-modal-header">
+                            <div>
+                                <p class="eyebrow">REQUEST INFORMATION</p>
+                                <h2>Customization Details</h2>
+                            </div>
+
+                            <button type="button"
+                                    class="close-modal"
+                                    id="closeDetailsModal"
+                                    aria-label="Close details">
+                                &times;
+                            </button>
+                        </div>
+
+                        <div class="details-modal-body" id="detailsModalBody">
+                            <!-- Details will be displayed here -->
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <footer class="page-footer">
+                    <span>© 2026 Sugar Spark Cakes</span>
+                    <span>Customization Request Management</span>
+                </footer>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <script src="js/admin-customization.js"></script>
+
+</body>
+</html>

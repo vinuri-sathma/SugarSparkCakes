@@ -27,6 +27,7 @@ function updateCartCount() {
 
         cartCount.textContent = total;
         cartCount.hidden = total === 0;
+
     } catch (error) {
         cartCount.textContent = "0";
         cartCount.hidden = true;
@@ -40,6 +41,7 @@ window.addEventListener("storage", function (event) {
         updateCartCount();
     }
 });
+
 let selectedImage = null;
 let previewUrl = null;
 
@@ -112,9 +114,13 @@ removeImageButton.addEventListener("click", function () {
 });
 
 
-// Send customer name and contact number through WhatsApp
-customizeForm.addEventListener("submit", function (event) {
+// Submit customization request to the database
+customizeForm.addEventListener("submit", async function (event) {
     event.preventDefault();
+
+    if (!customizeForm.reportValidity()) {
+        return;
+    }
 
     const customerName =
         document.getElementById("customer-name").value.trim();
@@ -122,27 +128,116 @@ customizeForm.addEventListener("submit", function (event) {
     const customerPhone =
         document.getElementById("customer-phone").value.trim();
 
-    if (!customizeForm.reportValidity()) {
-        return;
+    const flavour =
+        document.getElementById("cake-flavour").value;
+
+    const cakeSize =
+        document.getElementById("cake-weight").value;
+
+    const occasion =
+        document.getElementById("cake-occasion").value;
+
+    const preferredDesign =
+        document.getElementById("cake-design").value.trim();
+
+    const cakeMessage =
+        document.getElementById("cake-greeting").value.trim();
+
+    const specialInstructions =
+        document.getElementById("additional-notes").value.trim();
+
+    const deliveryDate =
+        deliveryDateInput.value;
+
+    // Prepare form data for the API
+    const formData = new FormData();
+
+    formData.append("customerName", customerName);
+    formData.append("customerPhone", customerPhone);
+    formData.append("flavour", flavour);
+    formData.append("cakeSize", cakeSize);
+    formData.append("occasion", occasion);
+    formData.append("preferredDesign", preferredDesign);
+    formData.append("cakeMessage", cakeMessage);
+    formData.append("specialInstructions", specialInstructions);
+    formData.append("deliveryDate", deliveryDate);
+
+    // Add reference image only if the customer selected one
+    if (selectedImage) {
+        formData.append("referenceImage", selectedImage);
     }
 
-    const message =
-        "Hello Sugar Spark Cakes! 🧁\n\n" +
-        "I would like to place a customized cake order.\n\n" +
-        "Customer Name: " + customerName + "\n" +
-        "Contact Number: " + customerPhone + "\n\n" +
-        "Please note my customized cake order. " +
-        "I will discuss the cake details with you. Thank you!";
+    // Open a blank tab first to avoid browser popup blocking
+    const whatsappWindow = window.open("about:blank", "_blank");
 
-    const whatsappURL =
-        "https://wa.me/" +
-        whatsappNumber +
-        "?text=" +
-        encodeURIComponent(message);
-
-    window.open(
-        whatsappURL,
-        "_blank",
-        "noopener,noreferrer"
+    const submitButton = customizeForm.querySelector(
+        'button[type="submit"], input[type="submit"]'
     );
+
+    if (submitButton) {
+        submitButton.disabled = true;
+    }
+
+    try {
+        const response = await fetch("/api/customization-requests", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                result.message || "Unable to submit customization request."
+            );
+        }
+
+        // Prepare WhatsApp message after successful database save
+        const message =
+            "Hello Sugar Spark Cakes! 🧁\n\n" +
+            "I have submitted a customized cake request through your website.\n\n" +
+            "Customer Name: " + customerName + "\n" +
+            "Contact Number: " + customerPhone + "\n" +
+            "Flavour: " + flavour + "\n" +
+            "Cake Size: " + cakeSize + "\n" +
+            "Occasion: " + (occasion || "Not specified") + "\n" +
+            "Preferred Design: " + (preferredDesign || "Not specified") + "\n" +
+            "Cake Message: " + (cakeMessage || "Not specified") + "\n" +
+            "Additional Instructions: " +
+            (specialInstructions || "Not specified") + "\n" +
+            "Delivery Date: " + deliveryDate + "\n\n" +
+            "Customization Request ID: " + result.customizationId + "\n\n" +
+            "Thank you!";
+
+        const whatsappURL =
+            "https://wa.me/" +
+            whatsappNumber +
+            "?text=" +
+            encodeURIComponent(message);
+
+        alert("Your customization request has been saved successfully!");
+
+        if (whatsappWindow) {
+            whatsappWindow.location.href = whatsappURL;
+        } else {
+            window.location.href = whatsappURL;
+        }
+
+    } catch (error) {
+        console.error("Customization submission error:", error);
+
+        if (whatsappWindow) {
+            whatsappWindow.close();
+        }
+
+        alert(
+            error.message ||
+            "Something went wrong. Please try again."
+        );
+
+    } finally {
+        if (submitButton) {
+            submitButton.disabled = false;
+        }
+    }
 });

@@ -482,6 +482,109 @@ app.get('/api/admin/dashboard-stats', async (req, res) => {
     }
 });
 
+// ==========================================
+// ADMIN - GET ALL CUSTOMIZATION REQUESTS
+// ==========================================
+
+app.get('/api/admin/customization-requests', async (req, res) => {
+
+    try {
+        const [requests] = await db.query(`
+            SELECT
+                customization_id,
+                customer_name,
+                customer_phone,
+                flavour,
+                cake_size,
+                occasion,
+                preferred_design,
+                cake_message,
+                special_instructions,
+                delivery_date,
+                reference_image,
+                request_status,
+                created_at
+            FROM cake_customization_requests
+            ORDER BY customization_id DESC
+        `);
+
+        res.json(requests);
+
+    } catch (error) {
+        console.error(
+            'Error fetching customization requests:',
+            error.message
+        );
+
+        res.status(500).json({
+            message: 'Failed to retrieve customization requests.'
+        });
+    }
+
+});
+
+// ==========================================
+// ADMIN - UPDATE CUSTOMIZATION REQUEST STATUS
+// ==========================================
+
+app.put(
+    '/api/admin/customization-requests/:id/status',
+    async (req, res) => {
+
+        try {
+            const customizationId = Number(req.params.id);
+            const { requestStatus } = req.body;
+
+            const allowedStatuses = [
+                'Pending',
+                'Processing',
+                'Completed'
+            ];
+
+            if (
+                !Number.isInteger(customizationId) ||
+                customizationId <= 0
+            ) {
+                return res.status(400).json({
+                    message: 'Invalid customization request ID.'
+                });
+            }
+
+            if (!allowedStatuses.includes(requestStatus)) {
+                return res.status(400).json({
+                    message: 'Invalid request status.'
+                });
+            }
+
+            const [result] = await db.query(
+                `UPDATE cake_customization_requests
+                 SET request_status = ?
+                 WHERE customization_id = ?`,
+                [requestStatus, customizationId]
+            );
+
+            if (result.affectedRows === 0) {
+                return res.status(404).json({
+                    message: 'Customization request not found.'
+                });
+            }
+
+            res.json({
+                message: 'Customization request status updated successfully.'
+            });
+
+        } catch (error) {
+            console.error(
+                'Status update error:',
+                error.message
+            );
+
+            res.status(500).json({
+                message: 'Unable to update request status.'
+            });
+        }
+    }
+);
 
 // ==========================================
 // ADMIN - GET ALL CUSTOMERS
@@ -681,6 +784,231 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
+// ==========================================
+// CUSTOMER - CAKE CUSTOMIZATION REQUEST
+// ==========================================
+
+app.post(
+    '/api/customization-requests',
+    upload.single('referenceImage'),
+    async (req, res) => {
+
+        try {
+            const {
+                customerName,
+                customerPhone,
+                flavour,
+                cakeSize,
+                occasion,
+                preferredDesign,
+                cakeMessage,
+                specialInstructions,
+                deliveryDate
+            } = req.body;
+
+            // Validate required fields
+            if (
+                !customerName ||
+                !customerPhone ||
+                !flavour ||
+                !cakeSize ||
+                !deliveryDate
+            ) {
+                return res.status(400).json({
+                    message: 'Please complete all required customization details.'
+                });
+            }
+
+            // Validate delivery date format
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(deliveryDate)) {
+                return res.status(400).json({
+                    message: 'Please enter a valid delivery date.'
+                });
+            }
+
+            const dateParts = deliveryDate.split('-').map(Number);
+
+            const dateCheck = new Date(
+                Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2])
+            );
+
+            if (
+                dateCheck.getUTCFullYear() !== dateParts[0] ||
+                dateCheck.getUTCMonth() !== dateParts[1] - 1 ||
+                dateCheck.getUTCDate() !== dateParts[2]
+            ) {
+                return res.status(400).json({
+                    message: 'Please enter a valid delivery date.'
+                });
+            }
+
+            // Save uploaded image path
+            const referenceImage = req.file
+                ? '/uploads/' + req.file.filename
+                : null;
+
+            // Insert customization request into database
+            const [result] = await db.query(
+                `INSERT INTO cake_customization_requests
+                (
+                    customer_id,
+                    customer_name,
+                    customer_phone,
+                    flavour,
+                    cake_size,
+                    occasion,
+                    preferred_design,
+                    cake_message,
+                    special_instructions,
+                    delivery_date,
+                    reference_image
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    null,
+                    customerName.trim(),
+                    customerPhone.trim(),
+                    flavour,
+                    cakeSize,
+                    occasion || null,
+                    preferredDesign || null,
+                    cakeMessage || null,
+                    specialInstructions || null,
+                    deliveryDate,
+                    referenceImage
+                ]
+            );
+
+            res.status(201).json({
+                message: 'Customization request saved successfully.',
+                customizationId: result.insertId,
+                referenceImage: referenceImage
+            });
+
+        } catch (error) {
+
+            console.error(
+                'Customization request error:',
+                error.message
+            );
+
+            res.status(500).json({
+                message: 'Unable to save customization request.'
+            });
+
+        }
+    }
+);
+
+// ==========================================
+// CUSTOMER - CAKE CUSTOMIZATION REQUEST
+// ==========================================
+
+app.post(
+    '/api/customization-requests',
+    upload.single('referenceImage'),
+    async (req, res) => {
+
+        try {
+            const {
+                customerName,
+                customerPhone,
+                flavour,
+                cakeSize,
+                occasion,
+                preferredDesign,
+                cakeMessage,
+                specialInstructions,
+                deliveryDate
+            } = req.body;
+
+            if (
+                !customerName ||
+                !customerPhone ||
+                !flavour ||
+                !cakeSize ||
+                !deliveryDate
+            ) {
+                return res.status(400).json({
+                    message: 'Please complete all required customization details.'
+                });
+            }
+
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(deliveryDate)) {
+                return res.status(400).json({
+                    message: 'Please enter a valid delivery date.'
+                });
+            }
+
+            const dateParts = deliveryDate.split('-').map(Number);
+
+            const dateCheck = new Date(
+                Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2])
+            );
+
+            if (
+                dateCheck.getUTCFullYear() !== dateParts[0] ||
+                dateCheck.getUTCMonth() !== dateParts[1] - 1 ||
+                dateCheck.getUTCDate() !== dateParts[2]
+            ) {
+                return res.status(400).json({
+                    message: 'Please enter a valid delivery date.'
+                });
+            }
+
+            const referenceImage = req.file
+                ? '/uploads/' + req.file.filename
+                : null;
+
+            const [result] = await db.query(
+                `INSERT INTO cake_customization_requests
+                (
+                    customer_id,
+                    customer_name,
+                    customer_phone,
+                    flavour,
+                    cake_size,
+                    occasion,
+                    preferred_design,
+                    cake_message,
+                    special_instructions,
+                    delivery_date,
+                    reference_image
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    null,
+                    customerName.trim(),
+                    customerPhone.trim(),
+                    flavour,
+                    cakeSize,
+                    occasion || null,
+                    preferredDesign || null,
+                    cakeMessage || null,
+                    specialInstructions || null,
+                    deliveryDate,
+                    referenceImage
+                ]
+            );
+
+            res.status(201).json({
+                message: 'Customization request saved successfully.',
+                customizationId: result.insertId,
+                referenceImage: referenceImage
+            });
+
+        } catch (error) {
+            console.error(
+                'Customization request error:',
+                error.message
+            );
+
+            res.status(500).json({
+                message: 'Unable to save customization request.'
+            });
+        }
+    }
+);
 
 // ==========================================
 // CUSTOMER ORDER PLACEMENT API
