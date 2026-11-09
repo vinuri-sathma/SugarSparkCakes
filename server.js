@@ -468,7 +468,11 @@ app.get('/api/admin/dashboard-stats', async (req, res) => {
                 (SELECT COUNT(*) FROM orders) AS totalOrders,
                 (SELECT COUNT(*) FROM orders
                  WHERE order_status = 'Pending') AS pendingOrders,
-                (SELECT COUNT(*) FROM customers) AS totalCustomers
+                (SELECT COUNT(*) FROM customers) AS totalCustomers,
+                
+                (SELECT COUNT(*)
+                FROM cake_customization_requests
+                WHERE request_status = 'Pending') AS pendingCustomizations
         `);
 
         res.json(stats[0]);

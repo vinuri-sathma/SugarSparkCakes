@@ -43,6 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("totalCustomers").textContent =
                 stats.totalCustomers;
 
+            document.getElementById("pendingCustomizations").textContent =
+                stats.pendingCustomizations;
+
         } catch (error) {
             console.error("Dashboard statistics error:", error);
 
@@ -50,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("totalOrders").textContent = "-";
             document.getElementById("pendingOrders").textContent = "-";
             document.getElementById("totalCustomers").textContent = "-";
+            document.getElementById("pendingCustomizations").textContent = "-";
         }
     }
 
