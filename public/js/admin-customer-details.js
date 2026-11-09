@@ -1,55 +1,8 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    const customers = [
-        {
-            id: "CUS001",
-            name: "Amaya Perera",
-            email: "amaya.perera@example.com",
-            phone: "077 123 4567",
-            registeredDate: "2026-10-05",
-            status: "Active"
-        },
-        {
-            id: "CUS002",
-            name: "Nethmi Fernando",
-            email: "nethmi.fernando@example.com",
-            phone: "071 234 5678",
-            registeredDate: "2026-10-12",
-            status: "Active"
-        },
-        {
-            id: "CUS003",
-            name: "Kavindu Silva",
-            email: "kavindu.silva@example.com",
-            phone: "076 345 6789",
-            registeredDate: "2026-09-20",
-            status: "Inactive"
-        },
-        {
-            id: "CUS004",
-            name: "Tharushi Jayawardena",
-            email: "tharushi.j@example.com",
-            phone: "075 456 7890",
-            registeredDate: "2026-10-18",
-            status: "Active"
-        },
-        {
-            id: "CUS005",
-            name: "Dinuka Peris",
-            email: "dinuka.peris@example.com",
-            phone: "078 567 8901",
-            registeredDate: "2026-08-15",
-            status: "Inactive"
-        },
-        {
-            id: "CUS006",
-            name: "Senuja Wickramasinghe",
-            email: "senuja.w@example.com",
-            phone: "072 678 9012",
-            registeredDate: "2026-10-21",
-            status: "Active"
-        }
-    ];
+
+    // Customer data loaded from the database
+    let customers = [];
 
     const searchInput = document.getElementById("searchInput");
     const statusFilter = document.getElementById("statusFilter");
@@ -71,8 +24,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeModal = document.getElementById("closeModal");
     const doneModal = document.getElementById("doneModal");
 
+    // Format database date
     function formatDate(dateString) {
-        const date = new Date(`${dateString}T00:00:00`);
+        if (!dateString) {
+            return "N/A";
+        }
+
+        const date = new Date(dateString);
+
+        if (Number.isNaN(date.getTime())) {
+            return "N/A";
+        }
 
         return date.toLocaleDateString("en-GB", {
             day: "2-digit",
@@ -81,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Generate customer initials
     function getInitials(name) {
         return name
             .split(" ")
@@ -91,28 +54,82 @@ document.addEventListener("DOMContentLoaded", () => {
             .toUpperCase();
     }
 
-    function updateSummary() {
-        const now = new Date();
-        const thirtyDaysAgo = new Date(now);
-        thirtyDaysAgo.setDate(now.getDate() - 30);
+    // Generate status CSS class
+    function getStatusClass(status) {
+        return `status-pill status-${status.toLowerCase().replace(/\s+/g, "-")}`;
+    }
 
+    // Load customers from MySQL database
+    async function loadCustomers() {
+        refreshButton.disabled = true;
+        statusMessage.textContent = "Loading customer records...";
+
+        try {
+            const response = await fetch("/api/admin/customers");
+
+            if (!response.ok) {
+                throw new Error("Failed to load customer records.");
+            }
+
+            const data = await response.json();
+
+            customers = data.map(customer => ({
+                id: String(customer.customer_id),
+                name: customer.full_name,
+                email: customer.email,
+                phone: customer.phone,
+                registeredDate: customer.created_at,
+                status: customer.status
+            }));
+
+            updateSummary();
+            renderCustomers();
+
+        } catch (error) {
+            console.error("Error loading customers:", error);
+
+            customers = [];
+
+            updateSummary();
+
+            tableBody.replaceChildren();
+
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 6;
+            cell.className = "empty-state";
+            cell.textContent =
+                "Unable to load customer records. Please try again.";
+
+            row.appendChild(cell);
+            tableBody.appendChild(row);
+
+            statusMessage.textContent = "Failed to load customer records.";
+
+        } finally {
+            refreshButton.disabled = false;
+        }
+    }
+
+    // Update summary cards using automatic database status
+    function updateSummary() {
         totalCustomers.textContent = customers.length;
 
         activeCustomers.textContent = customers.filter(
             customer => customer.status === "Active"
         ).length;
 
+        newCustomers.textContent = customers.filter(
+            customer => customer.status === "New Customer"
+        ).length;
+
         inactiveCustomers.textContent = customers.filter(
             customer => customer.status === "Inactive"
         ).length;
-
-        newCustomers.textContent = customers.filter(customer => {
-            const registered = new Date(`${customer.registeredDate}T00:00:00`);
-            return registered >= new Date(thirtyDaysAgo.toDateString())
-                && registered <= new Date(now.toDateString());
-        }).length;
     }
 
+    // Search and status filtering
     function getFilteredCustomers() {
         const query = searchInput.value.trim().toLowerCase();
         const selectedStatus = statusFilter.value;
@@ -123,15 +140,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 customer.name,
                 customer.email,
                 customer.phone
-            ].some(value => value.toLowerCase().includes(query));
+            ].some(value =>
+                String(value).toLowerCase().includes(query)
+            );
 
             const matchesStatus =
-                selectedStatus === "all" || customer.status === selectedStatus;
+                selectedStatus === "all" ||
+                customer.status === selectedStatus;
 
             return matchesSearch && matchesStatus;
         });
     }
 
+    // Display customers in the table
     function renderCustomers() {
         const filteredCustomers = getFilteredCustomers();
 
@@ -143,7 +164,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             cell.colSpan = 6;
             cell.className = "empty-state";
-            cell.textContent = "No customers found. Try another search or filter.";
+            cell.textContent =
+                "No customers found. Try another search or filter.";
 
             row.appendChild(cell);
             tableBody.appendChild(row);
@@ -155,10 +177,12 @@ document.addEventListener("DOMContentLoaded", () => {
         filteredCustomers.forEach(customer => {
             const row = document.createElement("tr");
 
+            // Customer ID
             const idCell = document.createElement("td");
             idCell.className = "customer-id";
             idCell.textContent = customer.id;
 
+            // Customer name and email
             const customerCell = document.createElement("td");
             const customerInfo = document.createElement("div");
             customerInfo.className = "customer-cell";
@@ -181,25 +205,35 @@ document.addEventListener("DOMContentLoaded", () => {
             customerInfo.append(avatar, nameInfo);
             customerCell.appendChild(customerInfo);
 
+            // Phone
             const phoneCell = document.createElement("td");
             phoneCell.textContent = customer.phone;
 
+            // Registration date
             const dateCell = document.createElement("td");
             dateCell.textContent = formatDate(customer.registeredDate);
 
+            // Status
             const statusCell = document.createElement("td");
             const statusPill = document.createElement("span");
-            statusPill.className = `status-pill status-${customer.status.toLowerCase()}`;
+
+            statusPill.className = getStatusClass(customer.status);
             statusPill.textContent = customer.status;
+
             statusCell.appendChild(statusPill);
 
+            // View details button
             const actionCell = document.createElement("td");
             const viewButton = document.createElement("button");
 
             viewButton.type = "button";
             viewButton.className = "view-button";
             viewButton.textContent = "View Details";
-            viewButton.setAttribute("aria-label", `View details for ${customer.name}`);
+
+            viewButton.setAttribute(
+                "aria-label",
+                `View details for ${customer.name}`
+            );
 
             viewButton.addEventListener("click", () => {
                 showCustomerDetails(customer.id);
@@ -223,41 +257,58 @@ document.addEventListener("DOMContentLoaded", () => {
             `Showing ${filteredCustomers.length} of ${customers.length} customers.`;
     }
 
+    // Show customer details modal
     function showCustomerDetails(customerId) {
-        const customer = customers.find(item => item.id === customerId);
+        const customer = customers.find(
+            item => item.id === customerId
+        );
 
         if (!customer) {
             return;
         }
 
-        document.getElementById("modalAvatar").textContent = getInitials(customer.name);
-        document.getElementById("modalCustomerName").textContent = customer.name;
+        document.getElementById("modalAvatar").textContent =
+            getInitials(customer.name);
 
-        const modalStatus = document.getElementById("modalCustomerStatus");
+        document.getElementById("modalCustomerName").textContent =
+            customer.name;
+
+        const modalStatus =
+            document.getElementById("modalCustomerStatus");
+
         modalStatus.textContent = customer.status;
-        modalStatus.className =
-            `status-pill status-${customer.status.toLowerCase()}`;
+        modalStatus.className = getStatusClass(customer.status);
 
-        document.getElementById("modalCustomerId").textContent = customer.id;
-        document.getElementById("modalCustomerEmail").textContent = customer.email;
-        document.getElementById("modalCustomerPhone").textContent = customer.phone;
+        document.getElementById("modalCustomerId").textContent =
+            customer.id;
+
+        document.getElementById("modalCustomerEmail").textContent =
+            customer.email;
+
+        document.getElementById("modalCustomerPhone").textContent =
+            customer.phone;
+
         document.getElementById("modalCustomerDate").textContent =
             formatDate(customer.registeredDate);
+
         document.getElementById("modalCustomerStatusText").textContent =
             customer.status;
 
         customerModal.classList.add("open");
         customerModal.setAttribute("aria-hidden", "false");
+
         document.body.style.overflow = "hidden";
         closeModal.focus();
     }
 
+    // Close customer details modal
     function hideCustomerDetails() {
         customerModal.classList.remove("open");
         customerModal.setAttribute("aria-hidden", "true");
         document.body.style.overflow = "";
     }
 
+    // Mobile sidebar
     function closeSidebar() {
         sidebar.classList.remove("open");
         sidebarOverlay.classList.remove("visible");
@@ -270,17 +321,18 @@ document.addEventListener("DOMContentLoaded", () => {
         menuToggle.setAttribute("aria-expanded", "true");
     }
 
+    // Search and filter events
     searchInput.addEventListener("input", renderCustomers);
     statusFilter.addEventListener("change", renderCustomers);
 
+    // Refresh customer records from database
     refreshButton.addEventListener("click", () => {
         searchInput.value = "";
         statusFilter.value = "all";
-        updateSummary();
-        renderCustomers();
-        statusMessage.textContent = "Customer list refreshed.";
+        loadCustomers();
     });
 
+    // Sidebar events
     menuToggle.addEventListener("click", () => {
         if (sidebar.classList.contains("open")) {
             closeSidebar();
@@ -291,6 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     sidebarOverlay.addEventListener("click", closeSidebar);
 
+    // Modal events
     closeModal.addEventListener("click", hideCustomerDetails);
     doneModal.addEventListener("click", hideCustomerDetails);
     modalBackdrop.addEventListener("click", hideCustomerDetails);
@@ -302,6 +355,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    updateSummary();
-    renderCustomers();
+    // Initial database loading
+    loadCustomers();
+
 });

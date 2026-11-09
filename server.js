@@ -482,6 +482,53 @@ app.get('/api/admin/dashboard-stats', async (req, res) => {
     }
 });
 
+
+// ==========================================
+// ADMIN - GET ALL CUSTOMERS
+// AUTOMATIC CUSTOMER STATUS
+// ==========================================
+
+app.get('/api/admin/customers', async (req, res) => {
+    try {
+        const [customers] = await db.query(`
+            SELECT
+                c.customer_id,
+                c.full_name,
+                c.email,
+                c.phone,
+                c.created_at,
+
+                CASE
+                    WHEN EXISTS (
+                        SELECT 1
+                        FROM orders o
+                        WHERE o.customer_id = c.customer_id
+                        AND o.order_status = 'Completed'
+                        AND o.order_date >= DATE_SUB(NOW(), INTERVAL 90 DAY)
+                    )
+                    THEN 'Active'
+
+                    WHEN c.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                    THEN 'New Customer'
+
+                    ELSE 'Inactive'
+                END AS status
+
+            FROM customers c
+            ORDER BY c.customer_id DESC
+        `);
+
+        res.json(customers);
+
+    } catch (error) {
+        console.error('Error fetching customers:', error.message);
+
+        res.status(500).json({
+            message: 'Failed to retrieve customers.'
+        });
+    }
+});
+
 // ==========================================
 // CUSTOMER REGISTRATION API
 // ==========================================
